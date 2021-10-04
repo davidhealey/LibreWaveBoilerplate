@@ -22,11 +22,11 @@ namespace Mixer
 	// vptMixer
 	const vptMixer = Content.getComponent("vptMixer");
 	
-	// pnlMixer
-	const pnlMixer = Content.getComponent("pnlMixer");
-	pnlMixer.setPosition(0, 0, Manifest.channels.length * CHANNEL_WIDTH, vptMixer.getHeight());
+	// pnlMixerControls
+	const pnlMixerControls = Content.getComponent("pnlMixerControls");
+	pnlMixerControls.setPosition(0, 0, Manifest.channels.length * CHANNEL_WIDTH, vptMixer.getHeight());
 
-	pnlMixer.setPaintRoutine(function(g)
+	pnlMixerControls.setPaintRoutine(function(g)
 	{
 		var numChannels = Manifest.channels.length;
 

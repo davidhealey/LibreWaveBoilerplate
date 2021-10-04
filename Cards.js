@@ -22,7 +22,7 @@ namespace Cards
 	// Functions
 	inline function drawComponentBackgrounds()
 	{
-		local exclude = ["pnlHeader", "pnlFooter", "pnlMain", "pnlSettingsTab0", "pnlSettingsTab1", "pnlSettingsTab2", "pnlPresetBrowser", "pnlAdmin", "pnlMixer"];
+		local exclude = ["pnlHeader", "pnlFooter", "pnlMain", "pnlSettingsTab0", "pnlSettingsTab1", "pnlSettingsTab2", "pnlPresetBrowser", "pnlAdmin", "pnlMixerControls"];
 		local components = {}; // Components indexed with their parent panel
 		local panels = [];
 		
