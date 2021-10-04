@@ -27,6 +27,7 @@ namespace Articulations
 	// pnlArticulationList
 	const pnlArticulationList = Content.getComponent("pnlArticulationList");
 	pnlArticulationList.setValue(0);
+	pnlArticulationList.data.hover = -1;
 	pnlArticulationList.setControlCallback(onpnlArticulationListControl);
 	
 	inline function onpnlArticulationListControl(component, value)
@@ -49,7 +50,11 @@ namespace Articulations
 
 			var a = [0, i * (ROW_HEIGHT + ROW_SPACE), this.getWidth(), ROW_HEIGHT];
                 
-			this.getValue() == artIndex ? g.setColour(THEME.articulations.itemColour) : g.setColour(THEME.articulations.itemColour2);
+			if (this.getValue() == artIndex)
+				g.setColour(Colours.withAlpha(THEME.articulations.itemColour, this.data.hover == artIndex ? 0.8 : 1));
+			else
+				g.setColour(Colours.withAlpha(THEME.articulations.itemColour2, this.data.hover == artIndex ? 0.8 : 1));
+
 			g.fillRoundedRectangle(a, 3);
 
 			g.setColour(THEME.articulations.textColour);
@@ -70,11 +75,17 @@ namespace Articulations
 		var arts = Patches.getCurrentPatch().articulations.active;
         var value = Math.floor(event.y / this.getHeight() * arts.length);
         
+        event.hover ? this.data.hover = value : this.data.hover = -1;
+        
         if (event.clicked)
         {
             this.setValue(value);
             this.changed();
         }
+        else
+        {
+        	this.repaint();
+        }        
 	});
 	
 	// slpArticulationGain
