@@ -221,6 +221,12 @@ namespace Articulations
 				Configuration.setSamplerAttributes(samplerData);			
 		}
 
+		// Disable components that are not used by the articulation
+		if (isDefined(art.disabledComponents))
+			Configuration.enableAllComponents(art.disabledComponents);
+		else
+			Configuration.enableAllComponents([]);
+	
 		// Update envelope
 		Envelope.setEnabled(art.ahdsr !== false);
 		
@@ -228,12 +234,6 @@ namespace Articulations
 			Envelope.setProcessorId(art.ahdsr);
 		
 		Envelope.restoreFromSliderPack(index);
-
-		// Disable components that are not used by the articulation
-		if (isDefined(art.disabledComponents))
-			Configuration.enableAllComponents(art.disabledComponents);
-		else
-			Configuration.enableAllComponents([]);
 
         Configuration.setMidiProcessorAttributes(art.scripts);
         Configuration.setModulatorAttributes(art.modulators);
