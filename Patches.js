@@ -31,11 +31,27 @@ namespace Patches
 	}
 	
 	// Functions
+	inline function getPatchFromIndex(index)
+	{
+
+	}
+	
 	inline function changePatch(index)
 	{
-		local patch = Manifest.patches[index];
-		current = index;
-		
+		local patch;
+
+		for (i = 0; i < Manifest.patches.length; i++)
+		{
+			if (Manifest.patches[i].index == parseInt(index))
+			{
+				current = i;
+				patch = Manifest.patches[i];
+				break;
+			}
+		}
+
+		Console.assertIsDefined(patch);
+
 		Configuration.enableAllModules();
 		
 		// Apply manifest level settings
@@ -51,8 +67,8 @@ namespace Patches
 		Configuration.setSamplerAttributes(patch.samplers);
 		Configuration.loadSampleMaps(patch.samplers);
 
-		updateKeyswitches(index);
-		updateKeyRanges(index);
+		updateKeyswitches(current);
+		updateKeyRanges(current);
 		Articulations.init();
 	}
 

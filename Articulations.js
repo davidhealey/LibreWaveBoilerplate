@@ -106,7 +106,7 @@ namespace Articulations
 	pnlArticulationGain.setPaintRoutine(function(g)
 	{
         var arts = Patches.getCurrentPatch().articulations.active;
-        
+
 		for (i = 0; i < arts.length; i++)
 		{
 			var a = this.data.sliders[i];
