@@ -189,12 +189,12 @@ namespace Articulations
 	inline function changeArticulation(index)
 	{
 		local art = Manifest.articulations[index];
-		
+
 		// Set muters state
 		for (i = 0; i < Configuration.muters.length; i++)
 		{
 			local m = Configuration.muters[i];
-			m.setAttribute(m.ignoreButton, art.samplers.indexOf(i) == -1);
+			m.setAttribute(m.ignoreButton, !art.samplers.contains(i));
 		}
 
 		setArticulationGain(index);

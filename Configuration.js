@@ -22,15 +22,19 @@ namespace Configuration
 	const masterChain = Synth.getChildSynth(containerIds[0]);	
 
 	// Midi Muters
+	const masterMuter = Synth.getMidiProcessor("masterMidiMuter");
 	const muterIds = Synth.getIdList("MidiMuter");
 	const muters = [];
 	
 	for (id in muterIds)
-	    muters.push(Synth.getMidiProcessor(id));
+	{
+		if (id != "masterMidiMuter")
+			muters.push(Synth.getMidiProcessor(id));
+	}
 
 	// MIDI Processors
-	const processorIds = Synth.getIdList("Script Processor");
 	const noteRangeFilter = Synth.getMidiProcessor("noteRangeFilter");
+	const processorIds = Synth.getIdList("Script Processor");
 	const scriptProcessors = [];
 	    
 	for (id in processorIds)
@@ -255,6 +259,6 @@ namespace Configuration
 	
 	inline function setMasterMuter(state)
 	{
-		muters[0].setAttribute(muters[0].ignoreButton, state);
+		masterMuter.setAttribute(masterMuter.ignoreButton, state);
 	}
 }

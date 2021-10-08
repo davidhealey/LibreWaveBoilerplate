@@ -38,7 +38,7 @@ namespace Header
 
     // lblPreset
     const lblPreset = Content.getComponent("lblPreset");
-    
+
     // Functions
     inline function updatePresetLabel(patchName)
     {
