@@ -252,4 +252,9 @@ namespace Configuration
 		if (isDefined(data))
 			setAttributes(samplers, samplerIds, samplerAttributeIds, data);	    	
 	}
+	
+	inline function setMasterMuter(state)
+	{
+		muters[0].setAttribute(muters[0].ignoreButton, state);
+	}
 }
