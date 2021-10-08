@@ -16,9 +16,7 @@
 */
 
 namespace Header
-{
-    reg title = "";
-    
+{    
     // pnlHeader
     const pnlHeader = Content.getComponent("pnlHeader");
 
@@ -35,36 +33,24 @@ namespace Header
         // Expansion name
         g.setFont("bold", 24);
         g.setColour(THEME.header.textColour);
-        g.drawAlignedText(title, [20, this.getHeight() / 2 - 30 / 2, 300, 26], "left");
+        g.drawAlignedText(Manifest.title, [20, 0, 300, this.getHeight()], "left");
     });
 
     // lblPreset
     const lblPreset = Content.getComponent("lblPreset");
-    lblPreset.set("text", "");
     
-    // Function    
-    inline function redraw()
+    // Functions
+    inline function updatePresetLabel(patchName)
     {
-        if (Expansions.getCurrentExpansionName() != undefined)
-        {
-            title = Expansions.getCurrentExpansionName();
-            pnlHeader.repaint();
-            updatePresetLabel();
-        }
-    }
-    
-    inline function updatePresetLabel()
-    {
-        local patchName = Patches.getCurrentPatchName();
         local presetName = Engine.getCurrentUserPresetName();
         local text = "";
         
-        lblPreset.set("text", "");
+        lblPreset.set("text", text);
 
-        if (patchName != undefined && patchName != "")
+        if (isDefined(patchName) && patchName != "")
             text = patchName + "  -  ";
-            
-        if (presetName != undefined)
+
+        if (isDefined(presetName) && presetName != "")
         {
             text += presetName;
             lblPreset.set("text", text);

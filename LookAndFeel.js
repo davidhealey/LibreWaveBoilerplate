@@ -397,7 +397,7 @@ namespace LookAndFeel
     
     //pnlMain
     const pnlMain = Content.getComponent("pnlMain");
-    
+
     pnlMain.setPaintRoutine(function(g)
     {
         g.fillAll(THEME.bgColour);

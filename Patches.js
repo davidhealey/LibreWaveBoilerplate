@@ -30,12 +30,7 @@ namespace Patches
 		changePatch(value);
 	}
 	
-	// Functions
-	inline function getPatchFromIndex(index)
-	{
-
-	}
-	
+	// Functions	
 	inline function changePatch(index)
 	{
 		local patch;
@@ -69,6 +64,7 @@ namespace Patches
 
 		updateKeyswitches(current);
 		updateKeyRanges(current);
+		Header.updatePresetLabel(patch.id);
 		Articulations.init();
 	}
 
