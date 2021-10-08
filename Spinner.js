@@ -1,9 +1,7 @@
 namespace Spinner
 {
-	
 	// pnlSpinnerContainer
 	const pnlSpinnerContainer = Content.getComponent("pnlSpinnerContainer");
-	//pnlSpinnerContainer.showControl(false);
 	
 	// pnlSpinner
 	const pnlSpinner = Content.getComponent("pnlSpinner");
