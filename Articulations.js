@@ -239,6 +239,7 @@ namespace Articulations
         Configuration.setModulatorAttributes(art.modulators);
         Configuration.setEffectAttributes(art.effects);
 		Configuration.setKeyColours(index);
+		Configuration.setNoteRangeFilter(index);
 
 		pnlArticulationList.setValue(index);
 		pnlArticulationList.repaint();

@@ -30,7 +30,7 @@ namespace Configuration
 
 	// MIDI Processors
 	const processorIds = Synth.getIdList("Script Processor");
-	//const noteRangeFilter = Synth.getMidiProcessor("noteRangeFilter");
+	const noteRangeFilter = Synth.getMidiProcessor("noteRangeFilter");
 	const scriptProcessors = [];
 	    
 	for (id in processorIds)
@@ -212,6 +212,14 @@ namespace Configuration
 					Engine.setKeyColour(i, parseInt(r[2]));
 			}
 		}
+	}
+	
+	inline function setNoteRangeFilter(index)
+	{
+		local keyRanges = Patches.getKeyRanges(index);
+		
+		noteRangeFilter.setAttribute(noteRangeFilter.LowNote, keyRanges[0][0]);
+		noteRangeFilter.setAttribute(noteRangeFilter.HighNote, keyRanges[0][1]);
 	}
 	
 	inline function enableAllComponents(exceptions)
