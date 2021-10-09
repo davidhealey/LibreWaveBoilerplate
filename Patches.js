@@ -98,20 +98,31 @@ namespace Patches
 	inline function updateKeyRanges(index)
 	{
 		local patch = Manifest.patches[index];
+		local patchArts = patch.articulations;
+		
 		keyRanges.clear();
 
-		for (i = 0; i < patch.articulations.active.length; i++)
+		for (i = 0; i < patchArts.active.length; i++)
 		{
 			local range = [];
-			range = patch.keyRanges.clone();
-			keyRanges.push(range);
 			
-			if (!isDefined(patch.articulations.keyRanges)) continue;
-			if (!isDefined(patch.articulations.keyRanges[i])) continue;
-			if (patch.articulations.keyRanges[i].length == 0) continue;
+			if (isDefined(patch.keyRanges))
+				range = patch.keyRanges.clone();
+			else if (isDefined(Manifest.keyRanges))
+				range = Manifest.keyRanges.clone();
 
-			for (j = 0; j < patch.articulations.keyRanges[i].length; j++)
-				range[j] = patch.articulations.keyRanges[i][j];
+			keyRanges.push(range);
+
+			if (isDefined(patchArts.keyRanges[i]))
+			{
+				for (j = 0; j < patchArts.keyRanges[i].length; j++)
+					range[j] = patchArts.keyRanges[i][j];
+			}
+			else if (isDefined(Manifest.articulations[patchArts.active[i]].keyRanges))
+			{
+				for (j = 0; j < Manifest.articulations[patchArts.active[i]].keyRanges.length; j++)
+					range[j] = Manifest.articulations[patchArts.active[i]].keyRanges[j];
+			}
 		}
 	}
 }
