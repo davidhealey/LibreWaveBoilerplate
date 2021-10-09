@@ -359,6 +359,22 @@ namespace UIFactory
 		}
 	}
 	
+	inline function spaceControlsHorizontally(panelId, controlIds)
+	{
+		local panel = Content.getAllComponents(panelId)[0];
+
+		local a = [0, 0, panel.getWidth(), panel.getHeight()];
+		local col = a[2] / controlIds.length;
+	
+		for (i = 0; i < controlIds.length; i++)
+		{
+			local id = controlIds[i];
+			local c = Content.getAllComponents(id)[0];
+			
+			c.set("x", col * i + col / 2 - c.getWidth() / 2);			
+		}
+	}
+	
 	inline function createDynamicsPanel(parentId, a)
 	{
 		local data = [
@@ -700,3 +716,4 @@ namespace UIFactory
 		});
 	}
 }
+
