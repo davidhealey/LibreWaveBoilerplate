@@ -31,9 +31,9 @@ namespace Header
         g.fillRoundedRectangle(a, 5);
         
         // Expansion name
-        g.setFont("bold", 24);
+        g.setFont("bold", 26);
         g.setColour(THEME.header.textColour);
-        g.drawAlignedText(Manifest.title, [20, 0, 300, this.getHeight()], "left");
+        g.drawAlignedText(Manifest.title, [20, 0, 400, this.getHeight()], "left");
     });
 
     // lblPreset
