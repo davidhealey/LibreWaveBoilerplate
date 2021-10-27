@@ -230,6 +230,10 @@ namespace Theme
                     "itemColour": 0xff5b504c,
                     "itemColour2": 0xffb6a79a
                 },
+                "btnUnload": {
+                    "itemColour": 0xff5b504c,
+                    "itemColour2": 0xffb6a79a
+                },
                 "btnPurge": {
                     "itemColour": 0xff7f726c,
                     "itemColour2": 0xffcec7b5
