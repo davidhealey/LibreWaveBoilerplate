@@ -44,16 +44,19 @@ namespace Header
     {
         local presetName = Engine.getCurrentUserPresetName();
         local text = "";
-        
-        lblPreset.set("text", text);
 
         if (isDefined(patchName) && patchName != "")
-            text = patchName + "  -  ";
+            text = patchName;
 
         if (isDefined(presetName) && presetName != "")
         {
-            text += presetName;
-            lblPreset.set("text", text);
-        }
+	        if (text.indexOf(presetName) == -1)
+	        	text += " - " + presetName;
+        }            
+
+		if (text == "" && isDefined(Manifest.defaultPreset))
+			text = Manifest.defaultPreset;
+        
+        lblPreset.set("text", text);
     }
 }
