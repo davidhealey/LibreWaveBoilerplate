@@ -30,10 +30,15 @@ namespace Header
         var a = [lblPreset.get("x"), lblPreset.get("y"), lblPreset.getWidth(), lblPreset.getHeight() + 2];
         g.fillRoundedRectangle(a, 5);
         
-        // Expansion name
-        g.setFont("bold", 24);
-        g.setColour(THEME.header.textColour);
-        g.drawAlignedText(Manifest.title, [20, 0, 300, this.getHeight()], "left");
+	    // Product title
+	    var titleSize = 26;
+	
+	    if (isDefined(Manifest.titleSize))
+	      titleSize = Manifest.titleSize;
+	
+	    g.setFont("title", titleSize);
+	    g.setColour(THEME.header.textColour);
+	    g.drawAlignedText(Manifest.title, [20, 0, 400, this.getHeight()], "left");
     });
 
     // lblPreset
