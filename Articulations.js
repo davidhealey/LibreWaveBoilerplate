@@ -79,7 +79,7 @@ namespace Articulations
         
         if (event.clicked)
         {
-            this.setValue(value);
+            this.setValue(arts[value]);
             this.changed();
         }
         else
@@ -110,7 +110,7 @@ namespace Articulations
 		for (i = 0; i < arts.length; i++)
 		{
 			var a = this.data.sliders[i];
-			var value = slpArticulationGain.getSliderValueAt(i);
+			var value = slpArticulationGain.getSliderValueAt(arts[i]);
 			var h = a[3] * value - 4 * value;
 			var y = a[1] + a[3] - a[3] * value - 2 + 4 * value;
 
@@ -124,6 +124,8 @@ namespace Articulations
 	
 	pnlArticulationGain.setMouseCallback(function(event)
 	{
+		var arts = Patches.getCurrentPatch().articulations.active;
+
         if (event.clicked)
         {
             this.data.index = parseInt(event.y / (ROW_HEIGHT + ROW_SPACE));
@@ -132,7 +134,7 @@ namespace Articulations
         
         if (event.doubleClick)
         {
-            slpArticulationGain.setSliderAtIndex(this.data.index, 1);
+            slpArticulationGain.setSliderAtIndex(arts[this.data.index], 1);
             this.repaint();
         }
 
@@ -151,14 +153,11 @@ namespace Articulations
             // Calculate the new value (limit it to the given range)
             var value = Math.range(this.data.downValue + normalizedDistance, this.get("min"), this.get("max"));
         
-            if (value != this.getValue())
-            {
-                slpArticulationGain.setSliderAtIndex(this.data.index, value);
-                this.repaint();
-                
-                if (pnlArticulationList.getValue() == this.data.index)
-                    setArticulationGain(this.data.index);
-            }
+            slpArticulationGain.setSliderAtIndex(arts[this.data.index], value);
+            this.repaint();
+
+            if (pnlArticulationList.getValue() == this.data.index)
+                setArticulationGain(arts[this.data.index]);
         }  
 	});
 	
@@ -171,10 +170,10 @@ namespace Articulations
 		local arts = Patches.getCurrentPatch().articulations.active;
 		
         local pHeight = arts.length * (ROW_HEIGHT + ROW_SPACE) - ROW_SPACE;
-        local pWidth = vptArticulations.getWidth() - 10;
+        local pWidth = vptArticulations.getWidth() - 7;
         
         if (pHeight > vptArticulations.getHeight())
-            pWidth = pWidth - 10;
+            pWidth = pWidth - 8;
 
         pnlArticulationList.setPosition(0, 0, pWidth, pHeight);
         pnlArticulationGain.setPosition(pnlArticulationList.getWidth() - 20, 0, 20, pHeight);
