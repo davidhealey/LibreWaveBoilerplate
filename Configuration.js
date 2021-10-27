@@ -229,7 +229,10 @@ namespace Configuration
 	inline function enableAllComponents(exceptions)
 	{
 		for (c in Content.getAllComponents(""))
-			c.set("enabled", exceptions.indexOf(c.get("id")) == -1);
+		{
+			if (!c.get("enabled"))
+				c.set("enabled", exceptions.indexOf(c.get("id")) == -1);
+		}
 	}
 		
 	// Helpers
