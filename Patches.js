@@ -111,7 +111,7 @@ namespace Patches
 			else if (isDefined(Manifest.keyRanges))
 				range = Manifest.keyRanges.clone();
 
-			keyRanges.push(range);
+			keyRanges[patchArts.active[i]] = range;
 
 			if (isDefined(patchArts.keyRanges[i]))
 			{
