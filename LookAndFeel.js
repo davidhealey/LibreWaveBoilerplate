@@ -28,7 +28,7 @@ namespace LookAndFeel
         g.setColour(0xff352f2e);
         g.fillEllipse([a[0], a[1] + shadow, a[2], a[3]]);
 
-        obj.enabled == 1 ? g.setColour(obj.itemColour1) : g.setColour(Colours.withAlpha(obj.itemColour1, 0.5));            
+        g.setColour(Colours.withAlpha(obj.itemColour1, obj.enabled ? 1 : 0.5));
         g.fillEllipse(a);
         
         var startOffset = 2.5;
@@ -56,7 +56,7 @@ namespace LookAndFeel
             
             var w = a[2] * 0.2;
             
-            obj.enabled == 1 ? g.setColour(obj.itemColour2) : g.setColour(Colours.withAlpha(obj.itemColour2, 0.5));
+            g.setColour(Colours.withAlpha(obj.itemColour2, obj.enabled ? 1 : 0.5));
 
             if (w >= 30)
             {
@@ -116,10 +116,7 @@ namespace LookAndFeel
         if (obj.text.indexOf("icon") != -1)
         {
             obj.value == 0 ? colour = obj.itemColour1 : colour = obj.itemColour2;
-
-            if (obj.over) colour = Colours.withAlpha(colour, 0.7);
-
-            g.setColour(colour);
+            g.setColour(Colours.withAlpha(colour, obj.over ? 0.7 : 1));
 
             if (obj.text.indexOf("iconOff") != -1 && !obj.value)
             {
@@ -183,7 +180,7 @@ namespace LookAndFeel
         var a = obj.area;
 
         // Background
-        g.setColour(THEME.ScriptComboBox.bgColour);
+        g.setColour(Colours.withAlpha(THEME.ScriptComboBox.bgColour, obj.enabled ? 1 : 0.5));
         g.fillRoundedRectangle(a, 5);
 
         // Outline
