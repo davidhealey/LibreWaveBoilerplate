@@ -16,44 +16,49 @@
 */
 
 namespace Header
-{    
-    // pnlHeader
-    const pnlHeader = Content.getComponent("pnlHeader");
+{
+  // pnlHeader
+  const pnlHeader = Content.getComponent("pnlHeader");
 
-    pnlHeader.setPaintRoutine(function(g)
+  pnlHeader.setPaintRoutine(function(g)
+  {
+    // Header
+    g.fillAll(THEME.header.bgColour);
+
+    // Preset display
+    g.setColour(THEME.presetDisplay.bgColour);
+    var a = [lblPreset.get("x"), lblPreset.get("y"), lblPreset.getWidth(), lblPreset.getHeight() + 2];
+    g.fillRoundedRectangle(a, 5);
+
+    // Product title
+    var titleSize = 26;
+
+    if (isDefined(Manifest.titleSize))
+      titleSize = Manifest.titleSize;
+
+    g.setFont("title", titleSize);
+    g.setColour(THEME.header.textColour);
+    g.drawAlignedText(Manifest.title, [20, 0, 400, this.getHeight()], "left");
+  });
+
+  // lblPreset
+  const lblPreset = Content.getComponent("lblPreset");
+
+  // Functions
+  inline  function updatePresetLabel(patchName)
+  {
+    local presetName = Engine.getCurrentUserPresetName();
+    local text = "";
+
+    lblPreset.set("text", text);
+
+    if (isDefined(patchName) && patchName != "")
+      text = patchName + "  -  ";
+
+    if (isDefined(presetName) && presetName != "")
     {
-        // Header
-        g.fillAll(THEME.header.bgColour);
-
-        // Preset display
-        g.setColour(THEME.presetDisplay.bgColour);
-        var a = [lblPreset.get("x"), lblPreset.get("y"), lblPreset.getWidth(), lblPreset.getHeight() + 2];
-        g.fillRoundedRectangle(a, 5);
-        
-        // Expansion name
-        g.setFont("bold", 26);
-        g.setColour(THEME.header.textColour);
-        g.drawAlignedText(Manifest.title, [20, 0, 400, this.getHeight()], "left");
-    });
-
-    // lblPreset
-    const lblPreset = Content.getComponent("lblPreset");
-
-    // Functions
-    inline function updatePresetLabel(patchName)
-    {
-        local presetName = Engine.getCurrentUserPresetName();
-        local text = "";
-        
-        lblPreset.set("text", text);
-
-        if (isDefined(patchName) && patchName != "")
-            text = patchName + "  -  ";
-
-        if (isDefined(presetName) && presetName != "")
-        {
-            text += presetName;
-            lblPreset.set("text", text);
-        }
+      text += presetName;
+      lblPreset.set("text", text);
     }
+  }
 }
