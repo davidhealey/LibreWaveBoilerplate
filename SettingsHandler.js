@@ -70,9 +70,9 @@ namespace SettingsHandler
     });
 	
 	// pnlSettingsTab2 - Engine
-    pnlSettingsTab[2].data.labels = ["Fine Tune"];
+    pnlSettingsTab[2].data.labels = ["Coarse Tune", "Fine Tune", "Transpose"];
     pnlSettingsTab[2].setPaintRoutine(function(g) {pnlSettingsTabPaintRoutine(g);});
-    pnlSettingsTab[2].data.components = [Content.getComponent("knbFineTuning")];
+    pnlSettingsTab[2].data.components = [Content.getComponent("knbCoarseTuning"), Content.getComponent("knbFineTuning"), Content.getComponent("knbTranspose")];
     
 	pnlSettingsTab[2].setPaintRoutine(function(g)
 	{
