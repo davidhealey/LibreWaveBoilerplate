@@ -276,11 +276,13 @@ namespace UIFactory
 			"x": 20, "y": 25, "width": 860, "height": 433,
 		    "parentComponent": "pnlPresetBrowser",
 		    "ContentType": "PresetBrowser",
-		    "Data": "{\r\n  \"ShowSaveButton\": true,\r\n  \"ShowExpansionsAsColumn\": false,\r\n  \"ShowFolderButton\": true,\r\n  \"ShowNotes\": true,\r\n  \"ShowEditButtons\": true,\r\n  \"ShowFavoriteIcon\": false,\r\n  \"NumColumns\": 3,\r\n  \"ColumnWidthRatio\": [\r\n    0.3,\r\n    0.3,\r\n    0.3\r\n  ]\r\n}"
+		    "Font": "bold",
+		    "FontSize": 14,
+		    "Data": "{\r\n  \"ShowSaveButton\": true,\r\n  \"ShowExpansionsAsColumn\": false,\r\n  \"ShowFolderButton\": true,\r\n  \"ShowNotes\": true,\r\n  \"ShowEditButtons\": true,\r\n  \"ShowFavoriteIcon\": false,\r\n  \"NumColumns\": 3,\r\n  \"ColumnWidthRatio\": [\r\n    0.3333333333333333,\r\n    0.3333333333333333,\r\n    0.3333333333333333\r\n  ]\r\n}"
 		});
 		
-		Content.addPanel("pnlPresetBrowserNotesBlocker", 0, 0);
-		Content.setPropertiesFromJSON("pnlPresetBrowserNotesBlocker", {
+		Content.addPanel("pnlPresetNotesBlocker", 0, 0);
+		Content.setPropertiesFromJSON("pnlPresetNotesBlocker", {
 			"x": 11, "y": 63, "width": 878, "height": 43,
 			"parentComponent": "pnlPresetBrowser"
 		});
