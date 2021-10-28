@@ -56,7 +56,12 @@ namespace Header
         if (isDefined(presetName) && presetName != "")
         {
 	        if (text.indexOf(presetName) == -1)
-	        	text += " - " + presetName;
+	        {
+		        if (text != "")
+		        	text += " - " + presetName;
+		        else 
+		        	text = presetName;
+	        }
         }            
 
 		if (text == "" && isDefined(Manifest.defaultPreset))
