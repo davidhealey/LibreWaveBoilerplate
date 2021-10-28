@@ -199,7 +199,7 @@ namespace UIFactory
 		    "saveInPreset": false,
 		    "enableMidiLearn": false,
 		    "isMomentary": true,
-		    "text": "icon-caretLeft"
+		    "text": "icon-caretRight"
 		});
 	}
 	
