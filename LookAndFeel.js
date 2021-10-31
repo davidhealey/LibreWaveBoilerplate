@@ -271,7 +271,8 @@ namespace LookAndFeel
         obj.selected == 1 ? g.setColour(Colours.black) : g.setColour(Colours.lightgrey);
         
         col == -1 ? g.setFont("bold", 16) : g.setFont("bold", 18);
-        g.drawAlignedText(obj.text.toUpperCase(), [a[0] + 10, a[1], a[2], a[3]], "left");        
+        
+        g.drawAlignedText(obj.text, [a[0] + 10, a[1], a[2], a[3]], "left");       
     });
     
     // Preset browser search bar

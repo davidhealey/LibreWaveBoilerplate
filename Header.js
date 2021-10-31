@@ -55,11 +55,11 @@ namespace Header
 
         if (isDefined(presetName) && presetName != "")
         {
-	        if (text.indexOf(presetName) == -1)
+	        if (text != "" && text.indexOf(presetName) == -1)
 	        {
-		        if (text != "")
+				if (presetName.indexOf(text) == -1)
 		        	text += " - " + presetName;
-		        else 
+		        else
 		        	text = presetName;
 	        }
         }            
