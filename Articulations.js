@@ -243,7 +243,15 @@ namespace Articulations
 		pnlArticulationList.setValue(index);
 		pnlArticulationList.repaint();
 	}
-		
+	
+	inline function updateViewportPosition(index)
+	{
+		local numArts = Patches.getCurrentPatch().articulations.active.length;
+		local y = 1 / (numArts - 1) * index;
+
+		vptArticulations.set("viewPositionY", y);
+	}
+	
 	inline function getCurrent()
 	{
 		return pnlArticulationList.getValue();
@@ -281,7 +289,10 @@ namespace Articulations
 		local index = keyswitches.indexOf(note);
 
 		if (index != -1 && index != pnlArticulationList.getValue())
+		{
 			changeArticulation(arts[index]);
+			updateViewportPosition(index);
+		}			
     }
     
     inline function onControllerHandler(ccValue)
