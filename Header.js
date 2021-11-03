@@ -36,7 +36,7 @@ namespace Header
 	    if (isDefined(Manifest.titleSize))
 	      titleSize = Manifest.titleSize;
 	
-	    g.setFont("title", titleSize);
+	    g.setFont("semibold", titleSize);
 	    g.setColour(THEME.header.textColour);
 	    g.drawAlignedText(Manifest.title, [20, 0, 400, this.getHeight()], "left");
     });
