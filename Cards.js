@@ -18,14 +18,14 @@
 namespace Cards
 {	
 	const TITLE_HEIGHT = 42;
+	const components = {}; // Components indexed with their parent panel
 
-	// Functions
+	// Functions	
 	inline function drawComponentBackgrounds()
 	{
 		local exclude = ["pnlHeader", "pnlFooter", "pnlMain", "pnlSettingsTab0", "pnlSettingsTab1", "pnlSettingsTab2", "pnlPresetBrowser", "pnlAdmin", "pnlMixerControls"];
-		local components = {}; // Components indexed with their parent panel
 		local panels = [];
-		
+
         for (c in Content.getAllComponents("(knb)|(flt)|(tbl)"))
         {
 			local parentId = c.get("parentComponent");
@@ -56,7 +56,7 @@ namespace Cards
 				 	{
 				 		case "ScriptSlider":
 				 			if (c.getWidth() == 55 && c.getHeight() == 55)
-					 			drawKnobRange(g, c, x);
+					 			drawKnobRange(g, c, this);
 				 			else if (c.get("text").indexOf("[r]") != -1)
 					 			drawSliderRange(g, c, data.range);
 				 			
