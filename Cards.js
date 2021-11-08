@@ -249,6 +249,6 @@ namespace Cards
 		for (i = 0; i < component.data.children.length; i++)
 			component.data.children[i].showControl(i == value);
 
-		this.repaint();
+		component.repaint();
 	}
 }
