@@ -86,13 +86,13 @@ namespace Articulations
         else
         {
         	this.repaint();
-        }        
+        }
 	});
 	
 	// slpArticulationGain
 	const slpArticulationGain = Content.getComponent("slpArticulationGain");
-	global g_slpArticulationGainData = Engine.createAndRegisterSliderPackData(0);
-	slpArticulationGain.referToData(g_slpArticulationGainData);
+	global g_slpArticulationGainSliderPackData = Engine.createAndRegisterSliderPackData(0);
+	slpArticulationGain.referToData(g_slpArticulationGainSliderPackData);
 	
     // pnlArticulationGain
     const pnlArticulationGain = Content.getComponent("pnlArticulationGain");

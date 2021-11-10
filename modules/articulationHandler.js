@@ -16,10 +16,8 @@
 */
 
 include("Manifest.js");
-include("{PROJECT_FOLDER}librewave-boilerplate-hise-scripts/Configuration.js");
+include("librewave-boilerplate-hise-scripts/Configuration.js");
 
-const keyswitches = [];
-const keyRanges = [];
 reg currentPatch;
 reg lastArticulation = 0;
 
@@ -50,27 +48,14 @@ inline function onknbArticulationControl(component, value)
 	changeArticulation(value);	
 }
 
-// knbGain
-const knbGain = Content.addKnob("knbGain", 300, 0);
-knbGain.set("mode", "Decibel");
-
 // slpArticulationGain
-const slpArticulationGain = Content.addSliderPack("slpArticulationGain", 450, 0);
-slpArticulationGain.referToData(g_slpArticulationGainData);
+const slpArticulationGain = Content.addSliderPack("slpArticulationGain", 300, 0);
+if (isDefined(g_slpArticulationGainSliderPackData)) slpArticulationGain.referToData(g_slpArticulationGainSliderPackData);
 slpArticulationGain.set("min", 0);
 slpArticulationGain.set("max", 1);
 slpArticulationGain.set("stepSize", 0.01);
 slpArticulationGain.set("sliderAmount", 25);
 slpArticulationGain.set("width", 128);
-slpArticulationGain.setControlCallback(onslpArticulationGainControl);
-
-inline function onslpArticulationGainControl(component, value)
-{
-    local index = knbArticulation.getValue();
-
-    if (index == value)
-        setArticulationGain(index);
-}
 
 // Functions
 inline function changeArticulation(index)
@@ -84,7 +69,6 @@ inline function changeArticulation(index)
 		m.setAttribute(m.ignoreButton, !art.samplers.contains(i));
 	}
 
-	setArticulationGain(index);
 	Configuration.setMidiProcessorAttributes(art.scripts);
 	Configuration.setModulatorAttributes(art.modulators);
 	Configuration.setEffectAttributes(art.effects);
@@ -93,12 +77,10 @@ inline function changeArticulation(index)
 	lastArticulation = index;
 }
 
-inline function setArticulationGain(index)
+inline function getArticulationGain(index)
 {
-    local v = slpArticulationGain.getSliderValueAt(index);        
-    local gainValue = (((v - 0) * (0 - -25)) / (1 - 0)) + -25;
-
-    knbGain.setValue(gainValue);
+	local v = slpArticulationGain.getSliderValueAt(index);        
+	return (((v - 0) * (0 - -25)) / (1 - 0)) + -25;	
 }function onNoteOn()
 {
 	local n = Message.getNoteNumber();
@@ -108,16 +90,16 @@ inline function setArticulationGain(index)
 	if (index != -1 && index != lastArticulation)
 	{
 		knbArticulation.setValue(patch.articulations.active[index]);
-		knbArticulation.changed();
+		changeArticulation(patch.articulations.active[index]);
 	}
 	else
 	{
-		Message.setGain(knbGain.getValue());
+		Message.setGain(getArticulationGain(knbArticulation.getValue()));
 	}
 }
  function onNoteOff()
 {
-	Message.setGain(knbGain.getValue());
+	Message.setGain(getArticulationGain(knbArticulation.getValue()));
 }
  function onController()
 {
