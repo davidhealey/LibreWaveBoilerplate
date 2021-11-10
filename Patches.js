@@ -17,9 +17,8 @@
 
 namespace Patches
 {
+	const articulationHandler = Synth.getMidiProcessor("articulationHandler");
 	reg current;
-	const keyswitches = [];
-	const keyRanges = [];
 
 	// knbPatch
 	const knbPatch = Content.getComponent("knbPatch");
@@ -44,9 +43,9 @@ namespace Patches
 				break;
 			}
 		}
-
-		Console.assertIsDefined(patch);
-
+		
+		articulationHandler.setAttribute(articulationHandler.knbPatch, current);
+		
 		Configuration.enableAllModules();
 		
 		// Apply manifest level settings
@@ -61,9 +60,9 @@ namespace Patches
 		Configuration.setEffectAttributes(patch.effects);
 		Configuration.setSamplerAttributes(patch.samplers);
 		Configuration.loadSampleMaps(patch.samplers);
-
-		updateKeyswitches(current);
-		updateKeyRanges(current);
+		
+		Configuration.updateKeySwitches(patch);
+		Configuration.updateKeyRanges(patch);
 		Header.updatePresetLabel(patch.id);
 		Articulations.init();
 	}
@@ -71,58 +70,5 @@ namespace Patches
 	inline function getCurrentPatch()
 	{
 		return Manifest.patches[current];
-	}
-	
-	inline function getKeyRanges(index)
-	{
-		return keyRanges[index];
-	}
-	
-	inline function getKeyswitches()
-	{
-		return keyswitches;
-	}
-	
-	inline function updateKeyswitches(index)
-	{
-		local patch = Manifest.patches[index];
-		keyswitches.clear();
-
-		local firstKs = patch.firstKs;
-		local numArts = patch.articulations.active.length;
-
-        for (i = 0; i < numArts; i++)
-            keyswitches.push(firstKs + i);
-	}
-	
-	inline function updateKeyRanges(index)
-	{
-		local patch = Manifest.patches[index];
-		local patchArts = patch.articulations;
-		
-		keyRanges.clear();
-
-		for (i = 0; i < patchArts.active.length; i++)
-		{
-			local range = [];
-			
-			if (isDefined(patch.keyRanges))
-				range = patch.keyRanges.clone();
-			else if (isDefined(Manifest.keyRanges))
-				range = Manifest.keyRanges.clone();
-
-			keyRanges[patchArts.active[i]] = range;
-
-			if (isDefined(patchArts.keyRanges[i]))
-			{
-				for (j = 0; j < patchArts.keyRanges[i].length; j++)
-					range[j] = patchArts.keyRanges[i][j];
-			}
-			else if (isDefined(Manifest.articulations[patchArts.active[i]].keyRanges))
-			{
-				for (j = 0; j < Manifest.articulations[patchArts.active[i]].keyRanges.length; j++)
-					range[j] = Manifest.articulations[patchArts.active[i]].keyRanges[j];
-			}
-		}
 	}
 }

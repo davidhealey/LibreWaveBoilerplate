@@ -17,7 +17,7 @@
 
 namespace Articulations 
 {
-	const articulationGain = Synth.getMidiProcessor("articulationGain");
+	const articulationHandler = Synth.getMidiProcessor("articulationHandler");
 	const ROW_HEIGHT = 38;
 	const ROW_SPACE = 7;
 
@@ -33,12 +33,13 @@ namespace Articulations
 	inline function onpnlArticulationListControl(component, value)
 	{
 		changeArticulation(value);
+		articulationHandler.setAttribute(articulationHandler.knbArticulation, value);
 	}
 	
 	pnlArticulationList.setPaintRoutine(function(g)
 	{
         var arts = Patches.getCurrentPatch().articulations.active;
-        var ks = Patches.getKeyswitches();
+        var ks = Configuration.keySwitches;
 
 		g.fillAll(THEME.articulations.bgColour);
 		g.setFont("mediumitalic", 16);
@@ -90,15 +91,8 @@ namespace Articulations
 	
 	// slpArticulationGain
 	const slpArticulationGain = Content.getComponent("slpArticulationGain");
-	slpArticulationGain.setControlCallback(onslpArticulationGainControl);
-	
-	inline function onslpArticulationGainControl(component, value)
-	{
-	    local index = pnlArticulationList.getValue();
-	
-	    if (index == value)
-	        setArticulationGain(index);
-	}
+	global g_slpArticulationGainData = Engine.createAndRegisterSliderPackData(0);
+	slpArticulationGain.referToData(g_slpArticulationGainData);
 	
     // pnlArticulationGain
     const pnlArticulationGain = Content.getComponent("pnlArticulationGain");
@@ -110,15 +104,19 @@ namespace Articulations
 		for (i = 0; i < arts.length; i++)
 		{
 			var a = this.data.sliders[i];
-			var value = slpArticulationGain.getSliderValueAt(arts[i]);
-			var h = a[3] * value - 4 * value;
-			var y = a[1] + a[3] - a[3] * value - 2 + 4 * value;
-
-			g.setColour(THEME.articulations.gainSlider.bgColour);
-			g.fillRoundedRectangle(a, 4);
-
-			g.setColour(THEME.articulations.gainSlider.itemColour);
-			g.fillRoundedRectangle([a[0] + 2, y, a[2] - 4, h], 3);
+			
+			if (isDefined(a))
+			{
+				var value = slpArticulationGain.getSliderValueAt(arts[i]);
+				var h = a[3] * value - 4 * value;
+				var y = a[1] + a[3] - a[3] * value - 2 + 4 * value;
+	
+				g.setColour(THEME.articulations.gainSlider.bgColour);
+				g.fillRoundedRectangle(a, 4);
+	
+				g.setColour(THEME.articulations.gainSlider.itemColour);
+				g.fillRoundedRectangle([a[0] + 2, y, a[2] - 4, h], 3);
+			}
 		}
 	});
 	
@@ -155,9 +153,6 @@ namespace Articulations
         
             slpArticulationGain.setSliderAtIndex(arts[this.data.index], value);
             this.repaint();
-
-            if (pnlArticulationList.getValue() == this.data.index)
-                setArticulationGain(arts[this.data.index]);
         }  
 	});
 	
@@ -182,43 +177,13 @@ namespace Articulations
         pnlArticulationList.repaint();
         pnlArticulationGain.repaint();
 
-        changeArticulation(0);			
+        changeArticulation(0);
+        articulationHandler.setAttribute(articulationHandler.knbArticulation, 0);			
 	}
 	
 	inline function changeArticulation(index)
 	{
 		local art = Manifest.articulations[index];
-
-		// Set muters state
-		for (i = 0; i < Configuration.muters.length; i++)
-		{
-			local m = Configuration.muters[i];
-			m.setAttribute(m.ignoreButton, !art.samplers.contains(i));
-		}
-
-		setArticulationGain(index);
-
-		// Set sampler voice amount
-		if (btnSingleArticulation.getValue())
-		{
-			local samplerData = [];
-
-			for (i = 0; i < Manifest.samplers.length; i++)
-			{
-				samplerData[i] = {"id": "Sampler" + i, "properties": {"VoiceAmount": 1, "VoiceLimit": 1}};
-				
-				if (art.samplers.indexOf(i) != -1)
-				{
-					if (!isDefined(Manifest.samplers[i].properties.VoiceAmount)) continue;				
-			
-					samplerData[i].properties.VoiceAmount = Manifest.samplers[i].properties.VoiceAmount;
-					samplerData[i].properties.VoiceLimit = Manifest.samplers[i].properties.VoiceLimit;
-				}
-			}
-			
-			if (samplerData.length > 0)
-				Configuration.setSamplerAttributes(samplerData);			
-		}
 
 		// Disable components that are not used by the articulation
 		if (isDefined(art.disabledComponents))
@@ -228,17 +193,13 @@ namespace Articulations
 	
 		// Update envelope
 		Envelope.setEnabled(art.ahdsr !== false);
-		
+
 		if (isDefined(art.ahdsr) && typeof art.ahdsr == "string")
 			Envelope.setProcessorId(art.ahdsr);
 		
 		Envelope.restoreFromSliderPack(index);
 
-        Configuration.setMidiProcessorAttributes(art.scripts);
-        Configuration.setModulatorAttributes(art.modulators);
-        Configuration.setEffectAttributes(art.effects);
 		Configuration.setKeyColours(index);
-		Configuration.setNoteRangeFilter(index);
 
 		pnlArticulationList.setValue(index);
 		pnlArticulationList.repaint();
@@ -256,15 +217,7 @@ namespace Articulations
 	{
 		return pnlArticulationList.getValue();
 	}
-	
-	inline function setArticulationGain(index)
-	{
-	    local v = slpArticulationGain.getSliderValueAt(index);        
-	    local gainValue = (((v - 0) * (0 - -25)) / (1 - 0)) + -25;
-	
-	    articulationGain.setAttribute(articulationGain.Gain, gainValue);
-	}
-	
+		
     inline function updateGainSliderAreas()
     {
 		local p = pnlArticulationGain;
@@ -285,14 +238,13 @@ namespace Articulations
 	inline function onNoteOnHandler(note)
 	{
 		local arts = Patches.getCurrentPatch().articulations.active;
-		local keyswitches = Patches.getKeyswitches();
-		local index = keyswitches.indexOf(note);
+		local index = Configuration.keySwitches.indexOf(note);
 
 		if (index != -1 && index != pnlArticulationList.getValue())
 		{
 			changeArticulation(arts[index]);
 			updateViewportPosition(index);
-		}			
+		}
     }
     
     inline function onControllerHandler(ccValue)
@@ -304,7 +256,10 @@ namespace Articulations
 			if (ccValue == Manifest.articulations[i].program)
 			{
 				if (i != pnlArticulationList.getValue())
-					changeArticulation(i);
+				{
+					changeArticulation(arts[i]);
+					updateViewportPosition(index);
+				}
 
 				break;
 			}

@@ -17,6 +17,9 @@
 
 namespace Configuration
 {
+	const keyRanges = [];
+	const keySwitches = [];	
+
 	// masterChain
 	const containerIds = Synth.getIdList("Container");
 	const masterChain = Synth.getChildSynth(containerIds[0]);	
@@ -203,12 +206,12 @@ namespace Configuration
 	
 	inline function setKeyColours(index)
 	{
-		local keyRanges = Patches.getKeyRanges(index);
+		local kr = keyRanges[index];
 
 		for (i = 0; i < 127; i++)
 			Engine.setKeyColour(i, Colours.withAlpha(Colours.black, 0.6));
 
-		for (r in keyRanges)
+		for (r in kr)
        	{
 			for (i = 0; i < 127; i++)
 			{
@@ -220,10 +223,10 @@ namespace Configuration
 	
 	inline function setNoteRangeFilter(index)
 	{
-		local keyRanges = Patches.getKeyRanges(index);
-		
-		noteRangeFilter.setAttribute(noteRangeFilter.LowNote, keyRanges[0][0]);
-		noteRangeFilter.setAttribute(noteRangeFilter.HighNote, keyRanges[0][1]);
+		local kr = keyRanges[index];
+
+		noteRangeFilter.setAttribute(noteRangeFilter.LowNote, kr[0][0]);
+		noteRangeFilter.setAttribute(noteRangeFilter.HighNote, kr[0][1]);
 	}
 	
 	inline function enableAllComponents(exceptions)
@@ -233,6 +236,47 @@ namespace Configuration
 			if (!c.get("enabled"))
 				c.set("enabled", exceptions.indexOf(c.get("id")) == -1);
 		}
+	}
+	
+	inline function updateKeyRanges(patch)
+	{
+		local patchArts = patch.articulations;
+
+		keyRanges.clear();
+	
+		for (i = 0; i < patchArts.active.length; i++)
+		{
+			local range = [];
+			
+			if (isDefined(patch.keyRanges))
+				range = patch.keyRanges.clone();
+			else if (isDefined(Manifest.keyRanges))
+				range = Manifest.keyRanges.clone();
+	
+			keyRanges[patchArts.active[i]] = range;
+	
+			if (isDefined(patchArts.keyRanges[i]))
+			{
+				for (j = 0; j < patchArts.keyRanges[i].length; j++)
+					range[j] = patchArts.keyRanges[i][j];
+			}
+			else if (isDefined(Manifest.articulations[patchArts.active[i]].keyRanges))
+			{
+				for (j = 0; j < Manifest.articulations[patchArts.active[i]].keyRanges.length; j++)
+					range[j] = Manifest.articulations[patchArts.active[i]].keyRanges[j];
+			}
+		}
+	}
+	
+	inline function updateKeySwitches(patch)
+	{
+		keySwitches.clear();
+	
+		local firstKs = patch.firstKs;
+		local numArts = patch.articulations.active.length;
+	
+        for (i = 0; i < numArts; i++)
+            keySwitches.push(firstKs + i);
 	}
 		
 	// Helpers
