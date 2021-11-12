@@ -23,11 +23,6 @@ namespace Presets
     // pnlPresetBrowser
     const pnlPresetBrowser = Content.getComponent("pnlPresetBrowser");
     pnlPresetBrowser.showControl(false);
-    pnlPresetBrowser.setControlCallback(onpnlPresetBrowserControl);
-    
-    inline function onpnlPresetBrowserControl(component, value)
-    {
-    }
     
     pnlPresetBrowser.setPaintRoutine(function(g)
     {
@@ -87,11 +82,9 @@ namespace Presets
         if (value)
         {
             if (index)
-                Engine.loadPreviousUserPreset(true);
+                Engine.loadPreviousUserPreset(false);
             else
-                Engine.loadNextUserPreset(true);
-            
-            Header.redraw();
+                Engine.loadNextUserPreset(false);
         }
     }
         
