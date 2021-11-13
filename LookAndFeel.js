@@ -110,12 +110,12 @@ namespace LookAndFeel
     laf.registerFunction("drawToggleButton", function(g, obj)
     {
         var a = obj.area;
-        var colour;
-        var icon = undefined;
 
         if (obj.text.indexOf("icon") != -1)
         {
-            obj.value == 0 ? colour = obj.itemColour1 : colour = obj.itemColour2;
+			var icon = undefined;
+
+            var colour = obj.value == 0 ? obj.itemColour1 : obj.itemColour2;
             g.setColour(Colours.withAlpha(colour, obj.over ? 0.7 : 1));
 
             if (obj.text.indexOf("iconOff") != -1 && !obj.value)

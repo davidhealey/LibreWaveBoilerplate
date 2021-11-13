@@ -230,7 +230,7 @@ namespace Cards
 		p.setMouseCallback(function(event)
 		{
 			var value = Math.floor(event.x / this.getWidth() * this.data.titles.length);
-			event.hover ? this.data.hover = value : this.data.hover = -1;
+			this.data.hover = event.hover ? value : -1;
 
 			if (event.clicked)
 			{
