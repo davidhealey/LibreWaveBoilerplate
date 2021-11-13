@@ -76,8 +76,8 @@ namespace Articulations
 		var arts = Patches.getCurrentPatch().articulations.active;
         var value = Math.floor(event.y / this.getHeight() * arts.length);
         
-        event.hover ? this.data.hover = value : this.data.hover = -1;
-        
+        this.data.hover = event.hover ? arts[value] : -1;
+
         if (event.clicked)
         {
             this.setValue(arts[value]);
