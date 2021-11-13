@@ -49,6 +49,7 @@ namespace Spinner
 
 	pnlSpinner.setLoadingCallback(function(isPreloading)
 	{
+		this.setValue(0);
 		Configuration.setMasterMuter(isPreloading);
 		pnlSpinnerContainer.set("visible", isPreloading);
 		isPreloading ? this.startTimer(100) : this.stopTimer();

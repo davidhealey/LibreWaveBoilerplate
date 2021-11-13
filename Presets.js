@@ -17,6 +17,13 @@
 
 namespace Presets
 {
+	const presetHandler = Engine.createUserPresetHandler();
+	
+	presetHandler.setPostCallback(function()
+	{
+		Configuration.loadSampleMaps(Manifest.patches[Patches.current].samplers);
+	});
+
     // fltPresetBrowser
     const fltPresetBrowser = Content.getComponent("fltPresetBrowser");
     

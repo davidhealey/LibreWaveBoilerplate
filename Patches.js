@@ -59,7 +59,6 @@ namespace Patches
 		Configuration.setModulatorAttributes(patch.modulators);
 		Configuration.setEffectAttributes(patch.effects);
 		Configuration.setSamplerAttributes(patch.samplers);
-		Configuration.loadSampleMaps(patch.samplers);
 		
 		Configuration.updateKeySwitches(patch);
 		Configuration.updateKeyRanges(patch);
