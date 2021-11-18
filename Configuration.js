@@ -208,15 +208,18 @@ namespace Configuration
 	{
 		local kr = keyRanges[index];
 
-		for (i = 0; i < 127; i++)
-			Engine.setKeyColour(i, Colours.withAlpha(Colours.black, 0.6));
-
-		for (r in kr)
-       	{
+		if (isDefined(kr))
+		{
 			for (i = 0; i < 127; i++)
-			{
-				if (i >= r[0] && i <= r[1])
-					Engine.setKeyColour(i, parseInt(r[2]));
+				Engine.setKeyColour(i, Colours.withAlpha(Colours.black, 0.6));
+	
+			for (r in kr)
+	       	{
+				for (i = 0; i < 127; i++)
+				{
+					if (i >= r[0] && i <= r[1])
+						Engine.setKeyColour(i, parseInt(r[2]));
+				}
 			}
 		}
 	}

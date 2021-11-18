@@ -26,7 +26,6 @@ namespace Articulations
 	
 	// pnlArticulationList
 	const pnlArticulationList = Content.getComponent("pnlArticulationList");
-	pnlArticulationList.setValue(0);
 	pnlArticulationList.data.hover = -1;
 	pnlArticulationList.setControlCallback(onpnlArticulationListControl);
 	
@@ -174,11 +173,12 @@ namespace Articulations
         pnlArticulationGain.setPosition(pnlArticulationList.getWidth() - 20, 0, 20, pHeight);
         
         updateGainSliderAreas();
+        
+        changeArticulation(pnlArticulationList.getValue());
+        articulationHandler.setAttribute(articulationHandler.knbArticulation, pnlArticulationList.getValue());
+        
         pnlArticulationList.repaint();
         pnlArticulationGain.repaint();
-
-        changeArticulation(0);
-        articulationHandler.setAttribute(articulationHandler.knbArticulation, 0);			
 	}
 	
 	inline function changeArticulation(index)
