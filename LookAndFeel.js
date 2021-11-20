@@ -340,13 +340,28 @@ namespace LookAndFeel
         return obj;
     });
     
-    laf.registerFunction("drawAlertWindowIcon", function(g, obj)
+	laf.registerFunction("drawAlertWindowIcon", function(g, obj)
     {
-        var a = obj.area;
-        var path = Paths.icons.question;
-        
-        g.setColour(0xff87746a);
-        g.fillPath(path, [a[0], a[1] + 10, a[2] / 2, a[3] - 20]);
+        var a = [obj.area[0], obj.area[1] + 10, obj.area[2], obj.area[3] - 10];
+        var path = Paths.icons[obj.type.toLowerCase()];
+		var multiplier = 1;		
+		
+        switch (obj.type)
+        {
+	        case "Question":
+	        	multiplier = 0.55;
+        		break;
+        		
+	        case "Info":
+	        	multiplier = 0.27;
+        		break;
+        		
+        	default:
+        		multiplier = 0.18;
+		}
+
+		g.setColour(0xff87746a);
+		g.fillPath(path, [a[0], a[1], a[3] * multiplier, a[3]]);
     });
     
     inline function drawPathButton(path, area, colours)
