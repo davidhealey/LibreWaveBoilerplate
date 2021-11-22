@@ -1,7 +1,5 @@
 namespace VuMeter
-{
-	const MasterGain = Synth.getEffect("Master Gain");
-	
+{	
 	//  pnlVuMeter
 	const pnlVuMeter = Content.getComponent("pnlVuMeter");
 	
@@ -18,13 +16,13 @@ namespace VuMeter
 	
 	pnlVuMeter.setTimerCallback(function()
 	{		
-		var gain = Math.max(MasterGain.getCurrentLevel(0), MasterGain.getCurrentLevel(1));
+		var gain = Math.max(Engine.getMasterPeakLevel(0), Engine.getMasterPeakLevel(1));
 		var v = 0.01 * (100.0 + Engine.getDecibelsForGainFactor(gain));
 	
 		this.setValue(v);
 	   	
 		this.repaint();
-		
+
 		if (!Engine.getNumVoices())
 			this.stopTimer();
 	});
