@@ -218,7 +218,7 @@ namespace Configuration
 				for (i = 0; i < 127; i++)
 				{
 					if (i >= r[0] && i <= r[1])
-						Engine.setKeyColour(i, parseInt(r[2]));
+						Engine.setKeyColour(i, r[2]);
 				}
 			}
 		}
