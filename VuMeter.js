@@ -12,7 +12,7 @@ namespace VuMeter
 		g.setColour(this.get("bgColour"));
 		g.fillRoundedRectangle(a, 8);
 
-		g.setColour(Colours.withAlpha(this.get("itemColour"), 0.5 * this.getValue()));
+		g.setColour(Colours.withAlpha(this.get("itemColour"), 0.2 * this.getValue()));
 		g.fillRoundedRectangle([a[0], a[1], a[2] * this.getValue(), a[3]], 8);
 	});
 	
@@ -24,7 +24,13 @@ namespace VuMeter
 		this.setValue(v);
 	   	
 		this.repaint();
+		
+		if (!Engine.getNumVoices())
+			this.stopTimer();
 	});
-	
-	pnlVuMeter.startTimer(80);
+		
+	inline function startTimer()
+	{
+		pnlVuMeter.startTimer(80);
+	}
 }
