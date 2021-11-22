@@ -80,6 +80,8 @@ namespace Theme
 
         for (component in Content.getAllComponents(""))
         {
+			local id = component.get("id");
+			local text = component.get("text");
             local type = component.get("type");
             local properties;
 
@@ -87,10 +89,18 @@ namespace Theme
             {
                 case "ScriptSlider":
                     
-                    local style = component.get("style");
-                    local text = component.get("text");
+                    local style = component.get("style");                   
                     
                     properties = THEME[type][style].clone();
+
+					for (b in THEME[type])
+					{
+					    if (id.indexOf(b) != -1 || text.indexOf(b) !=-1)
+					    {
+					        properties = THEME[type][b];
+					        break;
+					    }
+					}
 
                     if (style == "Knob")
                     {
@@ -105,9 +115,6 @@ namespace Theme
                     
                 case "ScriptButton":
                 
-                    local id = component.get("id");
-                    local text = component.get("text");
-
                     for (b in THEME[type])
                     {
                         if (id.indexOf(b) != -1 || text.indexOf(b) !=-1)
@@ -186,6 +193,12 @@ namespace Theme
               "bgColour": 0xff4c4441
             },
             "ScriptSlider": {
+	            "knbMasterGain": {
+					"bgColour": 0x00,
+					"itemColour": 0xff6a5e58,
+					"itemColour2": 0xffcec7b5,
+					"textColour": 0xff524e4c
+				},            
                 "Knob": {
                     "bgColour": 0xff97675e,
                     "itemColour": 0xff97675e,
@@ -205,7 +218,7 @@ namespace Theme
                     "itemColour": 0xff6a5e58,
                     "itemColour2": 0xffcec7b5,
                     "textColour": 0xff836e6b
-                }                
+                }          
             },
             "ScriptLabel":{
                 "lblPreset":{
