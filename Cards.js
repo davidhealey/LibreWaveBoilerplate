@@ -88,12 +88,11 @@ namespace Cards
 	inline function drawLabels(g, labels)
 	{
 	    g.setColour(THEME.card.label.textColour);
-	    g.setFont("regular", 18);
 	        
 	    for (l in labels)
 	    {
-	        local alignment = l.alignment;
-	        if (alignment == undefined) alignment = "centred";
+			local alignment = l.alignment == undefined ? "centred" : l.alignment;
+			l.font == undefined ? g.setFont("semibold", 18) : g.setFont(l.font[0], l.font[1]);
 	
 	        g.drawAlignedText(l.text, l.area, alignment);
 	    }
