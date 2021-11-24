@@ -208,11 +208,11 @@ namespace Configuration
 	{
 		local kr = keyRanges[index];
 
-		if (isDefined(kr))
-		{
-			for (i = 0; i < 127; i++)
-				Engine.setKeyColour(i, Colours.withAlpha(Colours.black, 0.6));
+		for (i = 0; i < 127; i++)
+			Engine.setKeyColour(i, Colours.withAlpha(Colours.black, 0.6));
 	
+		if (isDefined(kr))
+		{	
 			for (r in kr)
 	       	{
 				for (i = 0; i < 127; i++)
@@ -281,7 +281,22 @@ namespace Configuration
         for (i = 0; i < numArts; i++)
             keySwitches.push(firstKs + i);
 	}
-		
+
+	inline function loadDefaults()
+	{
+		Header.updatePresetLabel("Select a Preset");
+		Patches.set(-1);
+		Settings.clearMidiLearn();
+
+		for (s in samplers)
+		{
+			s.setBypassed(true);
+			s.asSampler().clearSampleMap();
+			s.setAttribute(s.VoiceAmount, 1);  
+			s.setAttribute(s.VoiceLimit, 1);
+		}	
+	}
+
 	// Helpers
 	inline function setMidiProcessorAttributes(data)
 	{

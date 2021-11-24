@@ -20,22 +20,23 @@ include("librewave-boilerplate-hise-scripts/Configuration.js");
 
 const var Interface = Synth.getMidiProcessor("Interface");
 
-reg currentPatch;
 reg lastArticulation = 0;
 
 // knbPatch
 const knbPatch = Content.addKnob("knbPatch", 0, 0);
 knbPatch.set("text", "Patch");
-knbPatch.setRange(0, 100, 1);
+knbPatch.setRange(-1, 100, 1);
 knbPatch.setControlCallback(onknbPatchControl);
 
 inline function onknbPatchControl(component, value)
 {
-	local patch = Manifest.patches[value];
-
-	currentPatch = value;
-	Configuration.updateKeySwitches(patch);
-	Configuration.updateKeyRanges(patch);
+	if (value != -1)
+	{
+		local patch = Manifest.patches[value];
+	
+		Configuration.updateKeySwitches(patch);
+		Configuration.updateKeyRanges(patch);
+	}
 }
 
 // knbArticulation
@@ -46,7 +47,7 @@ knbArticulation.setControlCallback(onknbArticulationControl);
 
 inline function onknbArticulationControl(component, value)
 {
-	changeArticulation(value);	
+		changeArticulation(value);
 }
 
 // slpArticulationGain
@@ -61,32 +62,36 @@ slpArticulationGain.set("width", 128);
 // Functions
 inline function initialisePatch()
 {
-	currentPatch = Interface.getAttribute("knbPatch");
-	
-	local patch = Manifest.patches[currentPatch];
+	local index = Interface.getAttribute(Interface.knbPatch);
+	local patch = Manifest.patches[index];
+			
 	Configuration.updateKeySwitches(patch);
 	Configuration.updateKeyRanges(patch);
+	knbPatch.setValue(index);
 }
 
 initialisePatch();
 
 inline function changeArticulation(index)
 {
-	local art = Manifest.articulations[index];
-	
-	// Set muters state
-	for (i = 0; i < Configuration.muters.length; i++)
+	if (knbPatch.getValue() != -1)
 	{
-		local m = Configuration.muters[i];
-		m.setAttribute(m.ignoreButton, !art.samplers.contains(i));
-	}
-
-	Configuration.setMidiProcessorAttributes(art.scripts);
-	Configuration.setModulatorAttributes(art.modulators);
-	Configuration.setEffectAttributes(art.effects);
-	Configuration.setNoteRangeFilter(index);
+		local art = Manifest.articulations[index];
+		
+		// Set muters state
+		for (i = 0; i < Configuration.muters.length; i++)
+		{
+			local m = Configuration.muters[i];
+			m.setAttribute(m.ignoreButton, !art.samplers.contains(i));
+		}
 	
-	lastArticulation = index;
+		Configuration.setMidiProcessorAttributes(art.scripts);
+		Configuration.setModulatorAttributes(art.modulators);
+		Configuration.setEffectAttributes(art.effects);
+		Configuration.setNoteRangeFilter(index);
+		
+		lastArticulation = index;
+	}
 }
 
 inline function getArticulationGain(index)
@@ -96,7 +101,7 @@ inline function getArticulationGain(index)
 }function onNoteOn()
 {
 	local n = Message.getNoteNumber();
-	local patch = Manifest.patches[currentPatch];
+	local patch = Manifest.patches[knbPatch.getValue()];
 	local index = Configuration.keySwitches.indexOf(n);
 
 	if (index != -1 && index != lastArticulation)
@@ -117,7 +122,7 @@ inline function getArticulationGain(index)
 {
 	local cc = Message.getControllerNumber();
 	local cv = Message.getControllerValue();
-	local patch = Manifest.patches[currentPatch];
+	local patch = Manifest.patches[knbPatch.getValue()];
 	local arts = patch.articulations.active;
 
 	if (cc == 32 || Message.isProgramChange())

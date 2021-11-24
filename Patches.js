@@ -18,7 +18,6 @@
 namespace Patches
 {
 	const articulationHandler = Synth.getMidiProcessor("articulationHandler");
-	reg current = -1;
 
 	// knbPatch
 	const knbPatch = Content.getComponent("knbPatch");
@@ -26,25 +25,25 @@ namespace Patches
 	
 	inline function onknbPatchControl(component, value)
 	{
-		changePatch(value);
+		if (value != -1)
+			changePatch(value);	
+	}
+	
+	// btnLoadDefault
+	const btnLoadDefault = Content.getComponent("btnLoadDefault");
+	btnLoadDefault.setControlCallback(onbtnLoadDefaultControl);
+	
+	inline function onbtnLoadDefaultControl(component, value)
+	{
+		if (value)
+			Configuration.loadDefaults();
 	}
 	
 	// Functions	
 	inline function changePatch(index)
 	{
-		local patch;
-
-		for (i = 0; i < Manifest.patches.length; i++)
-		{
-			if (Manifest.patches[i].index == index)
-			{
-				current = i;
-				patch = Manifest.patches[i];
-				break;
-			}
-		}
-
-		articulationHandler.setAttribute(articulationHandler.knbPatch, current);
+		local patch = Manifest.patches[index];
+		articulationHandler.setAttribute(articulationHandler.knbPatch, index);
 		
 		Configuration.enableAllModules();
 
@@ -68,6 +67,16 @@ namespace Patches
 
 	inline function getCurrentPatch()
 	{
-		return Manifest.patches[current];
+		return Manifest.patches[knbPatch.getValue()];
+	}
+	
+	inline function getPatchIndex()
+	{
+		return knbPatch.getValue();
+	}
+	
+	inline function set(value)
+	{
+		knbPatch.setValue(value);
 	}
 }

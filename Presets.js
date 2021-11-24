@@ -21,16 +21,12 @@ namespace Presets
 	
 	presetHandler.setPostCallback(function()
 	{
-		Configuration.loadSampleMaps(Manifest.patches[Patches.current].samplers);
+		Configuration.loadSampleMaps(Manifest.patches[Patches.getPatchIndex()].samplers);
 	});
-
-    // fltPresetBrowser
-    const fltPresetBrowser = Content.getComponent("fltPresetBrowser");
     
     // pnlPresetBrowser
     const pnlPresetBrowser = Content.getComponent("pnlPresetBrowser");
-    pnlPresetBrowser.showControl(false);
-    
+
     pnlPresetBrowser.setPaintRoutine(function(g)
     {
         var a = [10, 7, this.getWidth() - 20, this.getHeight() - 14];
@@ -44,6 +40,14 @@ namespace Presets
         g.fillRoundedRectangle([600, 100, 271, 370], 5);
     });
     
+    pnlPresetBrowser.setTimerCallback(function()
+    {
+		pnlPresetBrowser.showControl(Patches.getPatchIndex() == -1);
+		this.stopTimer();	    
+    });
+    
+	pnlPresetBrowser.startTimer(500);
+
     // pnlPresetNotesBlocker
     const pnlPresetNotesBlocker = Content.getComponent("pnlPresetNotesBlocker");
     
@@ -63,16 +67,25 @@ namespace Presets
         g.fillRoundedRectangle([589, 35, 271, 370], 5);
     });
     
+    // fltPresetBrowser
+    const fltPresetBrowser = Content.getComponent("fltPresetBrowser");
+    
     // btnPresetBrowser
     const btnPresetBrowser = Content.getComponent("btnPresetBrowser");
     btnPresetBrowser.setControlCallback(onbtnPresetBrowserControl);
-    btnPresetBrowser.setValue(0);
+    btnPresetBrowser.setValue(1);
     
     inline function onbtnPresetBrowserControl(component, value)
     {
-        pnlPresetBrowser.showControl(value);
+		if (Patches.getPatchIndex() != -1)
+        	pnlPresetBrowser.showControl(value);
+        else
+        {
+	        pnlPresetBrowser.showControl(true);
+	        component.setValue(1);
+        }
     }
-    
+        
     // btnPreset - previous/next preset buttons
     const btnPreset = [];
 
@@ -84,22 +97,30 @@ namespace Presets
     
     inline function onbtnPresetControl(component, value)
     {
-        local index = btnPreset.indexOf(component);
-        
-        if (value)
-        {
-            if (index)
-                Engine.loadPreviousUserPreset(false);
-            else
-                Engine.loadNextUserPreset(false);
-        }
+		if (Patches.getPatchIndex() != -1)
+		{
+	        local index = btnPreset.indexOf(component);
+	        
+	        if (value)
+	        {
+	            if (index)
+	                Engine.loadPreviousUserPreset(false);
+	            else
+	                Engine.loadNextUserPreset(false);
+	        }
+		}
     }
         
     // Functions    
-    inline function forceShowBrowser()
+    inline function showPresetBrowser()
     {
         pnlPresetBrowser.showControl(true);
         btnPresetBrowser.setValue(1);
-        btnPresetBrowser.set("enabled", false);
+    }
+    
+    inline function hidePresetBrowser()
+    {
+		pnlPresetBrowser.showControl(false);
+		btnPresetBrowser.setValue(0);	    
     }
 }
