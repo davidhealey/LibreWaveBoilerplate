@@ -82,12 +82,14 @@ namespace UIFactory
 		    "parameterId": "Breath"
 		});
 		
-		Content.addButton("btnSingleArticulation");
-		Content.setPropertiesFromJSON("btnSingleArticulation", {
+		Content.addButton("btnLoadDefault");
+		Content.setPropertiesFromJSON("btnLoadDefault", {
 		    "x": 160, "y": 50, "width": 128, "height": 28,
 		    "parentComponent": "pnlAdmin",
-		    "text": "Single Articulation Mode",
-		    "enableMidiLearn": false
+		    "text": "Load Default",
+		    "saveInPreset": false,
+		    "enableMidiLearn": false,
+		    "isMomentary": true
 		});
 		
 		Content.addKnob("knbVibratoGain", 0, 0);
