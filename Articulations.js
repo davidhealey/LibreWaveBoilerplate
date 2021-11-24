@@ -155,9 +155,6 @@ namespace Articulations
         }  
 	});
 	
-	// btnSingleArticulation - admin only control for now
-	const btnSingleArticulation = Content.getComponent("btnSingleArticulation");
-
 	// Functions
 	inline function init()
 	{
