@@ -18,6 +18,8 @@
 include("Manifest.js");
 include("librewave-boilerplate-hise-scripts/Configuration.js");
 
+const var Interface = Synth.getMidiProcessor("Interface");
+
 reg currentPatch;
 reg lastArticulation = 0;
 
@@ -34,7 +36,6 @@ inline function onknbPatchControl(component, value)
 	currentPatch = value;
 	Configuration.updateKeySwitches(patch);
 	Configuration.updateKeyRanges(patch);
-	changeArticulation(0);
 }
 
 // knbArticulation
@@ -58,6 +59,17 @@ slpArticulationGain.set("sliderAmount", 25);
 slpArticulationGain.set("width", 128);
 
 // Functions
+inline function initialisePatch()
+{
+	currentPatch = Interface.getAttribute("knbPatch");
+	
+	local patch = Manifest.patches[currentPatch];
+	Configuration.updateKeySwitches(patch);
+	Configuration.updateKeyRanges(patch);
+}
+
+initialisePatch();
+
 inline function changeArticulation(index)
 {
 	local art = Manifest.articulations[index];

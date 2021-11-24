@@ -18,7 +18,7 @@
 namespace Patches
 {
 	const articulationHandler = Synth.getMidiProcessor("articulationHandler");
-	reg current;
+	reg current = -1;
 
 	// knbPatch
 	const knbPatch = Content.getComponent("knbPatch");
@@ -36,18 +36,18 @@ namespace Patches
 
 		for (i = 0; i < Manifest.patches.length; i++)
 		{
-			if (Manifest.patches[i].index == parseInt(index))
+			if (Manifest.patches[i].index == index)
 			{
 				current = i;
 				patch = Manifest.patches[i];
 				break;
 			}
 		}
-		
+
 		articulationHandler.setAttribute(articulationHandler.knbPatch, current);
 		
 		Configuration.enableAllModules();
-		
+
 		// Apply manifest level settings
 		Configuration.setMidiProcessorAttributes(Manifest.scripts);
 		Configuration.setModulatorAttributes(Manifest.modulators);
@@ -59,7 +59,7 @@ namespace Patches
 		Configuration.setModulatorAttributes(patch.modulators);
 		Configuration.setEffectAttributes(patch.effects);
 		Configuration.setSamplerAttributes(patch.samplers);
-		
+
 		Configuration.updateKeySwitches(patch);
 		Configuration.updateKeyRanges(patch);
 		Header.updatePresetLabel(patch.id);
