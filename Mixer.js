@@ -17,23 +17,21 @@
 
 namespace Mixer
 {
-	const CHANNEL_WIDTH = 70;
-
 	// vptMixer
 	const vptMixer = Content.getComponent("vptMixer");
 	
 	// pnlMixerControls
 	const pnlMixerControls = Content.getComponent("pnlMixerControls");
-	pnlMixerControls.setPosition(0, 0, Manifest.channels.length * CHANNEL_WIDTH, vptMixer.getHeight());
 	pnlMixerControls.data.levels = [0, 0, 0, 0, 0, 0];
 
 	pnlMixerControls.setPaintRoutine(function(g)
 	{
 		var numChannels = Manifest.channels.length;
+		var channelWidth = vptMixer.getWidth() / numChannels;
 		
 		for (i = 0; i < Manifest.channels.length; i++)
 		{
-			var a = [i * CHANNEL_WIDTH, knbPan[i].get("y") - 40, CHANNEL_WIDTH, 15];
+			var a = [i * channelWidth, knbPan[i].get("y") - 40, channelWidth, 15];
 
 			g.setColour(THEME.card.label.textColour);
 			g.setFont("bold", 15);
@@ -46,16 +44,16 @@ namespace Mixer
 
 		if (knbPan.length > 0 && cmbOutput.length > 0)
 		{
-			g.setColour(Colours.withAlpha(THEME.card.label.textColour, 0.5));
+			g.setColour(Colours.withAlpha(this.get("textColour"), 0.5));
 			g.drawRect([cmbOutput[0].get("x"), knbPan[0].get("y") - 12, cmbOutput[numChannels - 1].get("x") + cmbOutput[numChannels - 1].getWidth() - cmbOutput[0].get("x"), knbPan[0].getHeight() + 20], 2);
 		}
 		
 		if (cmbOutput.length > 0)
 		{
-			g.setColour(THEME.card.label.textColour);
+			g.setColour(this.get("textColour"));
 			g.drawAlignedText("OUTPUTS", [cmbOutput[0].get("x"), cmbOutput[0].get("y") - 30, cmbOutput[numChannels - 1].get("x") + cmbOutput[0].getWidth() - cmbOutput[0].get("x"), 10], "centred");
 			
-			g.setColour(Colours.withAlpha(THEME.card.label.textColour, 0.5));
+			g.setColour(Colours.withAlpha(this.get("textColour"), 0.5));
 			g.drawLine(cmbOutput[0].get("x"), cmbOutput[numChannels - 1].get("x") + cmbOutput[0].getWidth(), cmbOutput[0].get("y") - 12, cmbOutput[0].get("y") - 12, 1);
 		}
 	});
@@ -135,49 +133,57 @@ namespace Mixer
     // cmbOutput
     inline function oncmbOutputControl(component, value)
     {
-		local index = cmbOutput.indexOf(component);
-		local matrix = Configuration.masterChain.getRoutingMatrix();
-		local success = true; // Checks if the output channel exists.
-
-		switch(value)
+		if (isDefined(Configuration.masterChain))
 		{
-			case 1:
+			local index = cmbOutput.indexOf(component);
+			local matrix = Configuration.masterChain.getRoutingMatrix();
+			local success = true; // Checks if the output channel exists.
+	
+			switch(value)
+			{
+				case 1:
+					matrix.addConnection(0 + (index * 2), 0);
+					matrix.addConnection(1 + (index * 2), 1);
+					break;
+	                
+				case 2:
+					matrix.addConnection(0 + (index * 2), 2);
+					success = matrix.addConnection(1 + (index * 2), 3);
+					break;
+	                
+				case 3:
+					matrix.addConnection(0 + (index * 2), 4);
+					success = matrix.addConnection(1 + (index * 2), 5);
+					break;
+	                
+				case 4:
+					matrix.addConnection(0 + (index * 2), 6);
+					success = matrix.addConnection(1 + (index * 2), 7);
+					break;
+			}
+	
+			//Reset to Channel 1+2 in case of an error
+			if (!success)
+			{
 				matrix.addConnection(0 + (index * 2), 0);
 				matrix.addConnection(1 + (index * 2), 1);
-				break;
-                
-			case 2:
-				matrix.addConnection(0 + (index * 2), 2);
-				success = matrix.addConnection(1 + (index * 2), 3);
-				break;
-                
-			case 3:
-				matrix.addConnection(0 + (index * 2), 4);
-				success = matrix.addConnection(1 + (index * 2), 5);
-				break;
-                
-			case 4:
-				matrix.addConnection(0 + (index * 2), 6);
-				success = matrix.addConnection(1 + (index * 2), 7);
-				break;
-		}
-
-		//Reset to Channel 1+2 in case of an error
-		if (!success)
-		{
-			matrix.addConnection(0 + (index * 2), 0);
-			matrix.addConnection(1 + (index * 2), 1);
+			}
 		}
 	}
 	
 	// Functions
 	inline function positionControls()
 	{
+		local channelWidth = vptMixer.getWidth() / Manifest.channels.length;
+		
+		pnlMixerControls.set("width", vptMixer.getWidth());
+		pnlMixerControls.set("height", vptMixer.getHeight());
+
 		for (i = 0; i < Manifest.channels.length; i++)
 		{
-			local x = i * CHANNEL_WIDTH + CHANNEL_WIDTH / 2;
-			
-			knbGain[i].set("x", x - knbGain[i].getWidth() / 2);			
+			local x = i * channelWidth + channelWidth / 2;
+
+			knbGain[i].set("x", x - knbGain[i].getWidth() / 2);
 			knbPan[i].set("x", x - knbPan[i].getWidth() / 2);
 			btnPurge[i].set("x", x - btnPurge[i].getWidth() / 2);
 			cmbOutput[i].set("x", x - cmbOutput[i].getWidth() / 2);
