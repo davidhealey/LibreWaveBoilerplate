@@ -17,8 +17,6 @@
 
 namespace Mixer
 {
-	const Container = Synth.getChildSynth("Container");
-
 	const CHANNEL_WIDTH = 70;
 
 	// vptMixer
@@ -64,14 +62,15 @@ namespace Mixer
 	
 	pnlMixerControls.setTimerCallback(function()
 	{		
-		var gain = Math.max(Container.getCurrentLevel(0), Container.getCurrentLevel(1));
-		var v = 0.01 * (100.0 + Engine.getDecibelsForGainFactor(gain));
-	
-		this.data.levels[0] = v;
-		this.data.levels[1] = v;
-		this.data.levels[2] = v;
-		this.data.levels[3] = v;
-	   	
+		for (i = 0; i < Configuration.mixerGain.length; i++)
+		{
+			var e = Configuration.mixerGain[i];
+			var gain = Math.max(e.getCurrentLevel(false), e.getCurrentLevel(true));
+			var v = 0.01 * (100.0 + Engine.getDecibelsForGainFactor(gain));
+
+			this.data.levels[i] = v;
+		}
+
 		this.repaint();
 	
 		if (!Engine.getNumVoices())
@@ -80,7 +79,7 @@ namespace Mixer
 	
 	inline function startVuTimer()
 	{
-		//pnlMixerControls.startTimer(50);
+		pnlMixerControls.startTimer(50);
 	}
 	
 	inline function drawVuMeter(g, c, index)

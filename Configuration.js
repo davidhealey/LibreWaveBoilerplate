@@ -64,11 +64,15 @@ namespace Configuration
 	// Effects
 	const effectIds = [];
 	const effects = [];
+	const mixerGain = [];
 	
 	for (e in Synth.getAllEffects(""))
 	{        
 	    effectIds.push(e.getId());
 	    effects.push(e);
+	    
+	    if (e.getId().indexOf("mixerGain") != -1)
+	    	mixerGain.push(e);
 	}    
 	
 	const effectAttributeIds = getAttributeIds(effects);
