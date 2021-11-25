@@ -231,10 +231,11 @@ namespace UIFactory
 		    "FontSize": 14
 		});
 		
-		Content.addKnob("pnlVuMeter", 0, 0);
+		Content.addPanel("pnlVuMeter", 0, 0);
 		Content.setPropertiesFromJSON("pnlVuMeter", {
 			"x": 640, "y": 16, "width": 100, "height": 16,
 			"parentComponent": "pnlFooter",
+			"saveInPreset": false,
 			"bgColour": 0xff514A47,
 			"itemColour": 0xff000000
 		});
