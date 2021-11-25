@@ -119,12 +119,15 @@ namespace Mixer
 	{
 		local index = btnPurge.indexOf(component);
 		
-		for (s in Configuration.samplers)
+		if (isDefined(Configuration.samplers))
 		{
-			if (s.asSampler().getNumMicPositions() > 1)
+			for (s in Configuration.samplers)
 			{
-				local n = s.asSampler().getMicPositionName(index);
-				s.asSampler().purgeMicPosition(n, !value);
+				if (s.asSampler().getNumMicPositions() > 1)
+				{
+					local n = s.asSampler().getMicPositionName(index);
+					s.asSampler().purgeMicPosition(n, !value);
+				}
 			}
 		}
     }

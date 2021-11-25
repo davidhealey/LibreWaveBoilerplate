@@ -58,7 +58,8 @@ namespace Footer
 	
 	inline function onknbMasterPanControl(component, value)
 	{
-		Configuration.masterChain.setAttribute(Configuration.masterChain.Balance, value / 100);
+		if (isDefined(Configuration.masterChain))
+			Configuration.masterChain.setAttribute(Configuration.masterChain.Balance, value / 100);
 	}
 
     // knbMasterGain
