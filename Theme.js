@@ -198,7 +198,13 @@ namespace Theme
 					"itemColour": 0xff6a5e58,
 					"itemColour2": 0xffcec7b5,
 					"textColour": 0xff524e4c
-				},            
+				},
+	            "knbGain": {
+					"bgColour": 0x00,
+					"itemColour": 0xff6a5e58,
+					"itemColour2": 0xffcec7b5,
+					"textColour": 0xff524e4c
+				},           
                 "Knob": {
                     "bgColour": 0xff97675e,
                     "itemColour": 0xff97675e,

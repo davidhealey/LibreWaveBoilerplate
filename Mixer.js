@@ -17,7 +17,9 @@
 
 namespace Mixer
 {
-	const CHANNEL_WIDTH = 70;	
+	const Container = Synth.getChildSynth("Container");
+
+	const CHANNEL_WIDTH = 70;
 
 	// vptMixer
 	const vptMixer = Content.getComponent("vptMixer");
@@ -25,22 +27,24 @@ namespace Mixer
 	// pnlMixerControls
 	const pnlMixerControls = Content.getComponent("pnlMixerControls");
 	pnlMixerControls.setPosition(0, 0, Manifest.channels.length * CHANNEL_WIDTH, vptMixer.getHeight());
+	pnlMixerControls.data.levels = [0, 0, 0, 0, 0, 0];
 
 	pnlMixerControls.setPaintRoutine(function(g)
 	{
 		var numChannels = Manifest.channels.length;
-
-		g.setColour(THEME.card.label.textColour);
-		g.setFont("bold", 15);
 		
 		for (i = 0; i < Manifest.channels.length; i++)
 		{
 			var a = [i * CHANNEL_WIDTH, knbPan[i].get("y") - 40, CHANNEL_WIDTH, 15];
+
+			g.setColour(THEME.card.label.textColour);
+			g.setFont("bold", 15);
 			g.drawAlignedText(Manifest.channels[i], a, "centred");
+
+			Cards.drawDefaultValueMarker(g, knbGain[i]);
+
+			drawVuMeter(g, knbGain[i], i);
 		}
-		
-		for (x in knbGain)
-			Cards.drawDefaultValueMarker(g, x);
 
 		if (knbPan.length > 0 && cmbOutput.length > 0)
 		{
@@ -57,6 +61,40 @@ namespace Mixer
 			g.drawLine(cmbOutput[0].get("x"), cmbOutput[numChannels - 1].get("x") + cmbOutput[0].getWidth(), cmbOutput[0].get("y") - 12, cmbOutput[0].get("y") - 12, 1);
 		}
 	});
+	
+	pnlMixerControls.setTimerCallback(function()
+	{		
+		var gain = Math.max(Container.getCurrentLevel(0), Container.getCurrentLevel(1));
+		var v = 0.01 * (100.0 + Engine.getDecibelsForGainFactor(gain));
+	
+		this.data.levels[0] = v;
+		this.data.levels[1] = v;
+		this.data.levels[2] = v;
+		this.data.levels[3] = v;
+	   	
+		this.repaint();
+	
+		if (!Engine.getNumVoices())
+			this.stopTimer();
+	});
+	
+	inline function startVuTimer()
+	{
+		//pnlMixerControls.startTimer(50);
+	}
+	
+	inline function drawVuMeter(g, c, index)
+	{
+		local a = [c.get("x"), c.get("y"), c.getWidth(), c.getHeight()];
+
+		g.setColour(this.get("bgColour"));
+		g.fillRoundedRectangle(a, 8);
+
+		local v = this.data.levels[index];
+
+		g.setColour(Colours.withAlpha(this.get("itemColour"), 0.2 * v));
+		g.fillRoundedRectangle([a[0], a[1] + a[3] - a[3] * v, a[2], a[3] * v], 8);
+	}
 	
 	// Gather components - knbPan, knbGain, btnPurge, cmbOutput
 	const knbPan = [];
