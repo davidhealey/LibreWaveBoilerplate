@@ -43,7 +43,8 @@ namespace Presets
     pnlPresetBrowser.setTimerCallback(function()
     {
 		pnlPresetBrowser.showControl(Patches.getPatchIndex() == -1);
-		this.stopTimer();	    
+		btnPresetBrowser.setValue(Patches.getPatchIndex() == -1);
+		this.stopTimer();
     });
     
 	pnlPresetBrowser.startTimer(500);
@@ -73,7 +74,6 @@ namespace Presets
     // btnPresetBrowser
     const btnPresetBrowser = Content.getComponent("btnPresetBrowser");
     btnPresetBrowser.setControlCallback(onbtnPresetBrowserControl);
-    btnPresetBrowser.setValue(1);
     
     inline function onbtnPresetBrowserControl(component, value)
     {
