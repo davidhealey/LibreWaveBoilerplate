@@ -23,7 +23,10 @@ namespace UIFactory
 
 		Content.addPanel("pnlMain", 0, 0);
 		Content.setPropertiesFromJSON("pnlMain", {
-			"x": a[0], "y": a[1], "width": a[2], "height": a[3]
+			"x": a[0], "y": a[1], "width": a[2], "height": a[3],
+			"bgColour": 0x00,
+		    "borderSize": 0,
+		    "borderRadius": 0
 		});
 
 		createHeader();
@@ -33,6 +36,9 @@ namespace UIFactory
 		Content.setPropertiesFromJSON("pnlPlay", {
 			"x": 0, "y": 61, "width": a[2], "height": a[3] - 191,
 		    "parentComponent": "pnlMain",
+		    "bgColour": 0x00,
+		    "itemColour": 0x00,
+		    "itemColour2": 0x00,
 		    "borderSize": 0,
 		    "borderRadius": 0
 		});
@@ -461,6 +467,9 @@ namespace UIFactory
 
 		for (i = 0; i < data.length; i++)
 		{
+			if (!isDefined(data[i].properties))
+				data[i].properties = {};
+
 			if (data[i].properties.x == undefined)
 				data[i].properties.x = col * i + col / 2 - 55 / 2;
 				
@@ -677,7 +686,7 @@ namespace UIFactory
 				"processorId": "mixerGain" + i,
 				"parameterId": "Balance"
 			});
-
+			
 			Content.addKnob("knbGain" + i, 0, 0);
 			Content.setPropertiesFromJSON("knbGain" + i, {
 				"mode": "Decibel",
@@ -693,7 +702,14 @@ namespace UIFactory
 				"processorId": "mixerGain" + i,
 				"parameterId": "Gain"
 			});
-						
+
+			if (i == num_channels - 1)
+			{
+				Content.setPropertiesFromJSON("knbGain" + i, {
+					"showValuePopup": "left"				
+				});
+			}
+	
 			Content.addButton("btnPurge" + i, 0, 0);
 			Content.setPropertiesFromJSON("btnPurge" + i, {
 				"enableMidiLearn": false,
