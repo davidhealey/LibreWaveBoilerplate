@@ -33,7 +33,7 @@ namespace Mixer
 		{
 			var a = [i * channelWidth, knbPan[i].get("y") - 40, channelWidth, 15];
 
-			g.setColour(THEME.card.label.textColour);
+			g.setColour(this.get("textColour"));
 			g.setFont("bold", 15);
 			g.drawAlignedText(Manifest.channels[i], a, "centred");
 
@@ -45,7 +45,7 @@ namespace Mixer
 		if (knbPan.length > 0 && cmbOutput.length > 0)
 		{
 			g.setColour(Colours.withAlpha(this.get("textColour"), 0.5));
-			g.drawRect([cmbOutput[0].get("x"), knbPan[0].get("y") - 12, cmbOutput[numChannels - 1].get("x") + cmbOutput[numChannels - 1].getWidth() - cmbOutput[0].get("x"), knbPan[0].getHeight() + 20], 2);
+			g.drawRect([cmbOutput[0].get("x"), knbPan[0].get("y") - 13, cmbOutput[numChannels - 1].get("x") + cmbOutput[numChannels - 1].getWidth() - cmbOutput[0].get("x"), knbPan[0].getHeight() + 20], 1);
 		}
 		
 		if (cmbOutput.length > 0)
