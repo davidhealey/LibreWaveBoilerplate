@@ -17,9 +17,7 @@
 
 namespace Patches
 {
-	reg current;
-	const keyswitches = [];
-	const keyRanges = [];
+	const articulationHandler = Synth.getMidiProcessor("articulationHandler");
 
 	// knbPatch
 	const knbPatch = Content.getComponent("knbPatch");
@@ -27,28 +25,28 @@ namespace Patches
 	
 	inline function onknbPatchControl(component, value)
 	{
-		changePatch(value);
+		if (value != -1)
+			changePatch(value);	
+	}
+	
+	// btnLoadDefault
+	const btnLoadDefault = Content.getComponent("btnLoadDefault");
+	btnLoadDefault.setControlCallback(onbtnLoadDefaultControl);
+	
+	inline function onbtnLoadDefaultControl(component, value)
+	{
+		if (value)
+			Configuration.loadDefaults();
 	}
 	
 	// Functions	
 	inline function changePatch(index)
 	{
-		local patch;
-
-		for (i = 0; i < Manifest.patches.length; i++)
-		{
-			if (Manifest.patches[i].index == parseInt(index))
-			{
-				current = i;
-				patch = Manifest.patches[i];
-				break;
-			}
-		}
-
-		Console.assertIsDefined(patch);
-
-		Configuration.enableAllModules();
+		local patch = Manifest.patches[index];
+		articulationHandler.setAttribute(articulationHandler.knbPatch, index);
 		
+		Configuration.enableAllModules();
+
 		// Apply manifest level settings
 		Configuration.setMidiProcessorAttributes(Manifest.scripts);
 		Configuration.setModulatorAttributes(Manifest.modulators);
@@ -60,69 +58,25 @@ namespace Patches
 		Configuration.setModulatorAttributes(patch.modulators);
 		Configuration.setEffectAttributes(patch.effects);
 		Configuration.setSamplerAttributes(patch.samplers);
-		Configuration.loadSampleMaps(patch.samplers);
 
-		updateKeyswitches(current);
-		updateKeyRanges(current);
+		Configuration.updateKeySwitches(patch);
+		Configuration.updateKeyRanges(patch);
 		Header.updatePresetLabel(patch.id);
 		Articulations.init();
 	}
 
 	inline function getCurrentPatch()
 	{
-		return Manifest.patches[current];
+		return Manifest.patches[knbPatch.getValue()];
 	}
 	
-	inline function getKeyRanges(index)
+	inline function getPatchIndex()
 	{
-		return keyRanges[index];
+		return knbPatch.getValue();
 	}
 	
-	inline function getKeyswitches()
+	inline function set(value)
 	{
-		return keyswitches;
-	}
-	
-	inline function updateKeyswitches(index)
-	{
-		local patch = Manifest.patches[index];
-		keyswitches.clear();
-
-		local firstKs = patch.firstKs;
-		local numArts = patch.articulations.active.length;
-
-        for (i = 0; i < numArts; i++)
-            keyswitches.push(firstKs + i);
-	}
-	
-	inline function updateKeyRanges(index)
-	{
-		local patch = Manifest.patches[index];
-		local patchArts = patch.articulations;
-		
-		keyRanges.clear();
-
-		for (i = 0; i < patchArts.active.length; i++)
-		{
-			local range = [];
-			
-			if (isDefined(patch.keyRanges))
-				range = patch.keyRanges.clone();
-			else if (isDefined(Manifest.keyRanges))
-				range = Manifest.keyRanges.clone();
-
-			keyRanges[patchArts.active[i]] = range;
-
-			if (isDefined(patchArts.keyRanges[i]))
-			{
-				for (j = 0; j < patchArts.keyRanges[i].length; j++)
-					range[j] = patchArts.keyRanges[i][j];
-			}
-			else if (isDefined(Manifest.articulations[patchArts.active[i]].keyRanges))
-			{
-				for (j = 0; j < Manifest.articulations[patchArts.active[i]].keyRanges.length; j++)
-					range[j] = Manifest.articulations[patchArts.active[i]].keyRanges[j];
-			}
-		}
+		knbPatch.setValue(value);
 	}
 }

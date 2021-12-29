@@ -80,6 +80,8 @@ namespace Theme
 
         for (component in Content.getAllComponents(""))
         {
+			local id = component.get("id");
+			local text = component.get("text");
             local type = component.get("type");
             local properties;
 
@@ -87,10 +89,18 @@ namespace Theme
             {
                 case "ScriptSlider":
                     
-                    local style = component.get("style");
-                    local text = component.get("text");
+                    local style = component.get("style");                   
                     
                     properties = THEME[type][style].clone();
+
+					for (b in THEME[type])
+					{
+					    if (id.indexOf(b) != -1 || text.indexOf(b) !=-1)
+					    {
+					        properties = THEME[type][b];
+					        break;
+					    }
+					}
 
                     if (style == "Knob")
                     {
@@ -105,9 +115,6 @@ namespace Theme
                     
                 case "ScriptButton":
                 
-                    local id = component.get("id");
-                    local text = component.get("text");
-
                     for (b in THEME[type])
                     {
                         if (id.indexOf(b) != -1 || text.indexOf(b) !=-1)
@@ -123,8 +130,15 @@ namespace Theme
                     properties = THEME[type][component.get("id")];
                     break;
                     
+                case "ScriptPanel":
+                	if (isDefined(THEME[type][component.get("id")]))
+                    	properties = THEME[type][component.get("id")];
+                    else
+                    	properties = THEME[type];
+                    break;
+                    
                 case "ScriptFloatingTile":
-                    properties = THEME[type][component.get("ContentType")];                    
+                    properties = THEME[type][component.get("ContentType")];
                     break;
 
                 default:
@@ -186,6 +200,18 @@ namespace Theme
               "bgColour": 0xff4c4441
             },
             "ScriptSlider": {
+	            "knbMasterGain": {
+					"bgColour": 0x00,
+					"itemColour": 0xff6a5e58,
+					"itemColour2": 0xffcec7b5,
+					"textColour": 0xff524e4c
+				},
+	            "knbGain": {
+					"bgColour": 0x00,
+					"itemColour": 0xff6a5e58,
+					"itemColour2": 0xffcec7b5,
+					"textColour": 0xff524e4c
+				},           
                 "Knob": {
                     "bgColour": 0xff97675e,
                     "itemColour": 0xff97675e,
@@ -205,11 +231,15 @@ namespace Theme
                     "itemColour": 0xff6a5e58,
                     "itemColour2": 0xffcec7b5,
                     "textColour": 0xff836e6b
-                }                
+                }          
             },
-            "ScriptLabel":{
-                "lblPreset":{
+            "ScriptLabel": {
+                "lblPreset": {
                     "textColour": 0xffd0b58e
+                },
+                "lblPreset": {
+	                "fontName": "bold",
+	                "fontSize": 18
                 }
             },            
             "ScriptButton": {
@@ -217,7 +247,8 @@ namespace Theme
                     "textColour": 0xff3c1a13
                 },
                 "btnPreset": {
-                    "itemColour": 0xff7c6c63
+                    "itemColour": 0xff7c6c63,
+                    "itemColour2": 0xff6E5C50
                 },
                 "btnSettingsTab":
                 {
@@ -252,6 +283,14 @@ namespace Theme
                 "bgColour":0x00,
                 "itemColour": 0xff7a6052,
                 "itemColour2": 0xffd2c2b2
+            },
+            "ScriptPanel": {           
+				"pnlMain": {
+					"bgColour":0x00,				
+					"itemColour": 0xff302c2a,
+					"itemColour2": 0xff302c2a,
+				},
+				"textColour": 0xff98908e
             },
             "ScriptFloatingTile": {
                 "AHDSRGraph": {

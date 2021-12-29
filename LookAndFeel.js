@@ -110,12 +110,12 @@ namespace LookAndFeel
     laf.registerFunction("drawToggleButton", function(g, obj)
     {
         var a = obj.area;
-        var colour;
-        var icon = undefined;
 
         if (obj.text.indexOf("icon") != -1)
         {
-            obj.value == 0 ? colour = obj.itemColour1 : colour = obj.itemColour2;
+			var icon = undefined;
+
+            var colour = obj.value == 0 ? obj.itemColour1 : obj.itemColour2;
             g.setColour(Colours.withAlpha(colour, obj.over ? 0.7 : 1));
 
             if (obj.text.indexOf("iconOff") != -1 && !obj.value)
@@ -340,14 +340,102 @@ namespace LookAndFeel
         return obj;
     });
     
-    laf.registerFunction("drawAlertWindowIcon", function(g, obj)
+	laf.registerFunction("drawAlertWindowIcon", function(g, obj)
     {
-        var a = obj.area;
-        var path = Paths.icons.question;
-        
-        g.setColour(0xff87746a);
-        g.fillPath(path, [a[0], a[1] + 10, a[2] / 2, a[3] - 20]);
+        var a = [obj.area[0], obj.area[1] + 10, obj.area[2], obj.area[3] - 10];
+        var path = Paths.icons[obj.type.toLowerCase()];
+		var multiplier = 1;		
+		
+        switch (obj.type)
+        {
+	        case "Question":
+	        	multiplier = 0.55;
+        		break;
+        		
+	        case "Info":
+	        	multiplier = 0.27;
+        		break;
+        		
+        	default:
+        		multiplier = 0.18;
+		}
+
+		g.setColour(0xff87746a);
+		g.fillPath(path, [a[0], a[1], a[3] * multiplier, a[3]]);
     });
+    
+	laf.registerFunction("drawWhiteNote", function(g, obj)
+	{
+		var a = [obj.area[0], obj.area[1], obj.area[2], obj.area[3] - 1];
+
+		if (obj.down)
+			a[3] += 1;
+	
+		g.setColour(Colours.white);
+		g.fillRoundedRectangle(a, 3);
+
+		if (obj.down)
+		{
+			g.setGradientFill([0x00, a[0], a[1], Colours.withAlpha(Colours.black, 0.2), a[0], a[3]]);
+			g.fillRect(a);
+		}
+		
+		if (obj.keyColour != 0)
+		{
+			g.setColour(obj.keyColour);
+			g.fillRoundedRectangle(a, 3);
+		}
+		
+		if (obj.hover)
+		{
+			g.setColour(Colours.withAlpha(Colours.coral, 0.3));
+			obj.down ? g.fillRect(a) : g.fillRoundedRectangle(a, 3);
+		}
+	
+		g.setColour(0xff3a322d);
+		g.drawRoundedRectangle(a, 3 - (3 * obj.down), 2);
+
+		g.drawLine(a[0], a[2], a[1], a[1], 3);
+		
+		var noteName = Engine.getMidiNoteName(obj.noteNumber);
+		
+		if (noteName.indexOf("C") != -1)
+		{
+			g.setColour(Colours.black);
+			g.setFont("semibold", 8);
+			g.drawAlignedText(noteName, [a[0], a[1] + a[3] - 20, a[2], 20], "centred");
+		}
+		
+	});
+	
+	laf.registerFunction("drawBlackNote", function(g, obj)
+	{
+		var a = [obj.area[0] + 0.5, obj.area[1] + 1.5, obj.area[2] - 1, obj.area[3] - 8];
+	
+		g.setColour(0xff52413d);
+		g.fillRoundedRectangle(a, 1);
+	
+		if (obj.down)
+		{
+			g.setGradientFill([0x00, a[0], a[1], Colours.withAlpha(0xff87796e, 0.7), a[0], a[3]]);
+			g.fillRect(a);
+		}
+	
+		if (obj.keyColour != 0)
+		{
+			g.setColour(obj.keyColour);
+			g.fillRoundedRectangle(a, 1);
+		}
+			
+		if (obj.hover)
+		{
+			g.setColour(Colours.withAlpha(Colours.coral, 0.3));
+			obj.down ? g.fillRect(a) : g.fillRoundedRectangle(a, 1);
+		}
+
+		g.setColour(0xff3a322d);
+		//g.drawLine(a[0], a[2], a[1], a[1], 3);
+	});
     
     inline function drawPathButton(path, area, colours)
     {

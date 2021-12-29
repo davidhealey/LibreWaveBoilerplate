@@ -88,12 +88,11 @@ namespace Cards
 	inline function drawLabels(g, labels)
 	{
 	    g.setColour(THEME.card.label.textColour);
-	    g.setFont("regular", 18);
 	        
 	    for (l in labels)
 	    {
-	        local alignment = l.alignment;
-	        if (alignment == undefined) alignment = "centred";
+			local alignment = l.alignment == undefined ? "centred" : l.alignment;
+			l.font == undefined ? g.setFont("semibold", 18) : g.setFont(l.font[0], l.font[1]);
 	
 	        g.drawAlignedText(l.text, l.area, alignment);
 	    }
@@ -230,7 +229,7 @@ namespace Cards
 		p.setMouseCallback(function(event)
 		{
 			var value = Math.floor(event.x / this.getWidth() * this.data.titles.length);
-			event.hover ? this.data.hover = value : this.data.hover = -1;
+			this.data.hover = event.hover ? value : -1;
 
 			if (event.clicked)
 			{
@@ -249,6 +248,6 @@ namespace Cards
 		for (i = 0; i < component.data.children.length; i++)
 			component.data.children[i].showControl(i == value);
 
-		this.repaint();
+		component.repaint();
 	}
 }

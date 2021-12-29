@@ -53,23 +53,26 @@ namespace Header
         if (isDefined(patchName) && patchName != "")
             text = patchName;
 
-        if (isDefined(presetName) && presetName != "")
-        {
-	        if (text != "")
+		if (text.toLowerCase() != "select a preset")
+		{
+	        if (isDefined(presetName) && presetName != "")
 	        {
-				if (presetName.indexOf(text) == -1)
-		        	text += " - " + presetName;
+		        if (text != "")
+		        {
+					if (presetName.indexOf(text) == -1)
+			        	text += " - " + presetName;
+			        else
+			        	text = presetName;
+		        }
 		        else
-		        	text = presetName;
-	        }
-	        else
-	        {
-		        text = presetName;
-	        }
-        }            
-
-		if (text == "" && isDefined(Manifest.defaultPreset))
-			text = Manifest.defaultPreset;
+		        {
+			        text = presetName;
+		        }
+	        }            
+	
+			if (text == "" && isDefined(Manifest.defaultPreset))
+				text = Manifest.defaultPreset;
+		}
         
         lblPreset.set("text", text);
     }

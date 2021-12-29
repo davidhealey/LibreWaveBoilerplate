@@ -23,7 +23,7 @@ namespace Footer
     pnlFooter.setPaintRoutine(function(g) 
     {
         // Footer
-        g.setColour(THEME.footer.bgColour);
+        g.setColour(this.get("bgColour"));
         g.fillRect([0, 0, this.getWidth(), 45]);
         
         g.setColour(0xff3a322d);
@@ -36,17 +36,17 @@ namespace Footer
         g.fillRect([10, 49, this.getWidth() - 20, this.getHeight() - 49]);
         
         // Logo
-        g.setColour(THEME.logoColour);
+        g.setColour(this.get("itemColour"));
         g.fillPath(Paths.librewave, [this.getWidth() / 2 - 128 / 2, 45 / 2 - 15 / 2, 128, 15]);
         
         // Labels
-        g.setColour(THEME.footer.textColour);
+        g.setColour(this.get("textColour"));
         g.setFont("bold", 14);
         g.drawAlignedText("PAN", [knbMasterPan.get("x") - 90, knbMasterPan.get("y") - 0.5, 80, knbMasterPan.getHeight()], "right");
         g.drawAlignedText("VOL", [knbMasterGain.get("x") - 90, knbMasterGain.get("y") - 0.5, 80, knbMasterGain.getHeight()], "right"); 
         
         // Default value markers
-        g.setColour(0xffa19b8c);
+        g.setColour(this.get("itemColour2"));
         g.fillEllipse([knbMasterPan.get("x") + knbMasterPan.getWidth() / 2 - 4 / 2, knbMasterPan.get("y") - 8, 4, 4]);
         g.fillEllipse([knbMasterGain.get("x") + knbMasterGain.getWidth() / 2 - 4 / 2 + 25.5, knbMasterGain.get("y") - 8, 4, 4]);
         
@@ -58,7 +58,8 @@ namespace Footer
 	
 	inline function onknbMasterPanControl(component, value)
 	{
-		Configuration.masterChain.setAttribute(Configuration.masterChain.Balance, value / 100);
+		if (isDefined(Configuration.masterChain))
+			Configuration.masterChain.setAttribute(Configuration.masterChain.Balance, value / 100);
 	}
 
     // knbMasterGain

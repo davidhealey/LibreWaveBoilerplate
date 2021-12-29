@@ -23,7 +23,10 @@ namespace UIFactory
 
 		Content.addPanel("pnlMain", 0, 0);
 		Content.setPropertiesFromJSON("pnlMain", {
-			"x": a[0], "y": a[1], "width": a[2], "height": a[3]
+			"x": a[0], "y": a[1], "width": a[2], "height": a[3],
+			"bgColour": 0x00,
+		    "borderSize": 0,
+		    "borderRadius": 0
 		});
 
 		createHeader();
@@ -32,7 +35,12 @@ namespace UIFactory
 		Content.addPanel("pnlPlay", 0, 0);
 		Content.setPropertiesFromJSON("pnlPlay", {
 			"x": 0, "y": 61, "width": a[2], "height": a[3] - 191,
-		    "parentComponent": "pnlMain"
+		    "parentComponent": "pnlMain",
+		    "bgColour": 0x00,
+		    "itemColour": 0x00,
+		    "itemColour2": 0x00,
+		    "borderSize": 0,
+		    "borderRadius": 0
 		});
 			
 		createSettingsPanel();
@@ -82,12 +90,14 @@ namespace UIFactory
 		    "parameterId": "Breath"
 		});
 		
-		Content.addButton("btnSingleArticulation");
-		Content.setPropertiesFromJSON("btnSingleArticulation", {
+		Content.addButton("btnLoadDefault");
+		Content.setPropertiesFromJSON("btnLoadDefault", {
 		    "x": 160, "y": 50, "width": 128, "height": 28,
 		    "parentComponent": "pnlAdmin",
-		    "text": "Single Articulation Mode",
-		    "enableMidiLearn": false
+		    "text": "Load Default",
+		    "saveInPreset": false,
+		    "enableMidiLearn": false,
+		    "isMomentary": true
 		});
 		
 		Content.addKnob("knbVibratoGain", 0, 0);
@@ -227,6 +237,15 @@ namespace UIFactory
 		    "updateAfterInit": true,
 		    "Font": "bold",
 		    "FontSize": 14
+		});
+		
+		Content.addPanel("pnlVuMeter", 0, 0);
+		Content.setPropertiesFromJSON("pnlVuMeter", {
+			"x": 640, "y": 16, "width": 100, "height": 16,
+			"parentComponent": "pnlFooter",
+			"saveInPreset": false,
+			"bgColour": 0xff514A47,
+			"itemColour": 0xff000000
 		});
 		
 		Content.addKnob("knbMasterGain", 0, 0);
@@ -448,6 +467,9 @@ namespace UIFactory
 
 		for (i = 0; i < data.length; i++)
 		{
+			if (!isDefined(data[i].properties))
+				data[i].properties = {};
+
 			if (data[i].properties.x == undefined)
 				data[i].properties.x = col * i + col / 2 - 55 / 2;
 				
@@ -609,7 +631,7 @@ namespace UIFactory
 	{
 		Content.addPanel(panelId, 0, 0);
 		Content.setPropertiesFromJSON(panelId, {
-			"x": 0, "y": 0, "width": a[2], "height": a[3],
+			"x": a[0], "y": a[1], "width": a[2], "height": a[3],
 			"parentComponent": parentId
 		});
 		
@@ -622,28 +644,49 @@ namespace UIFactory
 			"width": tableWidth,
 			"height": tableWidth,
 			"parentComponent": panelId,
-		    "processorId": processorId
+		    "processorId": processorId,
+		    "customColours": true
 		});
 	}
-	
-	inline function createMixer(parentId, num_channels, a)
+		
+	inline function createMixer(num_channels, a)
 	{
+		Content.addPanel("pnlMixer", 0, 0);
+		Content.setPropertiesFromJSON("pnlMixer", {
+			"x": a[0], "y": a[1], "width": a[2], "height": a[3],
+			"parentComponent": "pnlPlay"
+		});
+
 		Content.addViewport("vptMixer", 0, 0);
 		Content.setPropertiesFromJSON("vptMixer", {
-			"x": a[0], "y": a[1], "width": a[2], "height": a[3],
-			"parentComponent": parentId,
+			"x": 0, "y": 42, "width": a[2], "height": a[3] - 42,
+			"parentComponent": "pnlMixer",
 			"saveInPreset": false,
 			"scrollBarThickness": 10
 		});
 		
 		Content.addPanel("pnlMixerControls", 0, 0);
 		Content.setPropertiesFromJSON("pnlMixerControls", {
-			"x": 0, "y": 0, "width": a[2] - 3, "height": a[3],
+			"x": 0, "y": 0, "width": a[2] - 3, "height": a[3] - 42,
 			"parentComponent": "vptMixer"
 		});
 
 		for (i = 0; i < num_channels; i++)
 		{
+			Content.addKnob("knbPan" + i, 0, 0);
+			Content.setPropertiesFromJSON("knbPan" + i, {
+				"mode": "Pan",
+				"style": "Knob",
+				"showValuePopup": "Below",
+				"showTextBox": false,
+				"isPluginParameter": true,
+				"pluginParameterName": "Channel " + (i + 1) + " pan",
+				"text": "Pan-colourV2[nodefault]",
+				"parentComponent": "pnlMixerControls",
+				"processorId": "mixerGain" + i,
+				"parameterId": "Balance"
+			});
+			
 			Content.addKnob("knbGain" + i, 0, 0);
 			Content.setPropertiesFromJSON("knbGain" + i, {
 				"mode": "Decibel",
@@ -656,24 +699,17 @@ namespace UIFactory
 				"pluginParameterName": "Channel " + (i + 1) + " volume",
 				"text": "Gain",
 				"parentComponent": "pnlMixerControls",
-				"processorId": "Simple Gain" + i,
+				"processorId": "mixerGain" + i,
 				"parameterId": "Gain"
 			});
-			
-			Content.addKnob("knbPan" + i, 0, 0);
-			Content.setPropertiesFromJSON("knbPan" + i, {
-				"mode": "Pan",
-				"style": "Knob",
-				"showValuePopup": "Below",
-				"showTextBox": false,
-				"isPluginParameter": true,
-				"pluginParameterName": "Channel " + (i + 1) + " pan",
-				"text": "Pan-colourV2[nodefault]",
-				"parentComponent": "pnlMixerControls",
-				"processorId": "Simple Gain" + i,
-				"parameterId": "Balance"
-			});
-						
+
+			if (i == num_channels - 1)
+			{
+				Content.setPropertiesFromJSON("knbGain" + i, {
+					"showValuePopup": "left"				
+				});
+			}
+	
 			Content.addButton("btnPurge" + i, 0, 0);
 			Content.setPropertiesFromJSON("btnPurge" + i, {
 				"enableMidiLearn": false,
@@ -685,28 +721,36 @@ namespace UIFactory
 			Content.setPropertiesFromJSON("cmbOutput" + i, {
 				"enableMidiLearn": false,
 				"text": "Output",
-				"parentComponent": "pnlMixerControls"
+				"parentComponent": "pnlMixerControls",
+				"items": "1/2"
 			});			
 		}
 	}
 	
-	inline function createArticulationList(parentId, a)
-	{		
+	inline function createArticulationList(a)
+	{	
+		Content.addPanel("pnlArticulations", 0, 0);
+		Content.setPropertiesFromJSON("pnlArticulations",  {
+			"x": a[0], "y": a[1], "width": a[2], "height": a[3],
+			"parentComponent": "pnlPlay"
+		});
+
 		Content.addViewport("vptArticulations", 0, 0);
 		Content.setPropertiesFromJSON("vptArticulations",  {
-			"x": 0, "y": a[1], "width": a[2], "height": a[3],
-			"parentComponent": parentId,
+			"x": 10, "y": 53, "width": a[2] - 13, "height": a[3] - 60,
+			"parentComponent": "pnlArticulations",
 			"saveInPreset": false,
 			"scrollBarThickness": 10
 		});
 		
 		Content.addPanel("pnlArticulationList", 0, 0);
 		Content.setPropertiesFromJSON("pnlArticulationList",  {
-			"x": 0, "y": 0, "width": a[2] - 10, "height": 25,
+			"x": 0, "y": 0, "width": a[2] - 20, "height": 25,
 			"parentComponent": "vptArticulations",
+			"saveInPreset": true,
 			"allowCallbacks": "All Callbacks"
 		});
-		
+
 		Content.addPanel("pnlArticulationGain", 0, 0);
 		Content.setPropertiesFromJSON("pnlArticulationGain", {
 			"parentComponent": "pnlArticulationList",

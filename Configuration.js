@@ -17,6 +17,9 @@
 
 namespace Configuration
 {
+	const keyRanges = [];
+	const keySwitches = [];	
+
 	// masterChain
 	const containerIds = Synth.getIdList("Container");
 	const masterChain = Synth.getChildSynth(containerIds[0]);	
@@ -61,11 +64,15 @@ namespace Configuration
 	// Effects
 	const effectIds = [];
 	const effects = [];
+	const mixerGain = [];
 	
 	for (e in Synth.getAllEffects(""))
 	{        
 	    effectIds.push(e.getId());
 	    effects.push(e);
+	    
+	    if (e.getId().indexOf("mixerGain") != -1)
+	    	mixerGain.push(e);
 	}    
 	
 	const effectAttributeIds = getAttributeIds(effects);
@@ -203,27 +210,30 @@ namespace Configuration
 	
 	inline function setKeyColours(index)
 	{
-		local keyRanges = Patches.getKeyRanges(index);
+		local kr = keyRanges[index];
 
 		for (i = 0; i < 127; i++)
 			Engine.setKeyColour(i, Colours.withAlpha(Colours.black, 0.6));
-
-		for (r in keyRanges)
-       	{
-			for (i = 0; i < 127; i++)
-			{
-				if (i >= r[0] && i <= r[1])
-					Engine.setKeyColour(i, parseInt(r[2]));
+	
+		if (isDefined(kr))
+		{	
+			for (r in kr)
+	       	{
+				for (i = 0; i < 127; i++)
+				{
+					if (i >= r[0] && i <= r[1])
+						Engine.setKeyColour(i, r[2]);
+				}
 			}
 		}
 	}
 	
 	inline function setNoteRangeFilter(index)
 	{
-		local keyRanges = Patches.getKeyRanges(index);
-		
-		noteRangeFilter.setAttribute(noteRangeFilter.LowNote, keyRanges[0][0]);
-		noteRangeFilter.setAttribute(noteRangeFilter.HighNote, keyRanges[0][1]);
+		local kr = keyRanges[index];
+
+		noteRangeFilter.setAttribute(noteRangeFilter.LowNote, kr[0][0]);
+		noteRangeFilter.setAttribute(noteRangeFilter.HighNote, kr[0][1]);
 	}
 	
 	inline function enableAllComponents(exceptions)
@@ -234,7 +244,63 @@ namespace Configuration
 				c.set("enabled", exceptions.indexOf(c.get("id")) == -1);
 		}
 	}
-		
+	
+	inline function updateKeyRanges(patch)
+	{
+		local patchArts = patch.articulations;
+
+		keyRanges.clear();
+	
+		for (i = 0; i < patchArts.active.length; i++)
+		{
+			local range = [];
+			
+			if (isDefined(patch.keyRanges))
+				range = patch.keyRanges.clone();
+			else if (isDefined(Manifest.keyRanges))
+				range = Manifest.keyRanges.clone();
+	
+			keyRanges[patchArts.active[i]] = range;
+	
+			if (isDefined(patchArts.keyRanges[i]))
+			{
+				for (j = 0; j < patchArts.keyRanges[i].length; j++)
+					range[j] = patchArts.keyRanges[i][j];
+			}
+			else if (isDefined(Manifest.articulations[patchArts.active[i]].keyRanges))
+			{
+				for (j = 0; j < Manifest.articulations[patchArts.active[i]].keyRanges.length; j++)
+					range[j] = Manifest.articulations[patchArts.active[i]].keyRanges[j];
+			}
+		}
+	}
+	
+	inline function updateKeySwitches(patch)
+	{
+		keySwitches.clear();
+	
+		local firstKs = patch.firstKs;
+		local numArts = patch.articulations.active.length;
+	
+        for (i = 0; i < numArts; i++)
+            keySwitches.push(firstKs + i);
+	}
+
+	inline function loadDefaults()
+	{
+		Header.updatePresetLabel("Select a Preset");
+		Patches.set(-1);
+		Settings.clearMidiLearn();
+
+		for (s in samplers)
+		{
+			s.setBypassed(true);
+			s.asSampler().clearSampleMap();
+			s.setAttribute(s.VoiceAmount, 1);  
+			s.setAttribute(s.VoiceLimit, 1);
+		}	
+	}
+
 	// Helpers
 	inline function setMidiProcessorAttributes(data)
 	{

@@ -17,31 +17,43 @@
 
 namespace Presets
 {
-    // fltPresetBrowser
-    const fltPresetBrowser = Content.getComponent("fltPresetBrowser");
+	const presetHandler = Engine.createUserPresetHandler();
+	
+	presetHandler.setPostCallback(function()
+	{
+		Configuration.loadSampleMaps(Manifest.patches[Patches.getPatchIndex()].samplers);
+	});
     
     // pnlPresetBrowser
     const pnlPresetBrowser = Content.getComponent("pnlPresetBrowser");
-    pnlPresetBrowser.showControl(false);
-    pnlPresetBrowser.setControlCallback(onpnlPresetBrowserControl);
-    
-    inline function onpnlPresetBrowserControl(component, value)
-    {
-    }
-    
+
     pnlPresetBrowser.setPaintRoutine(function(g)
     {
         var a = [10, 7, this.getWidth() - 20, this.getHeight() - 14];
         
-        g.setColour(THEME.ScriptFloatingTile.PresetBrowser.bgColour2);
+        g.setColour(this.get("itemColour"));
         g.fillRoundedRectangle(a, 5);
         
         g.setColour(0xff2a2625);
-        g.fillRoundedRectangle([26, 100, 279, 370], 5);
-        g.fillRoundedRectangle([313, 100, 279, 370], 5);
-        g.fillRoundedRectangle([600, 100, 271, 370], 5);
+        g.fillRoundedRectangle([26, 100, 209, 370], 5);
+        g.fillRoundedRectangle([241, 100, 209, 370], 5);
+        g.fillRoundedRectangle([456, 100, 209, 370], 5);
+        g.fillRoundedRectangle([671, 100, 203, 370], 5);
     });
     
+    pnlPresetBrowser.setTimerCallback(function()
+    {
+		if (isDefined(Patches.getPatchIndex))
+		{
+			pnlPresetBrowser.showControl(Patches.getPatchIndex() == -1);
+			btnPresetBrowser.setValue(Patches.getPatchIndex() == -1);			
+		}
+
+		this.stopTimer();
+    });
+    
+	pnlPresetBrowser.startTimer(500);
+
     // pnlPresetNotesBlocker
     const pnlPresetNotesBlocker = Content.getComponent("pnlPresetNotesBlocker");
     
@@ -50,27 +62,42 @@ namespace Presets
         g.fillAll(0xff524844);
 
         g.setColour(0xff8d8681);
-        g.setFont("bold", 16);
-        g.drawAlignedText("BANK", [15, 0, 279, this.getHeight() - 7], "centred");
-        g.drawAlignedText("CATEGORY", [302, 0, 279, this.getHeight() - 7], "centred");
-        g.drawAlignedText("PRESET", [589, 0, 271, this.getHeight() - 7], "centred");
+        g.setFont("bold", 16);        
+        g.drawAlignedText("LIBRARY", [15, 0, 209, this.getHeight() - 7], "centred");
+        g.drawAlignedText("BANK", [230, 0, 209, this.getHeight() - 7], "centred");
+        g.drawAlignedText("CATEGORY", [445, 0, 209, this.getHeight() - 7], "centred");
+        g.drawAlignedText("PRESET", [660, 0, 203, this.getHeight() - 7], "centred");
         
         g.setColour(0xff2a2625);
-        g.fillRoundedRectangle([15, 35, 279, 370], 5);
-        g.fillRoundedRectangle([302, 35, 279, 370], 5);
-        g.fillRoundedRectangle([589, 35, 271, 370], 5);
+        g.fillRoundedRectangle([15, 35, 209, 370], 5);
+		g.fillRoundedRectangle([230, 35, 209, 370], 5);
+		g.fillRoundedRectangle([445, 35, 209, 370], 5);
+		g.fillRoundedRectangle([660, 35, 203, 370], 5);
+		
+		g.fillRoundedRectangle([26, 100, 209, 370], 5);
+		g.fillRoundedRectangle([241, 100, 209, 370], 5);
+		g.fillRoundedRectangle([456, 100, 209, 370], 5);
+		g.fillRoundedRectangle([671, 100, 203, 370], 5);
     });
+    
+    // fltPresetBrowser
+    const fltPresetBrowser = Content.getComponent("fltPresetBrowser");
     
     // btnPresetBrowser
     const btnPresetBrowser = Content.getComponent("btnPresetBrowser");
     btnPresetBrowser.setControlCallback(onbtnPresetBrowserControl);
-    btnPresetBrowser.setValue(0);
     
     inline function onbtnPresetBrowserControl(component, value)
     {
-        pnlPresetBrowser.showControl(value);
+		if (Patches.getPatchIndex() != -1)
+        	pnlPresetBrowser.showControl(value);
+        else
+        {
+	        pnlPresetBrowser.showControl(true);
+	        component.setValue(1);
+        }
     }
-    
+        
     // btnPreset - previous/next preset buttons
     const btnPreset = [];
 
@@ -82,24 +109,30 @@ namespace Presets
     
     inline function onbtnPresetControl(component, value)
     {
-        local index = btnPreset.indexOf(component);
-        
-        if (value)
-        {
-            if (index)
-                Engine.loadPreviousUserPreset(true);
-            else
-                Engine.loadNextUserPreset(true);
-            
-            Header.redraw();
-        }
+		if (Patches.getPatchIndex() != -1)
+		{
+	        local index = btnPreset.indexOf(component);
+	        
+	        if (value)
+	        {
+	            if (index)
+	                Engine.loadPreviousUserPreset(false);
+	            else
+	                Engine.loadNextUserPreset(false);
+	        }
+		}
     }
         
     // Functions    
-    inline function forceShowBrowser()
+    inline function showPresetBrowser()
     {
         pnlPresetBrowser.showControl(true);
         btnPresetBrowser.setValue(1);
-        btnPresetBrowser.set("enabled", false);
+    }
+    
+    inline function hidePresetBrowser()
+    {
+		pnlPresetBrowser.showControl(false);
+		btnPresetBrowser.setValue(0);	    
     }
 }
