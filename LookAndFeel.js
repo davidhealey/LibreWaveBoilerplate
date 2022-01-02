@@ -16,7 +16,7 @@
 */
 
 namespace LookAndFeel
-{            
+{
     const laf = Engine.createGlobalScriptLookAndFeel();
 
     // Knob
@@ -125,12 +125,6 @@ namespace LookAndFeel
             else if (obj.text.indexOf("iconOn") != -1 && obj.value)
             {
                 icon = obj.text.substring(obj.text.indexOf("iconOn-") + 7, obj.text.length);
-            }
-            else if (obj.text == "icon-install")
-            {
-                var path = Paths.icons.add;
-                a = [a[0] + a[2] / 2 - 11, a[1] + a[3] / 2 - 11, 22, 22];
-                drawPathButton(path, a, [0xff8e887f, 0xffafaa9f, 0x8f8e887f]);
             }
             else 
             {
@@ -244,17 +238,23 @@ namespace LookAndFeel
     // Preset browser column
     laf.registerFunction("drawPresetBrowserColumnBackground", function(g, obj)
     {
-        var a = [obj.area[0], obj.area[1], obj.area[2], obj.area[3]];
-        
-        if (obj.text == "Add a Bank")
-            obj.text = "Select a library";
-            
-        if (obj.text == "Select a Column")
-            obj.text = "Select a Category";
-        
-        g.setColour(Colours.grey);
-        g.setFont("bold", 16);
-        g.drawAlignedText(obj.text, a, "centred");
+	    var a = [obj.area[0], obj.area[1], obj.area[2], obj.area[3]];
+
+	    if (obj.text == "Add a Bank")
+	        obj.text = "Select a library";
+	        
+	    if (obj.text == "Select a Column")
+	        obj.text = "Select a Category";
+	        
+	    if (a[2] > 300 && obj.text != "")
+	        obj.text = "No Results";		
+
+		g.setColour(obj.itemColour);    
+	    g.fillRoundedRectangle([a[0], a[1], a[2] - 2, a[3]], 5);
+	    
+	    g.setColour(Colours.grey);
+	    g.setFont("bold", 16);
+	    g.drawAlignedText(obj.text, a, "centred");
     });
     
     // Preset browser list item
@@ -264,25 +264,27 @@ namespace LookAndFeel
         var col = obj.columnIndex;
         
         col == -1 || col == 1 ? g.setColour(0xffbd8a79) : g.setColour(0xffbb946e);
-        
-        if (obj.selected)            
+                
+        if (obj.selected)
             g.fillRoundedRectangle(a, 3);
-        
+
         obj.selected == 1 ? g.setColour(Colours.black) : g.setColour(Colours.lightgrey);
-        
-        col == -1 ? g.setFont("bold", 16) : g.setFont("bold", 18);
-        
+
+        g.setFont("medium", 18);
+        if (col == 2)
+        	a[0] += 10;
+
         g.drawAlignedText(obj.text, [a[0] + 10, a[1], a[2], a[3]], "left");       
     });
-    
+        
     // Preset browser search bar
     laf.registerFunction("drawPresetBrowserSearchBar", function(g, obj)
     {
         var a = [obj.area[0], obj.area[1], obj.area[2] - 10, obj.area[3]];
-        g.setColour(0x8fbcb8b2);
+        g.setColour(Colours.withAlpha(Colours.lightgrey, 0.8));
         g.fillRoundedRectangle(a, 3);
         
-        g.setColour(Colours.lightgrey);
+        g.setColour(Colours.withAlpha(Colours.darkgrey, 0.8));
         var wh = a[3] / 1.6;
         g.fillPath(obj.icon, [a[0] + 7, a[1] + a[3] / 2 - wh / 2, wh, wh]);       
     });    
@@ -291,24 +293,31 @@ namespace LookAndFeel
     laf.registerFunction("drawDialogButton", function(g, obj)
     {
         var a = obj.area;
-        var presetButtons = ["Add", "Rename", "Delete"];
-                
-        // Preset browser icon buttons
-        if (presetButtons.contains(obj.text))
+        
+        if (obj.parentType == "PresetBrowser")
         {
-            var icons = ["add", "edit", "trash"];            
-            var path = Paths.icons[icons[presetButtons.indexOf(obj.text)]];
-
-            if (obj.text == "Delete")
-                a = [a[0] + a[2] / 2 - 10, a[1] + a[3] / 2 - 11, 20, 22];
-            else
-                a = [a[0] + a[2] / 2 - 11, a[1] + a[3] / 2 - 11, 22, 22];
-
-            drawPathButton(path, a, [0xff8e887f, 0xffafaa9f, 0x8f8e887f]);
+	    	var editButtons = ["Add", "Rename", "Delete"];    
+	    	
+	        if (editButtons.contains(obj.text))
+	        {
+	            var icons = ["add", "edit", "trash"];
+	            var path = Paths.icons[icons[editButtons.indexOf(obj.text)]];
+	
+	            if (obj.text == "Delete")
+	                a = [a[0] + a[2] / 2 - 10, a[1] + a[3] / 2 - 11, 20, 22];
+	            else
+	                a = [a[0] + a[2] / 2 - 11, a[1] + a[3] / 2 - 11, 22, 22];
+	
+	            drawPathButton(path, a, [0xff8e887f, 0xffafaa9f, 0x8f8e887f]);
+	        }
+	        else
+	        {
+				drawTextButton(obj.text, a, [0xff746964, 0xff827670, 0xff6f6560, 0xff403a38]);
+	        }
         }
         else
         {
-            drawTextButton(obj.text, a, [0xff746964, 0xff968b86, 0x8f746964, 0xff302c2a]);
+	        drawTextButton(obj.text, a, [0xff746964, 0xff968b86, 0x8f746964, 0xff302c2a]);
         }
     });
 
@@ -450,6 +459,9 @@ namespace LookAndFeel
         g.fillPath(path, area);
     }
     
+    /*
+    colours = [background, over, down, text]
+    */
     inline function drawTextButton(text, area, colours)
     {
         g.setColour(colours[0]);
@@ -486,6 +498,6 @@ namespace LookAndFeel
 
     pnlMain.setPaintRoutine(function(g)
     {
-        g.fillAll(THEME.bgColour);
+        g.fillAll(this.get("bgColour"));
     });
 }

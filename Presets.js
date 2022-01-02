@@ -26,19 +26,14 @@ namespace Presets
     
     // pnlPresetBrowser
     const pnlPresetBrowser = Content.getComponent("pnlPresetBrowser");
-
+    
     pnlPresetBrowser.setPaintRoutine(function(g)
     {
-        var a = [10, 7, this.getWidth() - 20, this.getHeight() - 14];
-        
-        g.setColour(this.get("itemColour"));
-        g.fillRoundedRectangle(a, 5);
-        
-        g.setColour(0xff2a2625);
-        g.fillRoundedRectangle([26, 100, 209, 370], 5);
-        g.fillRoundedRectangle([241, 100, 209, 370], 5);
-        g.fillRoundedRectangle([456, 100, 209, 370], 5);
-        g.fillRoundedRectangle([671, 100, 203, 370], 5);
+	   var a = [0, 0, this.getWidth(), this.getHeight()] ;
+	   
+	   g.setColour(this.get("bgColour"));
+	   
+	   g.fillRoundedRectangle(a, 5);
     });
     
     pnlPresetBrowser.setTimerCallback(function()
@@ -59,25 +54,18 @@ namespace Presets
     
     pnlPresetNotesBlocker.setPaintRoutine(function(g)
     {
-        g.fillAll(0xff524844);
+		var labels = ["LIBRARY", "BANK", "CATEGORY", "PRESET"];
 
-        g.setColour(0xff8d8681);
-        g.setFont("bold", 16);        
-        g.drawAlignedText("LIBRARY", [15, 0, 209, this.getHeight() - 7], "centred");
-        g.drawAlignedText("BANK", [230, 0, 209, this.getHeight() - 7], "centred");
-        g.drawAlignedText("CATEGORY", [445, 0, 209, this.getHeight() - 7], "centred");
-        g.drawAlignedText("PRESET", [660, 0, 203, this.getHeight() - 7], "centred");
+        g.fillAll(this.get("bgColour"));
+
+        g.setColour(this.get("textColour"));
+        g.setFont("bold", 16);
         
-        g.setColour(0xff2a2625);
-        g.fillRoundedRectangle([15, 35, 209, 370], 5);
-		g.fillRoundedRectangle([230, 35, 209, 370], 5);
-		g.fillRoundedRectangle([445, 35, 209, 370], 5);
-		g.fillRoundedRectangle([660, 35, 203, 370], 5);
-		
-		g.fillRoundedRectangle([26, 100, 209, 370], 5);
-		g.fillRoundedRectangle([241, 100, 209, 370], 5);
-		g.fillRoundedRectangle([456, 100, 209, 370], 5);
-		g.fillRoundedRectangle([671, 100, 203, 370], 5);
+        for (i = 0; i < labels.length; i++)
+        {
+	        var w = this.getWidth() / labels.length;
+	        g.drawAlignedText(labels[i], [w * i, 3, w, this.getHeight()], "centred");
+        }
     });
     
     // fltPresetBrowser
