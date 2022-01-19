@@ -234,16 +234,23 @@ namespace LookAndFeel
 		var a = obj.area;
 		
 		g.setColour(Colours.withAlpha(obj.bgColour, obj.over ? 0.8 : 1.0));
-		g.fillRoundedRectangle([a[0] + 0.5, a[1] + 0.5, a[2] - 1, a[3] - 1], 3);
+		g.fillRoundedRectangle([a[0] + 0.5, a[1] + 0.5, a[3] - 1, a[3] - 1], 3);
 		
 		g.setColour(Colours.withAlpha(obj.itemColour1, obj.over ? 0.8 : 1.0));
-		g.drawRoundedRectangle([a[0] + 0.5, a[1] + 0.5, a[2] - 1, a[3] - 1], 3, 1);
+		g.drawRoundedRectangle([a[0] + 0.5, a[1] + 0.5, a[3] - 1, a[3] - 1], 3, 1);
 		
 		if (obj.value)
 		{
 			g.setColour(Colours.withAlpha(obj.itemColour2, obj.over ? 0.8 : 1.0));
-			a = [a[2] / 2 - (a[2] / 1.5) / 2, a[3] / 2 - (a[2] / 1.5 * 0.7) / 2, a[2] / 1.5, a[2] / 1.5 * 0.7];
-			g.fillPath(Paths.icons["check"], a);
+			var iconArea = [a[3] / 2 - (a[3] / 1.5) / 2, a[3] / 2 - (a[3] / 1.5 * 0.7) / 2, a[3] / 1.5, a[3] / 1.5 * 0.7];
+			g.fillPath(Paths.icons["check"], iconArea);
+		}
+
+		if (obj.text != "")
+		{
+			g.setFont("semibold", 16);
+			g.setColour(obj.textColour);
+			g.drawAlignedText(obj.text, [a[3] + 10, a[1], a[2] - a[3], a[3]], "left");
 		}
     });
     
