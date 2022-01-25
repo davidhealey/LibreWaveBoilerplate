@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 David Healey
+    Copyright 2021, 2022 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,32 +14,31 @@
     You should have received a copy of the GNU General Public License
     along with This file. If not, see <http://www.gnu.org/licenses/>.
 */
-
 namespace LookAndFeel
 {
     const laf = Engine.createGlobalScriptLookAndFeel();
 
-    // Knob
-    laf.registerFunction("drawRotarySlider", function(g, obj)
-    {
-        var a = [obj.area[0] + 2, obj.area[1], obj.area[2] - 4, obj.area[3] - 4];
-        var shadow = 4;
-
-        g.setColour(0xff352f2e);
-        g.fillEllipse([a[0], a[1] + shadow, a[2], a[3]]);
-
-        g.setColour(Colours.withAlpha(obj.itemColour1, obj.enabled ? 1 : 0.5));
-        g.fillEllipse(a);
-        
+	const lafKnob = Content.createLocalLookAndFeel();
+	
+	lafKnob.registerFunction("drawRotarySlider", function(g, obj)
+	{
+		var a = [obj.area[0] + 2, obj.area[1], obj.area[2] - 4, obj.area[3] - 4];
+		var shadow = 4;
+		
+		g.setColour(Colours.withAlpha(obj.bgColour, 0.8));
+		g.fillEllipse([a[0], a[1] + shadow, a[2], a[3]]);
+		
+		g.setColour(Colours.withAlpha(obj.itemColour1, obj.enabled ? 1.0 : 0.5));
+		g.fillEllipse(a);
+		
         var startOffset = 2.5;
         var endOffset = startOffset * 2 * obj.valueNormalized - startOffset;
         var markWidth = obj.area[2] / 12;
         
         g.rotate(endOffset, [obj.area[2] / 2, obj.area[2] / 2 - 2]);
-        
-        obj.enabled == 1 ? g.setColour(0xffebe7df) : g.setColour(Colours.withAlpha(0xffebe7df, 0.5));
+        g.setColour(Colours.withAlpha(obj.itemColour2, obj.enabled ? 1.0 : 0.5));
         g.fillRoundedRectangle([2 + a[2] / 2 - markWidth / 2, 2, markWidth, a[3] / 3], 2);
-    });
+	});
     
     // Slider
     laf.registerFunction("drawLinearSlider", function(g, obj)
@@ -232,7 +231,7 @@ namespace LookAndFeel
     lafCheckBox.registerFunction("drawToggleButton", function(g, obj)
     {
 		var a = obj.area;
-		
+
 		g.setColour(Colours.withAlpha(obj.bgColour, obj.over ? 0.8 : 1.0));
 		g.fillRoundedRectangle([a[0] + 0.5, a[1] + 0.5, a[3] - 1, a[3] - 1], 3);
 		
@@ -342,7 +341,7 @@ namespace LookAndFeel
 	    g.setFont("bold", 16);
 	    g.drawAlignedText(obj.text, a, "centred");
     });
-    
+
     // Preset browser list item
     laf.registerFunction("drawPresetBrowserListItem", function(g, obj)
     {
@@ -357,8 +356,8 @@ namespace LookAndFeel
         obj.selected == 1 ? g.setColour(Colours.black) : g.setColour(Colours.lightgrey);
 
         g.setFont("medium", 18);
-        if (col == 2)
-        	a[0] += 10;
+
+        if (col == 2) a[0] += 10;
 
         g.drawAlignedText(obj.text, [a[0] + 10, a[1], a[2], a[3]], "left");       
     });
@@ -423,7 +422,7 @@ namespace LookAndFeel
         g.setColour(0xff3a3635);
         g.fillRoundedRectangle([a[0], a[1] + 43, a[2], a[3] - 43], 5);
         
-        g.setColour(Colours.black);
+        g.setColour(0xff89837d);
         g.drawRoundedRectangle(a, 5, 3);
     });
     
@@ -588,16 +587,17 @@ namespace LookAndFeel
 	inline function modelPanelBackground(g)
 	{
 		var area = this.getLocalBounds(0);
+		var headerSize = 70;
+		
+		g.setColour(Colours.withMultipliedBrightness(this.get("itemColour"), this.get("enabled") ? 1.0 : 0.7));
+		g.fillRoundedRectangle([area[0], area[1], area[2], headerSize + 10], 5);
 
 		g.setColour(Colours.withMultipliedBrightness(this.get("bgColour"), this.get("enabled") ? 1.0 : 0.7));
-		g.fillRoundedRectangle(area, 5);
-
-		g.setColour(Colours.withMultipliedBrightness(this.get("itemColour"), this.get("enabled") ? 1.0 : 0.7));
-		g.fillRoundedRectangle([area[0], area[1], area[2], 70], 5);
+		g.fillRoundedRectangle([area[0], headerSize, area[2], area[3] - headerSize], 5);
 		
 		g.setColour(Colours.withMultipliedBrightness(this.get("textColour"), this.get("enabled") ? 1.0 : 0.7));
 		g.setFont("semibold", 22);
-		g.drawAlignedText(this.get("text"), [area[0], area[1], area[2], 70], "centred");
+		g.drawAlignedText(this.get("text"), [area[0], area[1], area[2], headerSize], "centred");
 	}
     
     inline function floatingWindowBackground(g)
