@@ -434,7 +434,7 @@ namespace LookAndFeel
         return obj;
     });
     
-	/*laf.registerFunction("drawAlertWindowIcon", function(g, obj)
+	laf.registerFunction("drawAlertWindowIcon", function(g, obj)
     {
         var a = [obj.area[0], obj.area[1] + 10, obj.area[2], obj.area[3] - 10];
         var path = Paths.icons[obj.type.toLowerCase()];
@@ -445,7 +445,7 @@ namespace LookAndFeel
 	        case "Question":
 	        	multiplier = 0.55;
         		break;
-        		
+
 	        case "Info":
 	        	multiplier = 0.27;
         		break;
@@ -456,7 +456,7 @@ namespace LookAndFeel
 
 		g.setColour(0xff87746a);
 		g.fillPath(path, [a[0], a[1], a[3] * multiplier, a[3]]);
-    });*/
+    });
     
 	laf.registerFunction("drawWhiteNote", function(g, obj)
 	{
