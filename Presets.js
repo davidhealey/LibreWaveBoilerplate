@@ -110,7 +110,19 @@ namespace Presets
 	        }
 		}
     }
-        
+
+	// btnLibraryManager
+	const btnLibraryManager = Content.getComponent("btnLibraryManager");
+	btnLibraryManager.showControl(!Engine.isPlugin());
+	btnLibraryManager.setLocalLookAndFeel(LookAndFeel.lafIconButton);
+	btnLibraryManager.setControlCallback(onbtnLibraryManagerControl);
+
+	inline function onbtnLibraryManagerControl(component, value)
+	{
+		if (value)
+			Library.show(true);
+	}
+
     // Functions    
     inline function showPresetBrowser()
     {
