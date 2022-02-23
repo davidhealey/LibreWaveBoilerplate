@@ -18,9 +18,10 @@ namespace LookAndFeel
 {
     const laf = Engine.createGlobalScriptLookAndFeel();
 
-	const lafKnob = Content.createLocalLookAndFeel();
+	// knob
+	const knob = Content.createLocalLookAndFeel();
 	
-	lafKnob.registerFunction("drawRotarySlider", function(g, obj)
+	knob.registerFunction("drawRotarySlider", function(g, obj)
 	{
 		var a = [obj.area[0] + 2, obj.area[1], obj.area[2] - 4, obj.area[3] - 4];
 		var shadow = 4;
@@ -40,114 +41,84 @@ namespace LookAndFeel
         g.fillRoundedRectangle([2 + a[2] / 2 - markWidth / 2, 2, markWidth, a[3] / 3], 2);
 	});
     
-    // Slider
-    laf.registerFunction("drawLinearSlider", function(g, obj)
-    {
-        var a = obj.area;
-        
-        g.setColour(obj.bgColour);
-        g.fillRoundedRectangle(a, 8);
-        
-        if (obj.style == 2) // Horizontal
-        {
-            g.setColour(obj.itemColour1);
-            g.fillRoundedRectangle([12, a[3] / 2 - 3 / 2, a[2] - 24, 3], 2);
-            
-            var w = a[2] * 0.2;
-            
-            g.setColour(Colours.withAlpha(obj.itemColour2, obj.enabled ? 1 : 0.5));
-
-            if (w >= 30)
-            {
-                var x = a[2] * obj.valueNormalized - (w + 4) * obj.valueNormalized + 2;
-                g.fillRoundedRectangle([x + 1, a[3] / 2 - (a[3] - 4) / 2, w - 2, a[3] - 4], 8);
-                
-                g.setColour(obj.textColour);
-                g.fillEllipse([x + w / 2 - a[3] / 4 / 2, a[3] / 2 - a[3] / 4 / 2, a[3] / 4, a[3] / 4]);
-            }                
-            else
-            {
-                var c = a[3] - 4;
-                var x = a[2] * obj.valueNormalized - (c + 4) * obj.valueNormalized + 2;
-                g.fillEllipse([x, a[3] / 2 - c / 2, c, c]);
-
-                g.setColour(obj.textColour);
-                g.fillEllipse([x + c / 2 - a[3] / 4 / 2, a[3] / 2 - a[3] / 4 / 2, a[3] / 4, a[3] / 4]);
-            }
-        }
-        else if (obj.style == 3) // Vertical
-        {
-            g.setColour(obj.itemColour1);
-            g.fillRoundedRectangle([a[2] / 2 - 3 / 2, 12, 3, a[3] - 24], 2);
-            
-            var h = a[3] * 0.2;
-            
-            obj.enabled == 1 ? g.setColour(obj.itemColour2) : g.setColour(Colours.withAlpha(obj.itemColour2, 0.5));
-            
-            if (h > 30)
-            {
-                var y = a[3] - a[3] * obj.valueNormalized - (h + 2) + (h + 4) * obj.valueNormalized;
-
-                g.fillRoundedRectangle([a[2] / 2 - (a[2] - 4) / 2, y + 1, a[2] - 4, h - 2], 8);
-            
-                g.setColour(obj.textColour);
-                g.fillEllipse([a[2] / 2 - a[2] / 4 / 2, y + h / 2 - a[2] / 4 / 2, a[2] / 4, a[2] / 4]);
-            }
-            else 
-            {
-                var c = a[2] - 4;
-                var y = a[3] - a[3] * obj.valueNormalized - (c + 2) + (c + 4) * obj.valueNormalized;
-                g.fillEllipse([a[2] / 2 - c / 2, y, c, c]);
-
-                g.setColour(obj.textColour);
-                g.fillEllipse([a[2] / 2 - a[2] / 4 / 2, y + c / 2 - a[2] / 4 / 2, a[2] / 4, a[2] / 4]);
-            }
-        }
-    });    
+    // horizontalSlider
+    const horizontalSlider = Content.createLocalLookAndFeel();
     
-    // Button
+    horizontalSlider.registerFunction("drawLinearSlider", function(g, obj)
+    {
+		var a = obj.area;
+	    
+		g.setColour(obj.bgColour);
+		g.fillRoundedRectangle(a, 8);
+	    
+		g.setColour(obj.itemColour1);
+		g.fillRoundedRectangle([12, a[3] / 2 - 3 / 2, a[2] - 24, 3], 2);
+		
+		var w = a[2] * 0.2;
+		
+		g.setColour(Colours.withAlpha(obj.itemColour2, obj.enabled ? 1 : 0.5));
+
+		if (w >= 30)
+		{
+		    var x = a[2] * obj.valueNormalized - (w + 4) * obj.valueNormalized + 2;
+		    g.fillRoundedRectangle([x + 1, a[3] / 2 - (a[3] - 4) / 2, w - 2, a[3] - 4], 8);
+		    
+		    g.setColour(obj.textColour);
+		    g.fillEllipse([x + w / 2 - a[3] / 4 / 2, a[3] / 2 - a[3] / 4 / 2, a[3] / 4, a[3] / 4]);
+		}                
+		else
+		{
+		    var c = a[3] - 4;
+		    var x = a[2] * obj.valueNormalized - (c + 4) * obj.valueNormalized + 2;
+		    g.fillEllipse([x, a[3] / 2 - c / 2, c, c]);
+		    g.setColour(obj.textColour);
+		    g.fillEllipse([x + c / 2 - a[3] / 4 / 2, a[3] / 2 - a[3] / 4 / 2, a[3] / 4, a[3] / 4]);
+		}
+    });
+    
+    // verticalSlider
+    const verticalSlider = Content.createLocalLookAndFeel();
+    
+    verticalSlider.registerFunction("drawLinearSlider", function(g, obj)
+    {
+		var a = obj.area;
+	    
+		g.setColour(obj.bgColour);
+		g.fillRoundedRectangle(a, 8);
+
+		g.setColour(obj.itemColour1);
+		g.fillRoundedRectangle([a[2] / 2 - 3 / 2, 12, 3, a[3] - 24], 2);
+		
+		var h = a[3] * 0.2;
+		
+		obj.enabled == 1 ? g.setColour(obj.itemColour2) : g.setColour(Colours.withAlpha(obj.itemColour2, 0.5));
+		
+		if (h > 30)
+		{
+		    var y = a[3] - a[3] * obj.valueNormalized - (h + 2) + (h + 4) * obj.valueNormalized;
+		    
+		    g.fillRoundedRectangle([a[2] / 2 - (a[2] - 4) / 2, y + 1, a[2] - 4, h - 2], 8);
+		
+		    g.setColour(obj.textColour);
+		    g.fillEllipse([a[2] / 2 - a[2] / 4 / 2, y + h / 2 - a[2] / 4 / 2, a[2] / 4, a[2] / 4]);
+		}
+		else
+		{
+		    var c = a[2] - 4;
+		    var y = a[3] - a[3] * obj.valueNormalized - (c + 2) + (c + 4) * obj.valueNormalized;
+		    
+		    g.fillEllipse([a[2] / 2 - c / 2, y, c, c]);
+		    g.setColour(obj.textColour);
+		    g.fillEllipse([a[2] / 2 - a[2] / 4 / 2, y + c / 2 - a[2] / 4 / 2, a[2] / 4, a[2] / 4]);
+		}	    
+    });
+        
+    // Buttons
     laf.registerFunction("drawToggleButton", function(g, obj)
     {
         var a = obj.area;
 
-        if (obj.text.indexOf("icon") != -1)
-        {
-			var icon = undefined;
-
-            if (obj.text.indexOf("iconOff") != -1 && !obj.value)
-            {
-                icon = obj.text.substring(obj.text.indexOf("-") + 1, obj.text.indexOf(" "));
-            }
-            else if (obj.text.indexOf("iconOn") != -1 && obj.value)
-            {
-                icon = obj.text.substring(obj.text.indexOf("iconOn-") + 7, obj.text.length);
-            }
-            else 
-            {
-                icon = obj.text.replace("icon-");
-                
-	            if (obj.text.indexOf("-circle") != -1)
-	            {
-					icon = icon.replace("-circle");
-					g.setColour(Colours.withAlpha(obj.bgColour, obj.over ? 0.7 : 1));
-		            g.fillEllipse(a);
-		            a = [a[2] / 2 - (a[2] / 2) / 2, a[3] / 2 - (a[3] / 2) / 2, a[2] / 2, a[3] / 2];
-	            }
-            }
-
-			var colour = obj.value == 0 ? obj.itemColour1 : obj.itemColour2;
-			g.setColour(Colours.withAlpha(colour, obj.over || !obj.enabled ? 0.7 : 1));
-			
-            if (icon != undefined)
-                g.fillPath(Paths.icons[icon], a);
-        }
-        else if (obj.text.indexOf("toggle-") != -1)
-        {
-            obj.value == 1 ? g.setColour(obj.itemColour1) : g.setColour(obj.itemColour2);
-            g.fillRoundedRectangle(a, 3);
-            obj.value == 1 ? g.setColour(obj.textColour) : g.setColour(obj.bgColour);
-        }
-        else if (obj.parentType == "MidiSources" || obj.parentType == "MidiChannelList")
+        if (obj.parentType == "MidiSources" || obj.parentType == "MidiChannelList")
         {
             g.setColour(0xffa8a49d);
             g.setFont("bold", 14);
@@ -163,11 +134,11 @@ namespace LookAndFeel
             g.fillPath(Paths.icons["power"], a3);
         }
     });
+        
+    // textButton
+    const textButton = Content.createLocalLookAndFeel();
     
-    // Text button
-    const lafTextButton = Content.createLocalLookAndFeel();
-    
-    lafTextButton.registerFunction("drawToggleButton", function(g, obj)
+    textButton.registerFunction("drawToggleButton", function(g, obj)
     {
 		var a = obj.area;
 		var alignment = "centred";
@@ -192,14 +163,14 @@ namespace LookAndFeel
     	g.drawAlignedText(text, a, alignment);
     });
        
-    // Icon button
-    const lafIconButton = Content.createLocalLookAndFeel();
+    // iconButton
+    const iconButton = Content.createLocalLookAndFeel();
     
-    lafIconButton.registerFunction("drawToggleButton", function(g, obj)
+    iconButton.registerFunction("drawToggleButton", function(g, obj)
     {
 		var a = obj.area;
 		var icon = obj.text;
-		
+
 		if (icon.indexOf("iconOff") != -1 && !obj.value)
 		{
 			icon = icon.replace("iconOff-");
@@ -225,10 +196,10 @@ namespace LookAndFeel
 		g.fillPath(Paths.icons[icon], a);  
     });
     
-    // Checkbox
-    const lafCheckBox = Content.createLocalLookAndFeel();
+    // checkBox
+    const checkBox = Content.createLocalLookAndFeel();
     
-    lafCheckBox.registerFunction("drawToggleButton", function(g, obj)
+    checkBox.registerFunction("drawToggleButton", function(g, obj)
     {
 		var a = obj.area;
 
@@ -458,6 +429,7 @@ namespace LookAndFeel
 		g.fillPath(path, [a[0], a[1], a[3] * multiplier, a[3]]);
     });
     
+    // Keyboard floating tile    
 	laf.registerFunction("drawWhiteNote", function(g, obj)
 	{
 		var a = [obj.area[0], obj.area[1], obj.area[2], obj.area[3] - 1];
@@ -479,7 +451,7 @@ namespace LookAndFeel
 			g.setColour(obj.keyColour);
 			g.fillRoundedRectangle(a, 3);
 		}
-		
+
 		if (obj.hover)
 		{
 			g.setColour(Colours.withAlpha(Colours.coral, 0.3));
@@ -500,6 +472,8 @@ namespace LookAndFeel
 			g.drawAlignedText(noteName, [a[0], a[1] + a[3] - 20, a[2], 20], "centred");
 		}
 		
+		g.setGradientFill([Colours.withAlpha(Colours.black, 0.5), a[2] / 2, 0, 0x00, a[2] / 2, a[3] / 4]);
+		g.fillRoundedRectangle(a, 3);
 	});
 	
 	laf.registerFunction("drawBlackNote", function(g, obj)
@@ -526,9 +500,9 @@ namespace LookAndFeel
 			g.setColour(Colours.withAlpha(Colours.coral, 0.3));
 			obj.down ? g.fillRect(a) : g.fillRoundedRectangle(a, 1);
 		}
-
-		g.setColour(0xff3a322d);
-		//g.drawLine(a[0], a[2], a[1], a[1], 3);
+		
+		g.setGradientFill([Colours.withAlpha(Colours.black, 0.5), a[2] / 2, 0, 0x00, a[2] / 2, a[3] / 4]);
+		g.fillRoundedRectangle(a, 3);
 	});
     
     // Helper functions
@@ -625,13 +599,5 @@ namespace LookAndFeel
         "itemColour": 0xcc5b504c,
         "itemColour2": 0xcc5b504c,
         "textColour": 0xccebe7df
-    });
-    
-    //pnlMain
-    const pnlMain = Content.getComponent("pnlMain");
-
-    pnlMain.setPaintRoutine(function(g)
-    {
-        g.fillAll(this.get("bgColour"));
     });
 }

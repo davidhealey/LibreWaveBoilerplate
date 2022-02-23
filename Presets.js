@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 David Healey
+    Copyright 2021, 2022 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -73,6 +73,7 @@ namespace Presets
     
     // btnPresetBrowser
     const btnPresetBrowser = Content.getComponent("btnPresetBrowser");
+    btnPresetBrowser.setLocalLookAndFeel(LookAndFeel.iconButton);
     btnPresetBrowser.setControlCallback(onbtnPresetBrowserControl);
     
     inline function onbtnPresetBrowserControl(component, value)
@@ -92,6 +93,7 @@ namespace Presets
     for (i = 0; i < 2; i++)
     {
         btnPreset.push(Content.getComponent("btnPreset" + i));
+        btnPreset[i].setLocalLookAndFeel(LookAndFeel.iconButton);
         btnPreset[i].setControlCallback(onbtnPresetControl);
     }
     
@@ -113,8 +115,8 @@ namespace Presets
 
 	// btnLibraryManager
 	const btnLibraryManager = Content.getComponent("btnLibraryManager");
+	btnLibraryManager.setLocalLookAndFeel(LookAndFeel.iconButton);
 	btnLibraryManager.showControl(!Engine.isPlugin());
-	btnLibraryManager.setLocalLookAndFeel(LookAndFeel.lafIconButton);
 	btnLibraryManager.setControlCallback(onbtnLibraryManagerControl);
 
 	inline function onbtnLibraryManagerControl(component, value)

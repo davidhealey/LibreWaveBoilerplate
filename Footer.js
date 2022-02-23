@@ -54,6 +54,7 @@ namespace Footer
     
 	// knbMasterPan
 	const knbMasterPan = Content.getComponent("knbMasterPan");
+	knbMasterPan.setLocalLookAndFeel(LookAndFeel.horizontalSlider);
 	knbMasterPan.setControlCallback(onknbMasterPanControl);
 	
 	inline function onknbMasterPanControl(component, value)
@@ -64,4 +65,5 @@ namespace Footer
 
     // knbMasterGain
     const knbMasterGain = Content.getComponent("knbMasterGain");
+    knbMasterGain.setLocalLookAndFeel(LookAndFeel.horizontalSlider);
 }
