@@ -31,8 +31,7 @@ namespace Presets
     {
 	   var a = [0, 0, this.getWidth(), this.getHeight()] ;
 	   
-	   g.setColour(this.get("bgColour"));
-	   
+	   g.setColour(this.get("bgColour"));	   
 	   g.fillRoundedRectangle(a, 5);
     });
     
@@ -72,19 +71,21 @@ namespace Presets
     const fltPresetBrowser = Content.getComponent("fltPresetBrowser");
     
     // btnPresetBrowser
-    const btnPresetBrowser = Content.getComponent("btnPresetBrowser");
-    btnPresetBrowser.setLocalLookAndFeel(LookAndFeel.iconButton);
-    btnPresetBrowser.setControlCallback(onbtnPresetBrowserControl);
+    const btnPresetBrowser = [];
+    
+    for (i = 0; i < 2; i++)
+    {
+	    btnPresetBrowser.push(Content.getComponent("btnPresetBrowser" + i));
+	    btnPresetBrowser[i].setControlCallback(onbtnPresetBrowserControl);
+		btnPresetBrowser[i].setValue(pnlPresetBrowser.get("visible"));
+    }
+    
+    btnPresetBrowser[0].setLocalLookAndFeel(LookAndFeel.iconButton);
+    btnPresetBrowser[1].setLocalLookAndFeel(LookAndFeel.empty);
     
     inline function onbtnPresetBrowserControl(component, value)
-    {
-		if (Patches.getPatchIndex() != -1)
-        	pnlPresetBrowser.showControl(value);
-        else
-        {
-	        pnlPresetBrowser.showControl(true);
-	        component.setValue(1);
-        }
+    {		
+		value ? show() : hide();
     }
         
     // btnPreset - previous/next preset buttons
@@ -102,14 +103,9 @@ namespace Presets
 		if (Patches.getPatchIndex() != -1)
 		{
 	        local index = btnPreset.indexOf(component);
-	        
+
 	        if (value)
-	        {
-	            if (index)
-	                Engine.loadPreviousUserPreset(false);
-	            else
-	                Engine.loadNextUserPreset(false);
-	        }
+	            index ? Engine.loadPreviousUserPreset(false) : Engine.loadNextUserPreset(false);
 		}
     }
 
@@ -126,15 +122,21 @@ namespace Presets
 	}
 
     // Functions    
-    inline function showPresetBrowser()
+    inline function show()
     {
         pnlPresetBrowser.showControl(true);
-        btnPresetBrowser.setValue(1);
+
+        for (i = 0; i < btnPresetBrowser.length; i++)
+        	btnPresetBrowser[i].setValue(1);
+
+        UserSettings.hide();
     }
     
-    inline function hidePresetBrowser()
+    inline function hide()
     {
 		pnlPresetBrowser.showControl(false);
-		btnPresetBrowser.setValue(0);	    
+		
+        for (i = 0; i < btnPresetBrowser.length; i++)
+        	btnPresetBrowser[i].setValue(0);
     }
 }

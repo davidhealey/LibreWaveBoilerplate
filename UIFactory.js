@@ -45,6 +45,7 @@ namespace UIFactory
 			
 		createSettingsPanel();
 		createPresetBrowser();
+		createToolTipPanel();
 
 		Content.addPanel("pnlSpinnerContainer", 0, 0);
 		Content.setPropertiesFromJSON("pnlSpinnerContainer", {
@@ -159,35 +160,36 @@ namespace UIFactory
 
 		Content.addButton("btnSettings", 0, 0);
 		Content.setPropertiesFromJSON("btnSettings", {
-			"x": 824 , "y": 19, "width": 22, "height": 22,
+			"x": 858 , "y": 17, "width": 26, "height": 26,
 		    "parentComponent": "pnlHeader",
 		    "saveInPreset": false,
 		    "enableMidiLearn": false,
-		    "text": "icon-settings"
+		    "text": "settings",
+		    "tooltip": "Open the settings page."
 		});
-		
-		Content.addButton("btnUnload", 0, 0);
-		Content.setPropertiesFromJSON("btnUnload", {
-			"x": 860 , "y": 22, "width": 16, "height": 16,
-		    "parentComponent": "pnlHeader",
-		    "saveInPreset": false,
-		    "enableMidiLearn": false,
-		    "text": "icon-eject"
-		});
-			
+					
 		Content.addLabel("lblPreset", 0, 0);
 		Content.setPropertiesFromJSON("lblPreset", {
-			"x": 427, "y": 15, "width": 365, "height": 28,
+			"x": 474, "y": 15, "width": 365, "height": 28,
 		    "parentComponent": "pnlHeader",
 		    "text": "",
 		    "editable": false
 		});
 		
-		Content.addButton("btnPresetBrowser", 0, 0);
-		Content.setPropertiesFromJSON("btnPresetBrowser", {
+		Content.addButton("btnPresetBrowser0", 0, 0);
+		Content.setPropertiesFromJSON("btnPresetBrowser0", {
 			"x": 10, "y": 10, "width": 15, "height": 11,
 		    "parentComponent": "lblPreset",
 		    "text": "iconOff-caretDown iconOn-caretUp",
+		    "saveInPreset": false,
+		    "enableMidiLearn": false,
+		    "tooltip": "Open the preset browser."
+		});
+		
+		Content.addButton("btnPresetBrowser1", 0, 0);
+		Content.setPropertiesFromJSON("btnPresetBrowser1", {
+			"x": 30, "y": 0, "width": 285, "height": 28,
+		    "parentComponent": "lblPreset",
 		    "saveInPreset": false,
 		    "enableMidiLearn": false
 		});
@@ -199,7 +201,8 @@ namespace UIFactory
 		    "saveInPreset": false,
 		    "enableMidiLearn": false,
 		    "isMomentary": true,
-		    "text": "icon-caretLeft"
+		    "text": "caretLeft",
+		    "tooltip": "Load the previous preset."
 		});
 		
 		Content.addButton("btnPreset1", 0, 0);
@@ -209,7 +212,8 @@ namespace UIFactory
 		    "saveInPreset": false,
 		    "enableMidiLearn": false,
 		    "isMomentary": true,
-		    "text": "icon-caretRight"
+		    "text": "caretRight",
+		    "tooltip": "Load the next preset."
 		});
 	}
 	
@@ -226,7 +230,7 @@ namespace UIFactory
 			"x": 15, "y": 50, "width": 870, "height": 72,
 			"ContentType": "Keyboard",
 		    "parentComponent": "pnlFooter",
-		    "Data": "{\r\n  \"KeyWidth\": 15,\r\n  \"DisplayOctaveNumber\": true,\r\n  \"LowKey\": 14,\r\n  \"HiKey\": 127,\r\n  \"CustomGraphics\": false,\r\n  \"DefaultAppearance\": false,\r\n  \"BlackKeyRatio\": 0.699999988079071,\r\n  \"ToggleMode\": false,\r\n  \"MidiChannel\": 1,\r\n  \"UseVectorGraphics\": true,\r\n  \"UseFlatStyle\": false,\r\n  \"MPEKeyboard\": false,\r\n  \"MPEStartChannel\": 2,\r\n  \"MPEEndChannel\": 16\r\n}"		    
+		    "Data": "{\n  \"KeyWidth\": 15.0,\n  \"DisplayOctaveNumber\": false,\n  \"LowKey\": 14,\n  \"HiKey\": 127,\n  \"CustomGraphics\": false,\n  \"DefaultAppearance\": false,\n  \"BlackKeyRatio\": 0.699999988079071,\n  \"ToggleMode\": false,\n  \"MidiChannel\": 1,\n  \"UseVectorGraphics\": true,\n  \"UseFlatStyle\": false,\n  \"MPEKeyboard\": false,\n  \"MPEStartChannel\": 2,\n  \"MPEEndChannel\": 16\n}"
 		});
 		
 		Content.addFloatingTile("fltStats", 0, 0);
@@ -262,7 +266,8 @@ namespace UIFactory
 		    "style": "Horizontal",		    
 		    "text": "Gain",
 		    "processorId": "Master Gain",
-		    "parameterId": "Gain"
+		    "parameterId": "Gain",
+		    "tooltip": "Master volume."
 		});
 
 		Content.addKnob("knbMasterPan", 0, 0);
@@ -276,7 +281,24 @@ namespace UIFactory
 		    "showTextBox": false,
 		    "mode": "Pan",
 		    "style": "Horizontal",
-		    "text": "pan-bipolar"
+		    "text": "pan-bipolar",
+		    "tooltip": "Master pan."
+		});
+	}
+
+	inline function createToolTipPanel()
+	{
+		Content.addPanel("pnlTooltip", 0, 0);
+		Content.setPropertiesFromJSON("pnlTooltip", {
+			"x": 0, "y": 645, "width": 900, "height": 42,
+			"parentComponent": "pnlMain",
+			"saveInPreset": false,
+			"bgColour": "0",
+			"itemColour": 0x30000000,
+			"itemColour2": 0x30000000,
+			"textColour": 0xc4ffffff,
+			"borderSize": 0.0,
+			"borderRadius": 0.0
 		});
 	}
 
@@ -284,26 +306,36 @@ namespace UIFactory
 	{
 		Content.addPanel("pnlPresetBrowser", 0, 0);
 		Content.setPropertiesFromJSON("pnlPresetBrowser", {
-			"x": 0, "y": 61, "width": 900, "height": 498,
+			"x": 13, "y": 68, "width": 874, "height": 484,
 		    "parentComponent": "pnlMain",
-		    "saveInPreset": true,
 		    "visible": false
 		});
 		
 		Content.addFloatingTile("fltPresetBrowser", 0, 0);
 		Content.setPropertiesFromJSON("fltPresetBrowser", {
-			"x": 20, "y": 25, "width": 860, "height": 433,
+			"x": 13, "y": 14, "width": 848, "height": 455,
 		    "parentComponent": "pnlPresetBrowser",
 		    "ContentType": "PresetBrowser",
 		    "Font": "bold",
 		    "FontSize": 14,
-		    "Data": "{\r\n  \"ShowSaveButton\": true,\r\n  \"ShowExpansionsAsColumn\": false,\r\n  \"ShowFolderButton\": true,\r\n  \"ShowNotes\": true,\r\n  \"ShowEditButtons\": true,\r\n  \"ShowFavoriteIcon\": false,\r\n  \"NumColumns\": 3,\r\n  \"ColumnWidthRatio\": [\r\n    0.3333333333333333,\r\n    0.3333333333333333,\r\n    0.3333333333333333\r\n  ]\r\n}"
+		    "Data": "{\n  \"ShowSaveButton\": true,\n  \"ShowExpansionsAsColumn\": true,\n  \"ShowFolderButton\": true,\n  \"ShowNotes\": true,\n  \"ShowEditButtons\": true,\n  \"EditButtonOffset\": 15,\n  \"ButtonsInsideBorder\": true,\n  \"ShowAddButton\": false,\n  \"ShowRenameButton\": true,\n  \"ShowDeleteButton\": true,\n  \"ShowFavoriteIcon\": true,\n  \"NumColumns\": 3,\n  \"ColumnWidthRatio\": [\n    0.3333333333333333,\n    0.3333333333333333,\n    0.3333333333333333\n  ],\n  \"ListAreaOffset\": [\n    0,\n    10,\n    -5,\n    -20\n  ],\n  \"ColumnRowPadding\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"SearchBarBounds\": [\n    200,\n    4,\n    500,\n    32\n  ],\n  \"FavoriteButtonBounds\": [\n    136,\n    5,\n    30,\n    30\n  ]\n}"
 		});
 		
 		Content.addPanel("pnlPresetNotesBlocker", 0, 0);
 		Content.setPropertiesFromJSON("pnlPresetNotesBlocker", {
-			"x": 11, "y": 63, "width": 878, "height": 43,
+			"x": 18, "y": 54, "width": 837, "height": 38,
 			"parentComponent": "pnlPresetBrowser"
+		});
+		
+		Content.addButton("btnLibraryManager", 0, 0);
+		Content.setPropertiesFromJSON("btnLibraryManager", {
+			"x": 106, "y": 425, "width": 25, "height": 25,
+			"parentComponent": "pnlPresetBrowser",
+			"saveInPreset": false,
+			"text": "apps",
+			"isMomentary": true,
+			"enableMidiLearn": false,
+			"tooltip": "Unload this instrument and open the library manager."
 		});
 	}
 
@@ -311,16 +343,16 @@ namespace UIFactory
 	{
 		Content.addPanel("pnlSettings", 0, 0);
 		Content.setPropertiesFromJSON("pnlSettings", {
-			"x": 0, "y": 61, "width": 900, "height": 498,
+			"x": 13, "y": 68, "width": 874, "height": 484,
 		    "parentComponent": "pnlMain",
 		    "visible": false
 		});
 	
-		local text = ["toggle-text-AUDIO", "toggle-text-MIDI", "toggle-text-ENGINE"];
+		local text = ["ENGINE", "MIDI"];
 
-		for (i = 0; i < 3; i++)
+		for (i = 0; i < text.length; i++)
 		{
-			Content.addButton("btnSettingsTab" + i, 0, 71);
+			Content.addButton("btnSettingsTab" + i, 0, 68);
 			Content.setPropertiesFromJSON("btnSettingsTab" + i, {
 				"width": 120,
 				"height": 34,
@@ -334,27 +366,94 @@ namespace UIFactory
 		local tabWidth = 830;
 		local tabHeight = 344;
 
-		for (i = 0; i < 3; i++)
+		for (i = 0; i < text.length; i++)
 		{
 			Content.addPanel("pnlSettingsTab" + i, 0, 0);
 			Content.setPropertiesFromJSON("pnlSettingsTab" + i, {
-			    "x": 35,
+			    "x": 22,
 			    "y": 127,
 			    "width": tabWidth,
 			    "height": tabHeight,
 			    "parentComponent": "pnlSettings",
 			    "visible": false
 			});
-		}		
+		}
 		
 		Content.addFloatingTile("fltAudioSettings", 0, 0);
 		Content.setPropertiesFromJSON("fltAudioSettings", {
-		    "x": 180, "y": 2, "width": 400, "height": 235,
+		    "x": 0, "y": 15, "width": 400, "height": 300,
 		    "parentComponent": "pnlSettingsTab0",
 		    "ContentType": "CustomSettings",
-		    "Data": "{\r\n  \"Driver\": true,\r\n  \"Device\": true,\r\n  \"Output\": true,\r\n  \"BufferSize\": true,\r\n  \"SampleRate\": true,\r\n  \"GlobalBPM\": false,\r\n  \"StreamingMode\": false,\r\n  \"ScaleFactor\": false,\r\n  \"VoiceAmountMultiplier\": false,\r\n  \"ClearMidiCC\": false,\r\n  \"SampleLocation\": false,\r\n  \"DebugMode\": false,\r\n  \"ScaleFactorList\": [\r\n    0.5,\r\n    0.75,\r\n    1.0,\r\n    1.25,\r\n    1.5,\r\n    2.0\r\n  ]\r\n}",
+		    "Data": "{\n  \"Driver\": true,\n  \"Device\": true,\n  \"Output\": true,\n  \"BufferSize\": true,\n  \"SampleRate\": true,\n  \"GlobalBPM\": false,\n  \"StreamingMode\": false,\n  \"ScaleFactor\": false,\n  \"VoiceAmountMultiplier\": false,\n  \"ClearMidiCC\": false,\n  \"SampleLocation\": false,\n  \"DebugMode\": false,\n  \"UseOpenGL\": false,\n  \"ScaleFactorList\": [\n    0.5,\n    0.75,\n    1.0,\n    1.25,\n    1.5,\n    2.0\n  ]\n}",
 		    "Font": "bold",
 		    "FontSize": 16.0
+		});
+
+		Content.addFloatingTile("fltEngineSettings", 0, 0);
+		Content.setPropertiesFromJSON("fltEngineSettings", {
+		    "x": 400, "y": 15, "width": 400, "height": 300,
+		    "parentComponent": "pnlSettingsTab0",
+		    "ContentType": "CustomSettings",
+		    "Data": "{\n  \"Driver\": false,\n  \"Device\": false,\n  \"Output\": false,\n  \"BufferSize\": false,\n  \"SampleRate\": false,\n  \"GlobalBPM\": true,\n  \"StreamingMode\": true,\n  \"ScaleFactor\": true,\n  \"VoiceAmountMultiplier\": true,\n  \"ClearMidiCC\": false,\n  \"SampleLocation\": false,\n  \"DebugMode\": true,\n  \"UseOpenGL\": true,\n  \"ScaleFactorList\": [\n    0.5,\n    0.75,\n    1.0,\n    1.25,\n    1.5,\n    2.0\n  ]\n}",
+		    "Font": "bold",
+		    "FontSize": 16.0
+		});
+
+		Content.addKnob("knbCoarseTuning", 0, 0);
+		Content.setPropertiesFromJSON("knbCoarseTuning", {
+		    "x": 173, "y": 230, "width": 188, "height": 20,
+		    "text": "Coarse Tuning-bipolar",
+		    "parentComponent": "pnlSettingsTab0",
+		    "style": "Horizontal",
+		    "min": -12.0,
+		    "max": 12.0,
+		    "middlePosition": 0.0,
+		    "suffix": "st",
+		    "stepSize": 1.0,
+		    "isPluginParameter": true,
+		    "pluginParameterName": "Coarse Tuning",
+		    "showTextBox": false,
+		    "showValuePopup": "Above",
+		    "processorId": "coarseFineTune",
+		    "parameterId": "Coarse"
+		});
+		
+		Content.addKnob("knbFineTuning", 0, 0);
+		Content.setPropertiesFromJSON("knbFineTuning", {
+		    "x": 173, "y": 259, "width": 188, "height": 20,
+		    "text": "Fine Tuning-bipolar",
+		    "parentComponent": "pnlSettingsTab0",
+		    "style": "Horizontal",
+		    "min": -100.0,
+		    "max": 100.0,
+		    "middlePosition": 0.0,
+		    "suffix": "ct",
+		    "stepSize": 1.0,
+		    "isPluginParameter": true,
+		    "pluginParameterName": "Fine Tuning",
+		    "showTextBox": false,
+		    "showValuePopup": "Above",		    
+		    "processorId": "coarseFineTune",
+		    "parameterId": "Fine"
+		});
+		
+		Content.addKnob("knbTranspose", 0, 0);
+		Content.setPropertiesFromJSON("knbTranspose", {
+		    "x": 173, "y": 288, "width": 188, "height": 20,
+		    "text": "Transpose",
+		    "parentComponent": "pnlSettingsTab0",
+		    "style": "Horizontal",
+		    "min": -2.0,
+		    "max": 2.0,
+		    "middlePosition": 0.0,
+		    "suffix": "st",
+		    "stepSize": 1.0,
+		    "isPluginParameter": true,
+		    "pluginParameterName": "Transpose",
+		    "showTextBox": false,
+		    "showValuePopup": "Above",		    
+		    "processorId": "transposer",
+		    "parameterId": "SemiTone"
 		});
 
 		Content.addFloatingTile("fltMidiLearn", 0, 0);
@@ -385,73 +484,6 @@ namespace UIFactory
 		    "FontSize": 16.0,
 		    "ContentType": "MidiSources",
 		    "Data": "{\r\n}"
-		});		
-		
-		Content.addFloatingTile("fltEngineSettings", 0, 0);
-		Content.setPropertiesFromJSON("fltEngineSettings", {
-		    "x": 180, "y": 2, "width": 400, "height": 235,
-		    "parentComponent": "pnlSettingsTab2",
-		    "ContentType": "CustomSettings",
-		    "Data": "{\r\n  \"Driver\": false,\r\n  \"Device\": false,\r\n  \"Output\": false,\r\n  \"BufferSize\": false,\r\n  \"SampleRate\": false,\r\n  \"GlobalBPM\": true,\r\n  \"StreamingMode\": true,\r\n  \"ScaleFactor\": true,\r\n  \"VoiceAmountMultiplier\": true,\r\n  \"ClearMidiCC\": false,\r\n  \"SampleLocation\": false,\r\n  \"DebugMode\": false,\r\n  \"ScaleFactorList\": [\r\n    0.5,\r\n    0.75,\r\n    1.0,\r\n    1.25,\r\n    1.5,\r\n    2.0\r\n  ]\r\n}",
-		    "Font": "bold",
-		    "FontSize": 16.0
-		});
-
-		Content.addKnob("knbCoarseTuning", 0, 0);
-		Content.setPropertiesFromJSON("knbCoarseTuning", {
-		    "x": 351, "y": 183, "width": 188, "height": 20,
-		    "text": "Coarse Tuning-bipolar",
-		    "parentComponent": "pnlSettingsTab2",
-		    "style": "Horizontal",
-		    "min": -12.0,
-		    "max": 12.0,
-		    "middlePosition": 0.0,
-		    "suffix": "st",
-		    "stepSize": 1.0,
-		    "isPluginParameter": true,
-		    "pluginParameterName": "Coarse Tuning",
-		    "showTextBox": false,
-		    "showValuePopup": "Above",
-		    "processorId": "coarseFineTune",
-		    "parameterId": "Coarse"
-		});
-		
-		Content.addKnob("knbFineTuning", 0, 0);
-		Content.setPropertiesFromJSON("knbFineTuning", {
-		    "x": 351, "y": 218, "width": 188, "height": 20,
-		    "text": "Fine Tuning-bipolar",
-		    "parentComponent": "pnlSettingsTab2",
-		    "style": "Horizontal",
-		    "min": -100.0,
-		    "max": 100.0,
-		    "middlePosition": 0.0,
-		    "suffix": "ct",
-		    "stepSize": 1.0,
-		    "isPluginParameter": true,
-		    "pluginParameterName": "Fine Tuning",
-		    "showTextBox": false,
-		    "showValuePopup": "Above",		    
-		    "processorId": "coarseFineTune",
-		    "parameterId": "Fine"
-		});
-		
-		Content.addKnob("knbTranspose", 0, 0);
-		Content.setPropertiesFromJSON("knbTranspose", {
-		    "x": 351, "y": 253, "width": 188, "height": 20,
-		    "text": "Transpose-bipolar",
-		    "parentComponent": "pnlSettingsTab2",
-		    "style": "Horizontal",
-		    "min": -2.0,
-		    "max": 2.0,
-		    "middlePosition": 0.0,
-		    "suffix": "st",
-		    "stepSize": 1.0,
-		    "isPluginParameter": true,
-		    "pluginParameterName": "Transpose",
-		    "showTextBox": false,
-		    "showValuePopup": "Above",		    
-		    "processorId": "transposer",
-		    "parameterId": "SemiTone"
 		});
 	}
 	
@@ -552,7 +584,8 @@ namespace UIFactory
 				    "pluginParameterName": "Vibrato Rate",
 				    "mode": "NormalizedPercentage",
 				    "processorId": "LFO0",
-				    "parameterId": "Frequency"
+				    "parameterId": "Frequency",
+				    "tooltip": "Controls the speed of vibrato."
 				}
 			},
 			{
@@ -564,7 +597,8 @@ namespace UIFactory
 				    "pluginParameterName": "Vibrato Depth",
 				    "mode": "NormalizedPercentage",
 				    "processorId": "LFO0",
-				    "parameterId": "Value"
+				    "parameterId": "Value",
+				    "tooltip": "Controls the amount of vibrato."
 				}
 			}
 		];	
@@ -584,7 +618,8 @@ namespace UIFactory
 				    "pluginParameterName": "Growl",
 				    "mode": "NormalizedPercentage",
 				    "processorId": "LFO1",
-				    "parameterId": "Value"
+				    "parameterId": "Value",
+				    "tooltip": "Controls the speed of growl."
 				}
 			},
 			{
@@ -596,7 +631,8 @@ namespace UIFactory
 				    "pluginParameterName": "Flutter",
 				    "mode": "NormalizedPercentage",
 				    "processorId": "LFO2",
-				    "parameterId": "Value"
+				    "parameterId": "Value",
+				    "tooltip": "Controls the speed of flutter tongue."
 				}
 			}
 		];
@@ -619,7 +655,8 @@ namespace UIFactory
 				    "defaultValue": -15.0,
 				    "middlePosition": -18.0,
 				    "stepSize": 0.1,
-				    "showValuePopup": "Right"
+				    "showValuePopup": "Right",
+				    "tooltip": "Release samples volume."
 				}
 			}
 		];
@@ -684,7 +721,8 @@ namespace UIFactory
 				"text": "Pan-colourV2[nodefault]",
 				"parentComponent": "pnlMixerControls",
 				"processorId": "mixerGain" + i,
-				"parameterId": "Balance"
+				"parameterId": "Balance",
+				"tooltip": "Set the channel's pan."
 			});
 			
 			Content.addKnob("knbGain" + i, 0, 0);
@@ -700,7 +738,8 @@ namespace UIFactory
 				"text": "Gain",
 				"parentComponent": "pnlMixerControls",
 				"processorId": "mixerGain" + i,
-				"parameterId": "Gain"
+				"parameterId": "Gain",
+				"tooltip": "Set the channel's volume."
 			});
 
 			if (i == num_channels - 1)
@@ -714,7 +753,8 @@ namespace UIFactory
 			Content.setPropertiesFromJSON("btnPurge" + i, {
 				"enableMidiLearn": false,
 				"text": "icon-power",
-				"parentComponent": "pnlMixerControls"
+				"parentComponent": "pnlMixerControls",
+				"tooltip": "Purge or load this channel's samples."
 			});
 			
 			Content.addComboBox("cmbOutput" + i, 0, 0);
@@ -722,7 +762,8 @@ namespace UIFactory
 				"enableMidiLearn": false,
 				"text": "Output",
 				"parentComponent": "pnlMixerControls",
-				"items": "1/2"
+				"items": "1/2",
+				"tooltip": "Set the channel's output."
 			});			
 		}
 	}
@@ -805,7 +846,8 @@ namespace UIFactory
 			"mode": "NormalizedPercentage",
 			"middlePosition": 0.5,
 			"defaultValue": 0.5,
-			"showValuePopup": "Below"
+			"showValuePopup": "Below",
+			"tooltip": "Envelope attack curve."
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR1", {
@@ -813,7 +855,8 @@ namespace UIFactory
 			"pluginParameterName": "Attack",
 			"mode": "Time",
 			"defaultValue": 5.0,
-			"showValuePopup": "Below"
+			"showValuePopup": "Below",
+			"tooltip": "Envelope attack time."
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR2", {
@@ -821,7 +864,8 @@ namespace UIFactory
 			"pluginParameterName": "Hold",
 			"mode": "Time",
 			"defaultValue": 10.0,
-			"showValuePopup": "Below"
+			"showValuePopup": "Below",
+			"tooltip": "Envelope hold time."
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR3", {
@@ -829,7 +873,8 @@ namespace UIFactory
 			"pluginParameterName": "Decay",
 			"mode": "Time",
 			"defaultValue": 1000.0,
-			"showValuePopup": "Below"
+			"showValuePopup": "Below",
+			"tooltip": "Envelope decay time."
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR4", {
@@ -837,7 +882,8 @@ namespace UIFactory
 			"pluginParameterName": "Sustain",
 			"mode": "Decibel",
 			"defaultValue": -2.0,
-			"showValuePopup": "Below"
+			"showValuePopup": "Below",
+			"tooltip": "Envelope sustain level."
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR5", {
@@ -845,9 +891,10 @@ namespace UIFactory
 			"pluginParameterName": "Release",
 			"mode": "Time",
 			"defaultValue": 500.0,
-			"showValuePopup": "Below"
+			"showValuePopup": "Below",
+			"tooltip": "Envelope release time."
 		});
-		
+
 		Content.addSliderPack("slpAHDSR", 0, 0);
 		Content.setPropertiesFromJSON("slpAHDSR", {
 			"parentComponent": "pnlEnvelope",

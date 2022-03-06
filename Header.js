@@ -23,10 +23,10 @@ namespace Header
     pnlHeader.setPaintRoutine(function(g)
     {
         // Header
-        g.fillAll(THEME.header.bgColour);
+        g.fillAll(this.get("bgColour"));
 
         // Preset display
-        g.setColour(THEME.presetDisplay.bgColour);
+        g.setColour(this.get("itemColour"));
         var a = [lblPreset.get("x"), lblPreset.get("y"), lblPreset.getWidth(), lblPreset.getHeight() + 2];
         g.fillRoundedRectangle(a, 5);
         
@@ -37,7 +37,7 @@ namespace Header
 	      titleSize = Manifest.titleSize;
 	
 	    g.setFont("semibold", titleSize);
-	    g.setColour(THEME.header.textColour);
+	    g.setColour(this.get("textColour"));
 	    g.drawAlignedText(Manifest.title, [20, 0, 400, this.getHeight()], "left");
     });
 

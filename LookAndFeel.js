@@ -18,6 +18,12 @@ namespace LookAndFeel
 {
     const laf = Engine.createGlobalScriptLookAndFeel();
 
+	// empty
+	const empty = Content.createLocalLookAndFeel();
+	
+	empty.registerFunction("drawToggleButton", function(g, obj) {});
+	empty.registerFunction("drawRotarySlider", function(g, obj) {});
+
 	// knob
 	const knob = Content.createLocalLookAndFeel();
 	
@@ -133,6 +139,17 @@ namespace LookAndFeel
             var a3 = [a[2] - 22, a[1] + a[3] / 2 - 15 / 2, 15, 15];
             g.fillPath(Paths.icons["power"], a3);
         }
+        else
+        {
+			if (obj.bgColour != 0)
+			{
+				g.setColour(Colours.withAlpha(obj.bgColour, obj.value ? 0.8 : 0.2));
+				g.fillRoundedRectangle(a, 3);				
+			}
+
+	        g.setColour(Colours.withAlpha(Colours.black, obj.value ? 1.0 : 0.6));
+	        g.drawAlignedText(obj.text, a, "centred");
+        }
     });
         
     // textButton
@@ -163,6 +180,25 @@ namespace LookAndFeel
     	g.drawAlignedText(text, a, alignment);
     });
        
+    // textToggleButton
+    const textToggleButton = Content.createLocalLookAndFeel();
+    
+    textToggleButton.registerFunction("drawToggleButton", function(g, obj)
+    {
+		var a = obj.area;
+		var alignment = "centred";
+		var text = obj.text;
+		var colour = obj.value ? obj.bgColour : obj.itemColour1;
+		
+		g.setColour(Colours.withAlpha(colour, obj.over ? 1.0 : 0.8));
+		g.fillRoundedRectangle(a, 3);		
+		
+    	g.setFont("medium", 18);
+    	g.setColour(Colours.withAlpha(obj.textColour, obj.value ? 1.0 : 0.6));
+
+    	g.drawAlignedText(text, a, alignment);
+    });
+       
     // iconButton
     const iconButton = Content.createLocalLookAndFeel();
     
@@ -173,11 +209,11 @@ namespace LookAndFeel
 
 		if (icon.indexOf("iconOff") != -1 && !obj.value)
 		{
-			icon = icon.replace("iconOff-");
+			icon = icon.substring(icon.indexOf("iconOff-") + 8, icon.indexOf(" "));
 		}
 		else if (icon.indexOf("iconOn") != -1 && obj.value)
 		{
-			icon = icon.replace("iconOn-");
+			icon = icon.substring(icon.indexOf("iconOn-") + 7, icon.length);
 		}
 		else
 		{
@@ -228,33 +264,30 @@ namespace LookAndFeel
     laf.registerFunction("drawComboBox", function(g, obj)
     {
         var a = obj.area;
+		var floatingTiles = ["CustomSettings"];
 
-        // Background    
-        g.setColour(Colours.withAlpha(obj.bgColour, obj.enabled ? 1 : 0.5));
+        // Background
+        var bgColour = floatingTiles.contains(obj.parentType) ? 0xff584d49 : obj.bgColour;
+        g.setColour(Colours.withAlpha(bgColour, obj.enabled ? 1 : 0.5));
         g.fillRoundedRectangle(a, 5);
 
-        // Outline
-        if (obj.itemColour1 != 0)
-        {
-            g.setColour(obj.itemColour1);
-            g.drawRoundedRectangle([a[0] + 1, a[1] + 1, a[2] - 2, a[3] - 2], 5, 2);
-        }
-
         // Triangle
-        if (a[2] > 55 && obj.itemColour2 != 0)
+        if (a[2] > 55 && obj.itemColour1 != 0)
         {
-            g.setColour(obj.itemColour2);
+			var itemColour1 = floatingTiles.contains(obj.parentType) ? 0xff2d2a29 : obj.itemColour1;
+            g.setColour(itemColour1);
             g.fillPath(Paths.icons.caretDown, [a[0] + a[2] - 20, a[3] / 2 - 4, 12, 8]);
         }
-       
+
         // Text
-        g.setColour(obj.textColour);
+        var textColour = floatingTiles.contains(obj.parentType) ? 0xffdad7d3 : obj.textColour;
+        g.setColour(textColour);
         g.setFont("medium", 18);
 
         if (a[2] < 55 || obj.itemColour2 == 0)
-            g.drawAlignedText(obj.text, a, "centred");
+            g.drawFittedText(obj.text, a, "centred", 1, 1);
         else
-            g.drawAlignedText(obj.text, [a[0] + 12, a[1] - 0.5, a[2], a[3]], "left");
+        	g.drawFittedText(obj.text, [a[0] + 12, a[1] - 0.5, a[2] - a[2] / 5, a[3]], "left", 1, 1);
     });
        
     // Preset browser dialog
