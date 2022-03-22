@@ -17,8 +17,12 @@
 
 namespace ReleaseTriggers
 {
+	const NoiseGenerator0 = Synth.getChildSynth("Noise Generator0");
+	const noise0SimpleGain0 = Synth.getEffect("noise0SimpleGain0");
+
 	// knbReleaseGain
 	const knbReleaseGain = Content.getComponent("knbReleaseGain");
+	knbReleaseGain.setLocalLookAndFeel(LookAndFeel.knob);
 	knbReleaseGain.setControlCallback(onknbReleaseGainControl);
 	
 	inline function onknbReleaseGainControl(component, value)
@@ -26,5 +30,16 @@ namespace ReleaseTriggers
       	local gf = Engine.getGainFactorForDecibels(value);
       	local s = Configuration.samplers;
         s[s.length - 1].setAttribute(s[0].Gain, gf);
+	}
+	
+	// knbKeyClickGain
+	const knbKeyClickGain = Content.getComponent("knbKeyClickGain");
+	knbKeyClickGain.setLocalLookAndFeel(LookAndFeel.knob);
+	knbKeyClickGain.setControlCallback(onknbKeyClickGainControl);
+	
+	inline function onknbKeyClickGainControl(component, value)
+	{
+        noise0SimpleGain0.setAttribute(noise0SimpleGain0.Gain, value);
+        NoiseGenerator0.setBypassed(value == -100);        	
 	}
 }
