@@ -19,25 +19,25 @@ namespace Expansions
 {
 	const expHandler = Engine.createExpansionHandler();
 	
-	// btnUnload
-	const btnUnload = Content.getComponent("btnUnload");
-	btnUnload.setControlCallback(onbtnUnloadControl);
-	
-	inline function onbtnUnloadControl(component, value)
-	{
-		if (value)
-		{
-			Engine.showYesNoWindow("Unload Instrument", "Do you want to unload this instrument?", function(response)
-			{
-				if (response)
-					unload();
-			});
-		}
-	}
+	// btnLibraryManager
+	const btnLibraryManager = Content.getComponent("btnLibraryManager");
+	btnLibraryManager.setLocalLookAndFeel(LookAndFeel.iconButton);
+	btnLibraryManager.showControl(!Engine.isPlugin());
+	btnLibraryManager.setControlCallback(onbtnLibraryManagerControl);
 
-	// Functions
-	inline function unload()
+	inline function onbtnLibraryManagerControl(component, value)
 	{
-		expHandler.setCurrentExpansion("");
+		if (!value)
+			Expansions.unloadWithPrompt();	
+	}
+	
+	// Functions
+	inline function unloadWithPrompt()
+	{
+		Engine.showYesNoWindow(l10n.get("Unload Instrument"), l10n.get("Do you want to unload this instrument?"), function(response)
+		{
+			if (response)
+				expHandler.setCurrentExpansion("");
+		});
 	}
 }
