@@ -24,6 +24,79 @@ namespace LookAndFeel
 	empty.registerFunction("drawToggleButton", function(g, obj) {});
 	empty.registerFunction("drawRotarySlider", function(g, obj) {});
 
+	// table
+	laf.registerFunction("drawTableBackground", function(g, obj)
+	{
+		var a = obj.area;
+		
+		g.setColour(obj.bgColour);
+		g.fillRoundedRectangle(a, 5);
+	});
+
+	laf.registerFunction("drawTablePath", function(g, obj)
+	{
+		var a = obj.area;
+
+		g.setColour(obj.itemColour);
+		g.fillPath(obj.path, a);
+		
+	    g.setColour(obj.itemColour2);
+	    g.drawPath(obj.path, a, 2.5);
+	});
+	
+	laf.registerFunction("drawTablePoint", function(g, obj)
+	{
+		var a = obj.tablePoint;
+
+		g.setColour(Colours.withAlpha(obj.itemColour2, obj.hover ? 1.0 : 0.5));
+		g.fillEllipse(a);
+	});
+
+	laf.registerFunction("drawTableRuler", function(g, obj)
+	{
+		var x = obj.position * obj.area[2];
+		
+	    g.setColour(Colours.withAlpha(obj.itemColour2, 0.1));	       
+	    g.drawLine(x, x, 0, obj.area[3], 10.0);
+
+	    g.setColour(obj.itemColour2);
+	    g.drawLine(x, x, 0, obj.area[3], 0.6);
+	});
+	
+	// AHDSR
+	laf.registerFunction("drawAhdsrBackground", function(g, obj)
+	{
+		g.fillAll(0xff3a3635);
+		g.setColour(obj.bgColour);
+		g.fillRoundedRectangle(obj.area, 5);
+	});
+	
+	laf.registerFunction("drawAhdsrPath", function(g, obj)
+	{
+		var a = obj.area;
+		var p = obj.path;
+		
+		if (obj.isActive)
+		{
+			g.setColour(Colours.withAlpha(obj.itemColour2, 0.2));
+			g.fillPath(p, a);
+		}
+		else
+		{
+			g.setColour(obj.itemColour);
+			g.fillPath(p, a);
+
+			g.setColour(obj.itemColour2);
+			g.drawPath(p, a, 2.5);
+		}
+	});
+
+	laf.registerFunction("drawAhdsrBall", function(g, obj)
+	{
+		g.setColour(obj.itemColour2);
+		g.fillEllipse([obj.position[0] - 5, obj.position[1] - 5, 10, 10]);
+	});
+
 	// knob
 	const knob = Content.createLocalLookAndFeel();
 	
@@ -32,10 +105,10 @@ namespace LookAndFeel
 		var a = [obj.area[0] + 2, obj.area[1], obj.area[2] - 4, obj.area[3] - 4];
 		var shadow = 4;
 		
-		g.setColour(Colours.withAlpha(obj.bgColour, 0.8));
+		g.setColour(Colours.withAlpha(Colours.black, obj.enabled ? 0.2 : 0.1));
 		g.fillEllipse([a[0], a[1] + shadow, a[2], a[3]]);
 		
-		g.setColour(Colours.withAlpha(obj.itemColour1, obj.enabled ? 1.0 : 0.5));
+		g.setColour(Colours.withAlpha(obj.bgColour, obj.enabled ? 1.0 : 0.5));
 		g.fillEllipse(a);
 		
         var startOffset = 2.5;
@@ -43,12 +116,12 @@ namespace LookAndFeel
         var markWidth = obj.area[2] / 12;
         
         g.rotate(endOffset, [obj.area[2] / 2, obj.area[2] / 2 - 2]);
-        g.setColour(Colours.withAlpha(obj.itemColour2, obj.enabled ? 1.0 : 0.5));
+        g.setColour(Colours.withAlpha(obj.itemColour1, obj.enabled ? 1.0 : 0.5));
         g.fillRoundedRectangle([2 + a[2] / 2 - markWidth / 2, 2, markWidth, a[3] / 3], 2);
 	});
     
-    // horizontalSlider
-    const horizontalSlider = Content.createLocalLookAndFeel();
+	// horizontalSlider
+	const horizontalSlider = Content.createLocalLookAndFeel();
     
     horizontalSlider.registerFunction("drawLinearSlider", function(g, obj)
     {
@@ -118,39 +191,30 @@ namespace LookAndFeel
 		    g.fillEllipse([a[2] / 2 - a[2] / 4 / 2, y + c / 2 - a[2] / 4 / 2, a[2] / 4, a[2] / 4]);
 		}	    
     });
-        
-    // Buttons
-    laf.registerFunction("drawToggleButton", function(g, obj)
-    {
-        var a = obj.area;
 
-        if (obj.parentType == "MidiSources" || obj.parentType == "MidiChannelList")
-        {
-            g.setColour(0xffa8a49d);
-            g.setFont("bold", 14);
-            var a1 = [a[0] + 12, a[1], a[2] - 40, a[3]];
-            g.drawAlignedText(obj.text, a1, "left");
-            
-            g.setColour(0xff66635e);
-            var a2 = [a[0] + 2, a[1] + 2, a[2] - 35, a[3] - 4];
-            g.drawRoundedRectangle(a2, 3, 2);
-            
-            obj.value == 1 ? g.setColour(0xffddd9d3) : g.setColour(0xff5a5452);
-            var a3 = [a[2] - 22, a[1] + a[3] / 2 - 15 / 2, 15, 15];
-            g.fillPath(Paths.icons["power"], a3);
-        }
-        else
-        {
-			if (obj.bgColour != 0)
-			{
-				g.setColour(Colours.withAlpha(obj.bgColour, obj.value ? 0.8 : 0.2));
-				g.fillRoundedRectangle(a, 3);				
-			}
+	// midiInputButtons
+	const midiInputButtons = Content.createLocalLookAndFeel();
 
-	        g.setColour(Colours.withAlpha(Colours.black, obj.value ? 1.0 : 0.6));
-	        g.drawAlignedText(obj.text, a, "centred");
-        }
-    });
+	midiInputButtons.registerFunction("drawToggleButton", function(g, obj)
+	{
+		var a = obj.area;
+
+		g.setColour(0xffa8a49d);
+		g.setFont("bold", 14);
+
+		var a1 = [a[0] + 12, a[1], a[2] - 40, a[3]];
+		g.drawAlignedText(obj.text, a1, "left");
+		
+		g.setColour(0xff66635e);
+
+		var a2 = [a[0] + 2, a[1] + 2, a[2] - 35, a[3] - 4];
+		g.drawRoundedRectangle(a2, 3, 2);
+		
+		obj.value == 1 ? g.setColour(0xffddd9d3) : g.setColour(0xff5a5452);
+
+		var a3 = [a[2] - 22, a[1] + a[3] / 2 - 15 / 2, 15, 15];
+		g.fillPath(Paths.icons["power"], a3);
+	});
         
     // textButton
     const textButton = Content.createLocalLookAndFeel();
@@ -164,6 +228,12 @@ namespace LookAndFeel
 		if (obj.bgColour != 0)
 		{
 			g.setColour(Colours.withAlpha(obj.bgColour, obj.over ? 1.0 : 0.8));
+			g.fillRoundedRectangle(a, 3);
+		}
+
+		if (obj.value && obj.itemColour1 != 0)
+		{
+			g.setColour(Colours.withAlpha(obj.itemColour1, obj.over ? 1.0 : 0.8));
 			g.fillRoundedRectangle(a, 3);
 		}
 
@@ -260,38 +330,65 @@ namespace LookAndFeel
 		}
     });
     
-    // Combo box
-    laf.registerFunction("drawComboBox", function(g, obj)
+    // customSettings
+    const customSettings = Content.createLocalLookAndFeel();
+    
+    customSettings.registerFunction("drawComboBox", function(g, obj)
     {
-        var a = obj.area;
-		var floatingTiles = ["CustomSettings"];
+		var a = obj.area;
 
         // Background
-        var bgColour = floatingTiles.contains(obj.parentType) ? 0xff584d49 : obj.bgColour;
-        g.setColour(Colours.withAlpha(bgColour, obj.enabled ? 1 : 0.5));
+		g.setColour(0xff584d49);
+		g.fillRoundedRectangle(a, 5);
+
+        // Triangle
+		g.setColour(Colours.withAlpha(0xff968b81, obj.hover ? 0.6 : 1.0));
+		g.fillPath(Paths.icons.caretDown, [a[0] + a[2] - 20, a[3] / 2 - 4, 12, 8]);
+
+        // Text
+        g.setFont("medium", 18);
+        g.setColour(0xffdad7d3);
+
+       	g.drawFittedText(obj.text, [a[0] + 12, a[1] - 0.5, a[2] - a[2] / 5, a[3]], "left", 1, 1);
+    });
+    
+    customSettings.registerFunction("drawPopupMenuBackground", function(g, obj)
+    {
+	   drawPopupMenuBackground();
+    });
+    
+    // Combo box
+    const comboBox = Content.createLocalLookAndFeel();
+    
+    comboBox.registerFunction("drawComboBox", function(g, obj)
+    {
+        var a = obj.area;
+        
+        // Background
+        g.setColour(Colours.withAlpha(obj.bgColour, obj.enabled ? 1 : 0.5));
         g.fillRoundedRectangle(a, 5);
 
         // Triangle
         if (a[2] > 55 && obj.itemColour1 != 0)
         {
-			var itemColour1 = floatingTiles.contains(obj.parentType) ? 0xff2d2a29 : obj.itemColour1;
-            g.setColour(itemColour1);
+            g.setColour(obj.itemColour1);
             g.fillPath(Paths.icons.caretDown, [a[0] + a[2] - 20, a[3] / 2 - 4, 12, 8]);
         }
 
         // Text
-        var textColour = floatingTiles.contains(obj.parentType) ? 0xffdad7d3 : obj.textColour;
-        g.setColour(textColour);
         g.setFont("medium", 18);
+        g.setColour(obj.textColour);
 
         if (a[2] < 55 || obj.itemColour2 == 0)
             g.drawFittedText(obj.text, a, "centred", 1, 1);
         else
         	g.drawFittedText(obj.text, [a[0] + 12, a[1] - 0.5, a[2] - a[2] / 5, a[3]], "left", 1, 1);
     });
-       
+
+	const presetBrowser = Content.createLocalLookAndFeel();	
+
     // Preset browser dialog
-    laf.registerFunction("drawPresetBrowserDialog", function(g, obj)
+    presetBrowser.registerFunction("drawPresetBrowserDialog", function(g, obj)
     {
         var a = obj.area;
         var h = 53;
@@ -325,7 +422,7 @@ namespace LookAndFeel
     });
 
     // Preset browser column
-    laf.registerFunction("drawPresetBrowserColumnBackground", function(g, obj)
+    presetBrowser.registerFunction("drawPresetBrowserColumnBackground", function(g, obj)
     {
 	    var a = [obj.area[0], obj.area[1], obj.area[2], obj.area[3]];
 
@@ -347,19 +444,22 @@ namespace LookAndFeel
     });
 
     // Preset browser list item
-    laf.registerFunction("drawPresetBrowserListItem", function(g, obj)
+    presetBrowser.registerFunction("drawPresetBrowserListItem", function(g, obj)
     {
         var a = [obj.area[0] + 8, obj.area[1], obj.area[2] - 18, obj.area[3]];
         var col = obj.columnIndex;
         
-        col == -1 || col == 1 ? g.setColour(0xffbd8a79) : g.setColour(0xffbb946e);
-                
+        
+        var colour = col == -1 || col == 1 ? 0xffbd8a79 : 0xffbb946e;
+		g.setColour(Colours.withAlpha(colour, obj.hover ? 0.8 : 1.0));
+
         if (obj.selected)
             g.fillRoundedRectangle(a, 3);
 
-        obj.selected == 1 ? g.setColour(Colours.black) : g.setColour(Colours.lightgrey);
-
-        g.setFont("medium", 18);
+        colour = obj.selected == 1 ? Colours.black : Colours.lightgrey;
+        g.setColour(colour);
+        
+        g.setFont("semibold", 18);
 
         if (col == 2) a[0] += 10;
 
@@ -367,7 +467,7 @@ namespace LookAndFeel
     });
         
     // Preset browser search bar
-    laf.registerFunction("drawPresetBrowserSearchBar", function(g, obj)
+    presetBrowser.registerFunction("drawPresetBrowserSearchBar", function(g, obj)
     {
         var a = [obj.area[0], obj.area[1], obj.area[2] - 10, obj.area[3]];
         g.setColour(Colours.withAlpha(Colours.lightgrey, 0.8));
@@ -378,36 +478,39 @@ namespace LookAndFeel
         g.fillPath(obj.icon, [a[0] + 7, a[1] + a[3] / 2 - wh / 2, wh, wh]);       
     });    
     
+    presetBrowser.registerFunction("drawDialogButton", function(g, obj)
+    {
+		var a = obj.area;
+		var editButtons = ["Add", "Rename", "Delete"];    
+
+		if (editButtons.contains(obj.text))
+		{
+			var icons = ["add", "edit", "trash"];
+			var path = Paths.icons[icons[editButtons.indexOf(obj.text)]];
+		
+			if (obj.text == "Delete")
+				a = [a[0] + a[2] / 2 - 10, a[1] + a[3] / 2 - 11, 20, 22];
+			else
+				a = [a[0] + a[2] / 2 - 11, a[1] + a[3] / 2 - 11, 22, 22];
+
+			drawPathButton(path, a, [0xff8e887f, 0xffafaa9f, 0x8f8e887f]);
+		}
+		else
+		{
+			drawTextButton(obj.text, a, [0xff746964, 0xff827670, 0xff6f6560, 0xff403a38]);
+		}
+    });    
+    
+    laf.registerFunction("drawPopupMenuBackground", function(g, obj)
+    {
+		drawPopupMenuBackground();
+    });
+    
     // Dialog button
     laf.registerFunction("drawDialogButton", function(g, obj)
     {
-        var a = obj.area;
-        
-        if (obj.parentType == "PresetBrowser")
-        {
-	    	var editButtons = ["Add", "Rename", "Delete"];    
-	    	
-	        if (editButtons.contains(obj.text))
-	        {
-	            var icons = ["add", "edit", "trash"];
-	            var path = Paths.icons[icons[editButtons.indexOf(obj.text)]];
-	
-	            if (obj.text == "Delete")
-	                a = [a[0] + a[2] / 2 - 10, a[1] + a[3] / 2 - 11, 20, 22];
-	            else
-	                a = [a[0] + a[2] / 2 - 11, a[1] + a[3] / 2 - 11, 22, 22];
-	
-	            drawPathButton(path, a, [0xff8e887f, 0xffafaa9f, 0x8f8e887f]);
-	        }
-	        else
-	        {
-				drawTextButton(obj.text, a, [0xff746964, 0xff827670, 0xff6f6560, 0xff403a38]);
-	        }
-        }
-        else
-        {
-	        drawTextButton(obj.text, a, [0xff746964, 0xff968b86, 0x8f746964, 0xff302c2a]);
-        }
+		var a = obj.area;
+		drawTextButton(obj.text, a, [0xff746964, 0xff968b86, 0x8f746964, 0xff302c2a]);
     });
 
     // Alert window
@@ -493,8 +596,6 @@ namespace LookAndFeel
 	
 		g.setColour(0xff3a322d);
 		g.drawRoundedRectangle(a, 3 - (3 * obj.down), 2);
-
-		g.drawLine(a[0], a[2], a[1], a[1], 3);
 		
 		var noteName = Engine.getMidiNoteName(obj.noteNumber);
 		
@@ -505,13 +606,13 @@ namespace LookAndFeel
 			g.drawAlignedText(noteName, [a[0], a[1] + a[3] - 20, a[2], 20], "centred");
 		}
 		
-		g.setGradientFill([Colours.withAlpha(Colours.black, 0.5), a[2] / 2, 0, 0x00, a[2] / 2, a[3] / 4]);
+		g.setGradientFill([Colours.withAlpha(Colours.black, 0.2), a[2] / 2, 0, 0x00, a[2] / 2, a[3] / 4]);
 		g.fillRoundedRectangle(a, 3);
 	});
 	
 	laf.registerFunction("drawBlackNote", function(g, obj)
 	{
-		var a = [obj.area[0] + 0.5, obj.area[1] + 1.5, obj.area[2] - 1, obj.area[3] - 8];
+		var a = [obj.area[0] + 0.5, obj.area[1], obj.area[2] - 1, obj.area[3] - 8];
 	
 		g.setColour(0xff52413d);
 		g.fillRoundedRectangle(a, 1);
@@ -620,6 +721,17 @@ namespace LookAndFeel
 		g.drawRoundedRectangle(area, 5, 2);
     }
     
+    inline function drawPopupMenuBackground()
+    {
+	    var a = [0, 0, obj.width, obj.height];
+
+	    g.setColour(0xff403e3c);
+	    g.fillRoundedRectangle(a, 5);
+
+	    g.setColour(0xff89837d);
+	    g.drawRoundedRectangle(a, 5, 3);
+    }
+
     // Value Popups
     Content.setValuePopupData(
     {

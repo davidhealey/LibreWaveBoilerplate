@@ -39,11 +39,11 @@ namespace UserSettings
 	    
 	    g.setColour(this.get("itemColour2"));
 	    g.fillRoundedRectangle([a[0] + 20, a[1] + 120, a[2] - 40, a[3] - 140], 5);
-	});  
-		
+	});
+
 	// btnSettings
 	const btnSettings = Content.getComponent("btnSettings");
-	btnSettings.setValue(pnlSettings.get("visible"));
+	btnSettings.setValue(parseInt(pnlSettings.get("visible")));
 	btnSettings.setLocalLookAndFeel(LookAndFeel.iconButton);
 	btnSettings.setControlCallback(onbtnSettingsControl);
 	
@@ -58,7 +58,7 @@ namespace UserSettings
     for (i = 0; i < 2; i++)
     	pnlSettingsTab.push(Content.getComponent("pnlSettingsTab" + i));
     
-    // pnlSettingsTab2 - Audio\Engine
+    // pnlSettingsTab0 - Audio\Engine
 	pnlSettingsTab[0].data.labels = ["Coarse Tune", "Fine Tune", "Transpose"];
 	pnlSettingsTab[0].setPaintRoutine(function(g) {pnlSettingsTabPaintRoutine(g);});
 	pnlSettingsTab[0].data.components = [Content.getComponent("knbCoarseTuning"), Content.getComponent("knbFineTuning"), Content.getComponent("knbTranspose")];
@@ -79,13 +79,32 @@ namespace UserSettings
             }
     });
     
+	// fltAudioSettings
+	const fltAudioSettings = Content.getComponent("fltAudioSettings");
+	fltAudioSettings.setLocalLookAndFeel(LookAndFeel.customSettings);
+
+	// fltEngineSettings
+	const fltEngineSettings = Content.getComponent("fltEngineSettings");
+	fltEngineSettings.setLocalLookAndFeel(LookAndFeel.customSettings);    
+    
+    // btnDebug
+    const btnDebug = Content.getComponent("btnDebug");
+    btnDebug.setLocalLookAndFeel(LookAndFeel.textButton);
+    btnDebug.setControlCallback(onbtnDebugControl);
+
+    inline function onbtnDebugControl(component, value)
+    {
+	    Settings.setEnableDebugMode(value);
+    }
+    
     // pnlSettingsTab1 - Midi
     pnlSettingsTab[1].setPaintRoutine(function(g)
     {
-        g.setColour(this.get("bgColour"));
+        g.setColour(this.get("itemColour"));
         g.drawLine(245, 245, 25, this.getHeight() - 25, 1);
         
         g.setFont("bold", 22);
+        g.setColour(this.get("textColour"));
         g.drawAlignedText("CHANNEL", [25, 15, 100, 25], "left");
         g.drawAlignedText("AUTOMATION", [285, 15, 200, 25], "left");
     
@@ -96,10 +115,12 @@ namespace UserSettings
     // fltMidiSource
     const fltMidiSource = Content.getComponent("fltMidiSource");
     fltMidiSource.showControl(!Engine.isPlugin());
+    fltMidiSource.setLocalLookAndFeel(LookAndFeel.midiInputButtons);
     
     // fltMidiChannel
     const fltMidiChannel = Content.getComponent("fltMidiChannel");    
     Engine.isPlugin() ? fltMidiChannel.set("height", 270) : fltMidiChannel.set("height", 160);
+    fltMidiChannel.setLocalLookAndFeel(LookAndFeel.midiInputButtons);
 	
     // btnSettingsTab
     const btnSettingsTab = [];
@@ -153,6 +174,11 @@ namespace UserSettings
             btnSettingsTab[i].setValue(i == index);
             pnlSettingsTab[i].showControl(i == index);
         }
+    }
+    
+    inline function setSettingsButtonEnabled(state)
+    {
+	    btnSettings.set("enabled", state);
     }
     
     // Function calls
