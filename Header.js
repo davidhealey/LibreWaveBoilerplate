@@ -36,9 +36,9 @@ namespace Header
 	    if (isDefined(Manifest.titleSize))
 	      titleSize = Manifest.titleSize;
 	
-	    g.setFont("semibold", titleSize);
+	    g.setFont("title", titleSize);
 	    g.setColour(this.get("textColour"));
-	    g.drawAlignedText(Manifest.title, [20, 0, 400, this.getHeight()], "left");
+	    g.drawAlignedText(Manifest.title, [15, 1, 400, this.getHeight()], "left");
     });
 
     // lblPreset
@@ -48,10 +48,7 @@ namespace Header
     inline function updatePresetLabel(patchName)
     {
         local presetName = Engine.getCurrentUserPresetName();
-        local text = "";
-
-        if (isDefined(patchName) && patchName != "")
-            text = patchName;
+        local text = patchName;
 
 		if (text.toLowerCase() != "select a preset")
 		{
