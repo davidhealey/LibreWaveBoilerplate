@@ -40,8 +40,8 @@ namespace Articulations
         var arts = Patches.getCurrentPatch().articulations.active;
         var ks = Configuration.keySwitches;
 
-		g.fillAll(THEME.articulations.bgColour);
-		g.setFont("mediumitalic", 16);
+		g.fillAll(this.get("bgColour"));
+		g.setFont("mediumitalic", 17);
 
 		for (i = 0; i < arts.length; i++)
 		{
@@ -51,13 +51,13 @@ namespace Articulations
 			var a = [0, i * (ROW_HEIGHT + ROW_SPACE), this.getWidth(), ROW_HEIGHT];
                 
 			if (this.getValue() == artIndex)
-				g.setColour(Colours.withAlpha(THEME.articulations.itemColour, this.data.hover == artIndex ? 0.8 : 1));
+				g.setColour(Colours.withAlpha(this.get("itemColour2"), this.data.hover == artIndex ? 1.0 : 0.8));
 			else
-				g.setColour(Colours.withAlpha(THEME.articulations.itemColour2, this.data.hover == artIndex ? 0.8 : 1));
+				g.setColour(Colours.withAlpha(this.get("itemColour"), this.data.hover == artIndex ? 0.6 : 1.0));
 
 			g.fillRoundedRectangle(a, 3);
 
-			g.setColour(THEME.articulations.textColour);
+			g.setColour(this.get("textColour"));
 
 			// Articulation name
 			var text;
@@ -110,13 +110,16 @@ namespace Articulations
 				var h = a[3] * value - 4 * value;
 				var y = a[1] + a[3] - a[3] * value - 2 + 4 * value;
 	
-				g.setColour(THEME.articulations.gainSlider.bgColour);
+				g.setColour(this.get("bgColour"));
 				g.fillRoundedRectangle(a, 4);
 	
-				g.setColour(THEME.articulations.gainSlider.itemColour);
-				g.fillRoundedRectangle([a[0] + 2, y, a[2] - 4, h], 3);
+				g.setColour(this.get("itemColour"));
+				g.fillRoundedRectangle([a[0] + 2, y, a[2] - 4, h], 2);
+				
+				g.fillRect([a[0] + 2, y + (3 * (value == 1)), a[2] - 4, h / 2]);
 			}
 		}
+
 	});
 	
 	pnlArticulationGain.setMouseCallback(function(event)

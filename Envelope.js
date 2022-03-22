@@ -61,18 +61,20 @@ namespace Envelope
     
     inline function setEnabled(state)
     {
+		local colours = Theme.getComponentColours("fltEnvelope");
+
 	    for (x in knbAHDSR)
 	    	x.set("enabled", state);
 	    	
-		if (state == false)
-		{
-			fltEnvelope.set("itemColour", 0x35968b81);
-			fltEnvelope.set("itemColour2", 0x35968b81);
-		}
-		else
-		{
-			fltEnvelope.set("itemColour", THEME.ScriptFloatingTile.AHDSRGraph.itemColour);
-			fltEnvelope.set("itemColour2", THEME.ScriptFloatingTile.AHDSRGraph.itemColour2);
-		}
+	    for (x in colours)
+	    {
+			if (x == "bgColour") continue;
+
+			local c = Colours.withAlpha(colours[x], state ? 1.0 : 0.5);
+			fltEnvelope.set(x, parseInt(c));
+	    }
     }
+    
+    // Function calls
+    setProcessorId("sampler2GainAHDSR");
 }

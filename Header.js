@@ -26,8 +26,8 @@ namespace Header
         g.fillAll(this.get("bgColour"));
 
         // Preset display
-        g.setColour(this.get("itemColour"));
         var a = [lblPreset.get("x"), lblPreset.get("y"), lblPreset.getWidth(), lblPreset.getHeight() + 2];
+        g.setColour(this.get("itemColour"));
         g.fillRoundedRectangle(a, 5);
         
 	    // Product title

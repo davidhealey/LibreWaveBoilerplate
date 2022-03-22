@@ -34,19 +34,6 @@ namespace Presets
 	   g.setColour(this.get("bgColour"));	   
 	   g.fillRoundedRectangle(a, 5);
     });
-    
-    pnlPresetBrowser.setTimerCallback(function()
-    {
-		if (isDefined(Patches.getPatchIndex))
-		{
-			pnlPresetBrowser.showControl(Patches.getPatchIndex() == -1);
-			btnPresetBrowser.setValue(Patches.getPatchIndex() == -1);			
-		}
-
-		this.stopTimer();
-    });
-    
-	pnlPresetBrowser.startTimer(500);
 
     // pnlPresetNotesBlocker
     const pnlPresetNotesBlocker = Content.getComponent("pnlPresetNotesBlocker");
@@ -69,6 +56,7 @@ namespace Presets
     
     // fltPresetBrowser
     const fltPresetBrowser = Content.getComponent("fltPresetBrowser");
+    fltPresetBrowser.setLocalLookAndFeel(LookAndFeel.presetBrowser);
     
     // btnPresetBrowser
     const btnPresetBrowser = [];
@@ -77,7 +65,7 @@ namespace Presets
     {
 	    btnPresetBrowser.push(Content.getComponent("btnPresetBrowser" + i));
 	    btnPresetBrowser[i].setControlCallback(onbtnPresetBrowserControl);
-		btnPresetBrowser[i].setValue(pnlPresetBrowser.get("visible"));
+		btnPresetBrowser[i].setValue(parseInt(pnlPresetBrowser.get("visible")));
     }
     
     btnPresetBrowser[0].setLocalLookAndFeel(LookAndFeel.iconButton);
@@ -109,19 +97,7 @@ namespace Presets
 		}
     }
 
-	// btnLibraryManager
-	const btnLibraryManager = Content.getComponent("btnLibraryManager");
-	btnLibraryManager.setLocalLookAndFeel(LookAndFeel.iconButton);
-	btnLibraryManager.showControl(!Engine.isPlugin());
-	btnLibraryManager.setControlCallback(onbtnLibraryManagerControl);
-
-	inline function onbtnLibraryManagerControl(component, value)
-	{
-		if (value)
-			Library.show(true);
-	}
-
-    // Functions    
+    // Functions
     inline function show()
     {
         pnlPresetBrowser.showControl(true);
@@ -138,5 +114,14 @@ namespace Presets
 		
         for (i = 0; i < btnPresetBrowser.length; i++)
         	btnPresetBrowser[i].setValue(0);
+    }
+    
+    inline function setButtonsEnabled(state)
+    {
+		for (x in btnPresetBrowser)
+	    	x.set("enabled", state);
+	    	
+		for (x in btnPreset)
+	    	x.set("enabled", state);
     }
 }

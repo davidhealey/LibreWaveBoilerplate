@@ -64,31 +64,16 @@ namespace Cards
 				 				drawDefaultValueMarker(g, c);
 
 				 			break;
-				 		
-				 		case "ScriptTable":
-				 			drawTableBackground(g, c);
-				 			break;
-				 			
-				 		case "ScriptFloatingTile":
-				 			drawTableBackground(g, c);
-				 			break;
 				 	}        
 		        }
 	        });
         }
 	}
 	
-	inline function drawTableBackground(g, c)
-	{
-	    local a = [c.get("x"), c.get("y"), c.getWidth(), c.getHeight()];
-	    g.setColour(THEME.table.bgColour);
-	    g.fillRoundedRectangle(a, 5);
-	}
-	
 	inline function drawLabels(g, labels)
 	{
-	    g.setColour(THEME.card.label.textColour);
-	        
+	    g.setColour(this.get("textColour"));
+
 	    for (l in labels)
 	    {
 			local alignment = l.alignment == undefined ? "centred" : l.alignment;
@@ -112,7 +97,7 @@ namespace Cards
         local pathArea = p.getBounds(1);
         g.drawPath(p, pathArea, 3);
 
-		local range = getKnobRange(c);    
+		local range = getKnobRange(c);
         g.setFont("regular", 16);
         g.setColour(c.get("itemColour2"));
         g.drawAlignedText(range[0], [a[0] - a[2] / 2 + 1, a[1] + a[3] + 16, a[2], 20], "centred");
@@ -181,17 +166,20 @@ namespace Cards
 		if (children.length > 1)
 		{
 			for (x in children)
-				p.data.children.push(Content.getComponent("pnl" + x));
+			{
+				if ("pnl" + x.replace(" ") != id)
+					p.data.children.push(Content.getComponent("pnl" + x.replace(" ")));
+			}
 		}
 		
 		p.setPaintRoutine(function(g)
 		{
-			var a = [0, 0, this.getWidth(), this.getHeight()];
+			var a = this.getLocalBounds(0);
 
-			g.setColour(THEME.card.title.bgColour);
+			g.setColour(this.get("itemColour"));
 			g.fillRoundedRectangle([a[0], a[1], a[2], TITLE_HEIGHT + 10], 5);
 
-			g.setColour(THEME.card.bgColour);
+			g.setColour(this.get("bgColour"));
 			g.fillRoundedRectangle([a[0], a[1] + 43, a[2], a[3] - TITLE_HEIGHT], 5);
 
 			// Titles
@@ -204,12 +192,12 @@ namespace Cards
 				if (this.getValue() == i)
 				{
 					g.setFont("bold", 20);						
-					g.setColour(Colours.withAlpha(THEME.card.title.textColour, this.data.hover == i ? 0.8 : 1));
+					g.setColour(Colours.withAlpha(this.get("itemColour2"), this.data.hover == i ? 0.8 : 1));
 				}
 				else 
 				{
 					g.setFont("bold", 16);
-					g.setColour(Colours.withAlpha(0xffc8a78d, this.data.hover == i ? 0.8 : 1));
+					g.setColour(Colours.withAlpha(this.get("textColour"), this.data.hover == i ? 0.8 : 1));
 				}				
 				
 				if (this.data.titles.length > 1)
