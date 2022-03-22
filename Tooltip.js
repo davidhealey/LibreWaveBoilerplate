@@ -25,7 +25,7 @@ namespace Tooltip
 	{
 		var a = [0, 0, this.getWidth(), this.getHeight()];
 
-		var t = Content.getCurrentTooltip();
+		var t = this.data.tooltip;
 		
 		if (this.data.text != "")
 			t = this.data.text;
@@ -41,6 +41,9 @@ namespace Tooltip
 	
 	pnlTooltip.setTimerCallback(function()
 	{
+		this.data.tooltip = Content.getCurrentTooltip();		
+		this.showControl(this.data.tooltip != "");
+		
 		this.repaint();
 	});
 		
