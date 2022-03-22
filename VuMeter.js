@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 David Healey
+    Copyright 2021, 2022 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace VuMeter
 		g.fillRoundedRectangle(a, 8);
 
 		g.setColour(Colours.withAlpha(this.get("itemColour"), 0.2 * this.getValue()));
-		g.fillRoundedRectangle([a[0], a[1], a[2] * this.getValue(), a[3]], 8);
+		g.fillRoundedRectangle([a[0], a[1], a[2] * this.getValue() - a[2] / 5, a[3]], 8);
 	});
 	
 	pnlVuMeter.setTimerCallback(function()
