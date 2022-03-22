@@ -78,4 +78,7 @@ namespace Spinner
 		pnlSpinner.stopTimer();
 		pnlSpinnerContainer.showControl(false);
 	}
+	
+	// Function calls
+	hide();
 }
