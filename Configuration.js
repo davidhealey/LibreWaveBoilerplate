@@ -36,12 +36,17 @@ namespace Configuration
 	}
 
 	// MIDI Processors
-	const noteRangeFilter = Synth.getMidiProcessor("noteRangeFilter");
+	const noteRangeFilter = [];
 	const processorIds = Synth.getIdList("Script Processor");
 	const scriptProcessors = [];
 	    
 	for (id in processorIds)
-	    scriptProcessors.push(Synth.getMidiProcessor(id));
+	{
+		scriptProcessors.push(Synth.getMidiProcessor(id));
+		
+		if (id.indexOf("oteRangeFilter") != -1)
+			noteRangeFilter.push(Synth.getMidiProcessor(id));			
+	}	    
 	     
 	const processorAttributeIds = getAttributeIds(scriptProcessors);
 	
@@ -65,12 +70,12 @@ namespace Configuration
 	const effectIds = [];
 	const effects = [];
 	const mixerGain = [];
-	
+
 	for (e in Synth.getAllEffects(""))
-	{        
+	{
 	    effectIds.push(e.getId());
-	    effects.push(e);
-	    
+    	effects.push(e);
+
 	    if (e.getId().indexOf("mixerGain") != -1)
 	    	mixerGain.push(e);
 	}    
@@ -149,7 +154,7 @@ namespace Configuration
                 {
                     for (p in props)
                     {
-                        if (!attributes.contains(p) && p != "Bypass" && p != "Intensity") continue;
+                        if (!attributes.contains(p) && !["Bypass", "Intensity", "File"].contains(p)) continue;
 
                         if (p == "Bypass")
                             modules[index].setBypassed(props[p]);
@@ -157,6 +162,8 @@ namespace Configuration
                             modules[index].setAttribute(attributes.indexOf(p), Engine.getGainFactorForDecibels(props[p]));
                         else if (p == "Intensity")
                             modules[index].setIntensity(props[p]);
+						else if (p == "File" && props[p] != "")
+							Synth.getAudioSampleProcessor(modules[index].getId()).setFile("{PROJECT_FOLDER}" + props[p]);
                         else if (attributes.contains(p))
                             modules[index].setAttribute(attributes.indexOf(p), props[p]);
                     }
@@ -216,7 +223,7 @@ namespace Configuration
 			Engine.setKeyColour(i, Colours.withAlpha(Colours.black, 0.6));
 	
 		if (isDefined(kr))
-		{	
+		{
 			for (r in kr)
 	       	{
 				for (i = 0; i < 127; i++)
@@ -231,9 +238,12 @@ namespace Configuration
 	inline function setNoteRangeFilter(index)
 	{
 		local kr = keyRanges[index];
-
-		noteRangeFilter.setAttribute(noteRangeFilter.LowNote, kr[0][0]);
-		noteRangeFilter.setAttribute(noteRangeFilter.HighNote, kr[0][1]);
+		
+		for (i = 0; i < noteRangeFilter.length; i++)
+		{
+			noteRangeFilter[i].setAttribute(noteRangeFilter[i].LowNote, kr[0][0]);
+			noteRangeFilter[i].setAttribute(noteRangeFilter[i].HighNote, kr[0][1]);
+		}
 	}
 	
 	inline function enableAllComponents(exceptions)
@@ -288,17 +298,15 @@ namespace Configuration
 
 	inline function loadDefaults()
 	{
-		Header.updatePresetLabel("Select a Preset");
 		Patches.set(-1);
-		Settings.clearMidiLearn();
 
-		for (s in samplers)
+		for (x in samplers)
 		{
-			s.setBypassed(true);
-			s.asSampler().clearSampleMap();
-			s.setAttribute(s.VoiceAmount, 1);  
-			s.setAttribute(s.VoiceLimit, 1);
-		}	
+			x.setBypassed(true);
+			x.asSampler().clearSampleMap();
+			x.setAttribute(x.VoiceAmount, 1);
+			x.setAttribute(x.VoiceLimit, 1);
+		}		
 	}
 
 	// Helpers
