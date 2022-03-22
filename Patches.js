@@ -25,8 +25,7 @@ namespace Patches
 	
 	inline function onknbPatchControl(component, value)
 	{
-		if (value != -1)
-			changePatch(value);	
+		changePatch(value);	
 	}
 	
 	// btnLoadDefault
@@ -42,27 +41,43 @@ namespace Patches
 	// Functions	
 	inline function changePatch(index)
 	{
-		local patch = Manifest.patches[index];
-		articulationHandler.setAttribute(articulationHandler.knbPatch, index);
-		
-		Configuration.enableAllModules();
-
-		// Apply manifest level settings
-		Configuration.setMidiProcessorAttributes(Manifest.scripts);
-		Configuration.setModulatorAttributes(Manifest.modulators);
-		Configuration.setEffectAttributes(Manifest.effects);
-		Configuration.setSamplerAttributes(Manifest.samplers);
-		
-		// Apply patch level settings
-		Configuration.setMidiProcessorAttributes(patch.scripts);
-		Configuration.setModulatorAttributes(patch.modulators);
-		Configuration.setEffectAttributes(patch.effects);
-		Configuration.setSamplerAttributes(patch.samplers);
-
-		Configuration.updateKeySwitches(patch);
-		Configuration.updateKeyRanges(patch);
-		Header.updatePresetLabel(patch.id);
-		Articulations.init();
+		if (index != -1)
+		{
+			local patch = Manifest.patches[index];
+			articulationHandler.setAttribute(articulationHandler.knbPatch, index);
+	
+			Configuration.enableAllModules();
+	
+			// Apply manifest level settings
+			Configuration.setMidiProcessorAttributes(Manifest.scripts);
+			Configuration.setModulatorAttributes(Manifest.modulators);
+			Configuration.setEffectAttributes(Manifest.effects);
+			Configuration.setSamplerAttributes(Manifest.samplers);
+			
+			// Apply patch level settings
+			Configuration.setMidiProcessorAttributes(patch.scripts);
+			Configuration.setModulatorAttributes(patch.modulators);
+			Configuration.setEffectAttributes(patch.effects);
+			Configuration.setSamplerAttributes(patch.samplers);
+	
+			Configuration.updateKeySwitches(patch);
+			Configuration.updateKeyRanges(patch);
+			Header.updatePresetLabel(patch.id);
+			
+			Presets.setButtonsEnabled(true);
+			
+			Articulations.init();
+		}
+		else
+		{
+			Header.updatePresetLabel("Select a Preset");
+			Settings.clearMidiLearn();
+			Presets.setButtonsEnabled(false);
+			UserSettings.setSettingsButtonEnabled(false);
+			UserSettings.hide();
+			Presets.show();
+			Configuration.setMasterMuter(true);
+		}
 	}
 
 	inline function getCurrentPatch()
@@ -78,5 +93,6 @@ namespace Patches
 	inline function set(value)
 	{
 		knbPatch.setValue(value);
+		knbPatch.changed();
 	}
 }
