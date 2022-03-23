@@ -16,7 +16,7 @@
 */
 
 include("Manifest.js");
-include("librewave-boilerplate-hise-scripts/Configuration.js");
+include("LibreWaveBoilerplate/Configuration.js");
 
 const var Interface = Synth.getMidiProcessor("Interface");
 
