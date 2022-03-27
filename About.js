@@ -41,6 +41,17 @@ namespace About
 			hide();
 	});	
 
+	// btnAbout
+	const btnAbout = Content.getComponent("btnAbout");
+	btnAbout.setLocalLookAndFeel(LookAndFeel.empty);
+	btnAbout.setControlCallback(onbtnAboutControl);
+	
+	inline function onbtnAboutControl(component, value)
+	{
+		if (value)
+			show();
+	}	
+
 	// Functions
 	inline function show()
 	{
