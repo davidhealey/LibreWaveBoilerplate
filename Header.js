@@ -31,7 +31,7 @@ namespace Header
         g.fillRoundedRectangle(a, 5);
         
 	    // Product title
-	    var titleSize = 26;
+	    var titleSize = 28;
 	
 	    if (isDefined(Manifest.titleSize))
 	      titleSize = Manifest.titleSize;
