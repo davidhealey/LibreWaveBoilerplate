@@ -53,5 +53,5 @@ namespace About
 	}
 	
 	// Function calls
-	show();
+	hide();
 }
