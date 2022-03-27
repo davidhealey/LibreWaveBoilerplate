@@ -66,4 +66,15 @@ namespace Footer
     // knbMasterGain
     const knbMasterGain = Content.getComponent("knbMasterGain");
     knbMasterGain.setLocalLookAndFeel(LookAndFeel.horizontalSlider);
+    
+    // btnPanic
+    const btnPanic = Content.getComponent("btnPanic");
+    btnPanic.setLocalLookAndFeel(LookAndFeel.empty);
+    btnPanic.setControlCallback(onbtnPanicControl);
+    
+    inline function onbtnPanicControl(component, value)
+    {
+	    if (value)
+	    	Engine.allNotesOff();
+    }
 }
