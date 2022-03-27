@@ -40,7 +40,7 @@ namespace Presets
     
     pnlPresetNotesBlocker.setPaintRoutine(function(g)
     {
-		var labels = ["LIBRARY", "BANK", "CATEGORY", "PRESET"];
+		var labels = ["BANK", "CATEGORY", "PRESET"];
 
         g.fillAll(this.get("bgColour"));
 
