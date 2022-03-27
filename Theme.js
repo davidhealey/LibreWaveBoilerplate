@@ -38,7 +38,8 @@ namespace Theme
 				"fltEnvelope": {"bgColour": 0xff4c4441, "itemColour": 0xff8b7559, "itemColour2": 0xffd2c7b2},
 				"pnlMixerControls": {"bgColour": 0xff514a47, "itemColour": 0x00, "itemColour2": 0x00},
 				"pnlVuMeter": {"bgColour": 0xff514a47, "itemColour": 0x00, "itemColour2": 0x00},
-				"pnlArticulationGain": {"bgColour": 0xff413c3b, "itemColour": 0xff9f8369}
+				"pnlArticulationGain": {"bgColour": 0xff413c3b, "itemColour": 0xff9f8369},
+				"pnlAbout": {"bgColour": 0x88000000, "itemColour": 0xff3a3635, "itemColour2": 0xff89837d, "textColour": Colours.white}
 			},
 			"types": {
 				"ScriptPanel": {"bgColour": 0xff3a3635, "itemColour": 0xff544945, "itemColour2": 0xfff6f5f1, "textColour": 0xffc1c1c1},
