@@ -34,7 +34,7 @@ namespace Expansions
 	// Functions
 	inline function unloadWithPrompt()
 	{
-		Engine.showYesNoWindow(l10n.get("Unload Instrument"), l10n.get("Do you want to unload this instrument?"), function(response)
+		Engine.showYesNoWindow(l10n.get("Unload"), l10n.get("Do you want to unload " + Engine.getName() + "?"), function(response)
 		{
 			if (response)
 				expHandler.setCurrentExpansion("");
