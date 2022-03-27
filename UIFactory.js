@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 David Healey
+    Copyright 2021, 2022 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -8,7 +8,7 @@
 
     This file is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -57,6 +57,12 @@ namespace UIFactory
 		Content.setPropertiesFromJSON("pnlSpinner", {
 			"x": 0, "y": 0, "width": a[2], "height": a[3],
 		    "parentComponent": "pnlSpinnerContainer"
+		});
+
+		Content.addPanel("pnlAbout", 0, 0);
+		Content.setPropertiesFromJSON("pnlAbout", {
+			"x": 0, "y": 0, "width": a[2], "height": a[3],
+			"visible": false
 		});
 		
 		createAdminPanel();
@@ -284,6 +290,26 @@ namespace UIFactory
 		    "text": "pan-bipolar",
 		    "tooltip": "Master pan."
 		});
+		
+		Content.addButton("btnPanic", 0, 0);
+		Content.setPropertiesFromJSON("btnPanic", {
+			"x": 6, "y": 6, "width": 200, "height": 30,
+			"parentComponent": "pnlFooter",
+			"saveInPreset": false,
+			"isMomentary": true,
+			"enableMidiLearn": false,
+			"tooltip": ""
+		});
+		
+		Content.addButton("btnAbout", 0, 0);
+		Content.setPropertiesFromJSON("btnAbout", {
+			"x": 375, "y": 8, "width": 147, "height": 30,
+			"parentComponent": "pnlFooter",
+			"saveInPreset": false,
+			"isMomentary": true,
+			"enableMidiLearn": false,
+			"tooltip": ""
+		});		
 	}
 
 	inline function createToolTipPanel()
