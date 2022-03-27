@@ -306,7 +306,13 @@ namespace Configuration
 			x.asSampler().clearSampleMap();
 			x.setAttribute(x.VoiceAmount, 1);
 			x.setAttribute(x.VoiceLimit, 1);
-		}		
+		}
+		
+		for (x in effects)
+		{
+			if (x.getId().indexOf("Convolution") != -1)
+				Synth.getAudioSampleProcessor(x.getId()).setFile("");
+		}
 	}
 
 	// Helpers
