@@ -164,6 +164,17 @@ namespace UIFactory
 			"parentComponent": "pnlMain"
 		});
 
+		Content.addButton("btnLibraryManager", 0, 0);
+		Content.setPropertiesFromJSON("btnLibraryManager", {
+			"x": 432, "y": 20, "width": 20, "height": 20,
+			"parentComponent": "pnlHeader",
+			"saveInPreset": false,
+			"text": "eject",
+			"isMomentary": true,
+			"enableMidiLearn": false,
+			"tooltip": "Unload this instrument and open the library manager."
+		});
+
 		Content.addButton("btnSettings", 0, 0);
 		Content.setPropertiesFromJSON("btnSettings", {
 			"x": 858 , "y": 17, "width": 26, "height": 26,
@@ -173,7 +184,7 @@ namespace UIFactory
 		    "text": "settings",
 		    "tooltip": "Open the settings page."
 		});
-					
+
 		Content.addLabel("lblPreset", 0, 0);
 		Content.setPropertiesFromJSON("lblPreset", {
 			"x": 474, "y": 15, "width": 365, "height": 28,
@@ -344,24 +355,13 @@ namespace UIFactory
 		    "ContentType": "PresetBrowser",
 		    "Font": "bold",
 		    "FontSize": 14,
-		    "Data": "{\n  \"ShowSaveButton\": true,\n  \"ShowExpansionsAsColumn\": true,\n  \"ShowFolderButton\": true,\n  \"ShowNotes\": true,\n  \"ShowEditButtons\": true,\n  \"EditButtonOffset\": 15,\n  \"ButtonsInsideBorder\": true,\n  \"ShowAddButton\": false,\n  \"ShowRenameButton\": true,\n  \"ShowDeleteButton\": true,\n  \"ShowFavoriteIcon\": true,\n  \"NumColumns\": 3,\n  \"ColumnWidthRatio\": [\n    0.3333333333333333,\n    0.3333333333333333,\n    0.3333333333333333\n  ],\n  \"ListAreaOffset\": [\n    0,\n    10,\n    -5,\n    -20\n  ],\n  \"ColumnRowPadding\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"SearchBarBounds\": [\n    200,\n    4,\n    500,\n    32\n  ],\n  \"FavoriteButtonBounds\": [\n    136,\n    5,\n    30,\n    30\n  ]\n}"
+		    "Data": "{\n  \"ShowSaveButton\": true,\n  \"ShowExpansionsAsColumn\": false,\n  \"ShowFolderButton\": true,\n  \"ShowNotes\": true,\n  \"ShowEditButtons\": true,\n  \"EditButtonOffset\": 15,\n  \"ButtonsInsideBorder\": true,\n  \"ShowAddButton\": false,\n  \"ShowRenameButton\": true,\n  \"ShowDeleteButton\": true,\n  \"ShowFavoriteIcon\": true,\n  \"NumColumns\": 3,\n  \"ColumnWidthRatio\": [\n    0.3333333333333333,\n    0.3333333333333333,\n    0.3333333333333333\n  ],\n  \"ListAreaOffset\": [\n    0,\n    10,\n    -5,\n    -20\n  ],\n  \"ColumnRowPadding\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"SearchBarBounds\": [\n    200,\n    4,\n    500,\n    32\n  ],\n  \"FavoriteButtonBounds\": [\n    136,\n    5,\n    30,\n    30\n  ]\n}"
 		});
 		
 		Content.addPanel("pnlPresetNotesBlocker", 0, 0);
 		Content.setPropertiesFromJSON("pnlPresetNotesBlocker", {
 			"x": 18, "y": 54, "width": 837, "height": 38,
 			"parentComponent": "pnlPresetBrowser"
-		});
-		
-		Content.addButton("btnLibraryManager", 0, 0);
-		Content.setPropertiesFromJSON("btnLibraryManager", {
-			"x": 106, "y": 425, "width": 25, "height": 25,
-			"parentComponent": "pnlPresetBrowser",
-			"saveInPreset": false,
-			"text": "apps",
-			"isMomentary": true,
-			"enableMidiLearn": false,
-			"tooltip": "Unload this instrument and open the library manager."
 		});
 	}
 
