@@ -105,8 +105,11 @@ namespace LookAndFeel
 		var a = [obj.area[0] + 2, obj.area[1], obj.area[2] - 4, obj.area[3] - 4];
 		var shadow = 4;
 		
-		g.setColour(Colours.withAlpha(Colours.black, obj.enabled ? 0.2 : 0.1));
-		g.fillEllipse([a[0], a[1] + shadow, a[2], a[3]]);
+		if (obj.enabled)
+		{
+			g.setColour(Colours.withAlpha(Colours.black, obj.enabled ? 0.2 : 0.1));
+			g.fillEllipse([a[0], a[1] + shadow, a[2], a[3]]);
+		}
 		
 		g.setColour(Colours.withAlpha(obj.bgColour, obj.enabled ? 1.0 : 0.5));
 		g.fillEllipse(a);
@@ -224,20 +227,28 @@ namespace LookAndFeel
 		var a = obj.area;
 		var alignment = "centred";
 		var text = obj.text;
-		
+				
 		if (obj.bgColour != 0)
 		{
 			g.setColour(Colours.withAlpha(obj.bgColour, obj.over ? 1.0 : 0.8));
+			
+			if (!obj.enabled)
+				g.setColour(Colours.withAlpha(obj.bgColour, 0.3));
+
 			g.fillRoundedRectangle(a, 3);
 		}
 
 		if (obj.value && obj.itemColour1 != 0)
 		{
 			g.setColour(Colours.withAlpha(obj.itemColour1, obj.over ? 1.0 : 0.8));
+			
+			if (!obj.enabled)
+				g.setColour(Colours.withAlpha(obj.itemColour1, 0.3));
+			
 			g.fillRoundedRectangle(a, 3);
 		}
 
-    	g.setFont("medium", 18);
+    	g.setFont("semibold", 18);
     	g.setColour(Colours.withAlpha(obj.textColour, obj.over ? 1.0 : 0.8));
 
 		if (text.indexOf("underline-") != -1)
