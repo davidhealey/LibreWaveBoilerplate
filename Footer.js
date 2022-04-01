@@ -22,22 +22,24 @@ namespace Footer
     
     pnlFooter.setPaintRoutine(function(g) 
     {
+		var a = this.getLocalBounds(0);
+
         // Footer
         g.setColour(this.get("bgColour"));
-        g.fillRect([0, 0, this.getWidth(), 45]);
+        g.fillRect([0, 0, a[2], a[3]]);
         
         g.setColour(0xff3a322d);
-        g.fillRect([0, 46, this.getWidth(), 5]);
+        g.fillRect([0, 46, a[2], 5]);
         
         g.setColour(0xff493d38);
-        g.fillRect([0, 51, this.getWidth(), this.getHeight() - 49]);
+        g.fillRect([0, 51, a[2], a[3] - 49]);
         
         g.setColour(0xff3a322d);
-        g.fillRect([10, 49, this.getWidth() - 20, this.getHeight() - 49]);
+        g.fillRect([10, 49, a[2] - 20, a[3] - 49]);
         
         // Logo
         g.setColour(this.get("itemColour"));
-        g.fillPath(Paths.librewave, [this.getWidth() / 2 - 128 / 2, 45 / 2 - 15 / 2, 128, 15]);
+        g.fillPath(Paths.librewave, [a[2] / 2 - 128 / 2, 45 / 2 - 15 / 2, 128, 15]);
         
         // Labels
         g.setColour(this.get("textColour"));
