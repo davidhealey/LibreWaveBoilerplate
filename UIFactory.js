@@ -62,7 +62,8 @@ namespace UIFactory
 		Content.addPanel("pnlAbout", 0, 0);
 		Content.setPropertiesFromJSON("pnlAbout", {
 			"x": 0, "y": 0, "width": a[2], "height": a[3],
-			"visible": false
+			"visible": false,
+			"allowCallbacks": "Clicks Only"
 		});
 		
 		createAdminPanel();
@@ -190,6 +191,10 @@ namespace UIFactory
 			"x": 474, "y": 15, "width": 365, "height": 28,
 		    "parentComponent": "pnlHeader",
 		    "text": "",
+		    "textColour": 0xffd0b58e,
+		    "fontName": "Bold",
+		    "fontSize": 18,
+		    "alignment": "centred",
 		    "editable": false
 		});
 		
@@ -407,7 +412,7 @@ namespace UIFactory
 		
 		Content.addFloatingTile("fltAudioSettings", 0, 0);
 		Content.setPropertiesFromJSON("fltAudioSettings", {
-		    "x": 0, "y": 15, "width": 400, "height": 300,
+		    "x": 0, "y": 7, "width": 400, "height": 300,
 		    "parentComponent": "pnlSettingsTab0",
 		    "ContentType": "CustomSettings",
 		    "Data": "{\n  \"Driver\": true,\n  \"Device\": true,\n  \"Output\": true,\n  \"BufferSize\": true,\n  \"SampleRate\": true,\n  \"GlobalBPM\": false,\n  \"StreamingMode\": false,\n  \"ScaleFactor\": false,\n  \"VoiceAmountMultiplier\": false,\n  \"ClearMidiCC\": false,\n  \"SampleLocation\": false,\n  \"DebugMode\": false,\n  \"UseOpenGL\": false,\n  \"ScaleFactorList\": [\n    0.5,\n    0.75,\n    1.0,\n    1.25,\n    1.5,\n    2.0\n  ]\n}",
@@ -417,17 +422,17 @@ namespace UIFactory
 
 		Content.addFloatingTile("fltEngineSettings", 0, 0);
 		Content.setPropertiesFromJSON("fltEngineSettings", {
-		    "x": 400, "y": 15, "width": 400, "height": 300,
+		    "x": 400, "y": 7, "width": 400, "height": 300,
 		    "parentComponent": "pnlSettingsTab0",
 		    "ContentType": "CustomSettings",
-		    "Data": "{\n  \"Driver\": false,\n  \"Device\": false,\n  \"Output\": false,\n  \"BufferSize\": false,\n  \"SampleRate\": false,\n  \"GlobalBPM\": true,\n  \"StreamingMode\": true,\n  \"ScaleFactor\": true,\n  \"VoiceAmountMultiplier\": true,\n  \"ClearMidiCC\": false,\n  \"SampleLocation\": false,\n  \"DebugMode\": true,\n  \"UseOpenGL\": true,\n  \"ScaleFactorList\": [\n    0.5,\n    0.75,\n    1.0,\n    1.25,\n    1.5,\n    2.0\n  ]\n}",
+		    "Data": "{\n  \"Driver\": false,\n  \"Device\": false,\n  \"Output\": false,\n  \"BufferSize\": false,\n  \"SampleRate\": false,\n  \"GlobalBPM\": true,\n  \"StreamingMode\": true,\n  \"ScaleFactor\": true,\n  \"VoiceAmountMultiplier\": true,\n  \"ClearMidiCC\": false,\n  \"SampleLocation\": false,\n  \"UseOpenGL\": false,\n  \"DebugMode\": false,\n  \"ScaleFactorList\": [\n    0.5,\n    0.75,\n    1.0,\n    1.25,\n    1.5,\n    2.0\n  ]\n}",
 		    "Font": "bold",
 		    "FontSize": 16.0
 		});
 
 		Content.addKnob("knbCoarseTuning", 0, 0);
 		Content.setPropertiesFromJSON("knbCoarseTuning", {
-		    "x": 173, "y": 230, "width": 188, "height": 20,
+		    "x": 173, "y": 225, "width": 188, "height": 20,
 		    "text": "Coarse Tuning-bipolar",
 		    "parentComponent": "pnlSettingsTab0",
 		    "style": "Horizontal",
@@ -446,7 +451,7 @@ namespace UIFactory
 		
 		Content.addKnob("knbFineTuning", 0, 0);
 		Content.setPropertiesFromJSON("knbFineTuning", {
-		    "x": 173, "y": 259, "width": 188, "height": 20,
+		    "x": 173, "y": 258, "width": 188, "height": 20,
 		    "text": "Fine Tuning-bipolar",
 		    "parentComponent": "pnlSettingsTab0",
 		    "style": "Horizontal",
@@ -465,7 +470,7 @@ namespace UIFactory
 		
 		Content.addKnob("knbTranspose", 0, 0);
 		Content.setPropertiesFromJSON("knbTranspose", {
-		    "x": 173, "y": 288, "width": 188, "height": 20,
+		    "x": 173, "y": 291, "width": 188, "height": 20,
 		    "text": "Transpose",
 		    "parentComponent": "pnlSettingsTab0",
 		    "style": "Horizontal",
@@ -480,6 +485,15 @@ namespace UIFactory
 		    "showValuePopup": "Above",		    
 		    "processorId": "transposer",
 		    "parameterId": "SemiTone"
+		});
+
+		Content.addButton("btnDebug" + i, 0, 0);
+		Content.setPropertiesFromJSON("btnDebug" + i, {
+			"x": 573, "y": 183, "width": 188, "height": 30,
+			"parentComponent": "pnlSettingsTab0",
+			"text": "Debug Mode",
+			"saveInPreset": false,
+			"enableMidiLearn": false
 		});
 
 		Content.addFloatingTile("fltMidiLearn", 0, 0);
@@ -854,11 +868,14 @@ namespace UIFactory
 			"parentComponent": "pnlEnvelope",
 			"Data": "{\r\n  \"ProcessorId\": \"\",\r\n  \"Index\": -1\r\n}"
 		});
-	
+
 		for (i = 0; i < 6; i++)
 		{
+			local x = i == 0 ? 22 : Math.round(70 + ((i - 1) * ((a[2] - 22 - 60) / 5)));
+
 			Content.addKnob("knbAHDSR" + i, 0, 0);
 			Content.setPropertiesFromJSON("knbAHDSR" + i, {
+				"x": x, "y": a[3] - 38, "width": 30, "height": 30,
 				"parentComponent": "pnlEnvelope",
 				"style": "Knob",
 				"saveInPreset": false,
@@ -867,7 +884,7 @@ namespace UIFactory
 		}
 		
 		Content.setPropertiesFromJSON("knbAHDSR0", {
-			"text": "Curve-colourV2[nodefault]",
+			"text": "CURVE[nodefault]",
 			"pluginParameterName": "Attack Curve",
 			"mode": "NormalizedPercentage",
 			"middlePosition": 0.5,
@@ -877,7 +894,7 @@ namespace UIFactory
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR1", {
-			"text": "A-colourV3[nodefault]",
+			"text": "A[nodefault]",
 			"pluginParameterName": "Attack",
 			"mode": "Time",
 			"defaultValue": 5.0,
@@ -886,7 +903,7 @@ namespace UIFactory
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR2", {
-			"text": "H-colourV3[nodefault]",
+			"text": "H[nodefault]",
 			"pluginParameterName": "Hold",
 			"mode": "Time",
 			"defaultValue": 10.0,
@@ -895,7 +912,7 @@ namespace UIFactory
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR3", {
-			"text": "D-colourV3[nodefault]",
+			"text": "D[nodefault]",
 			"pluginParameterName": "Decay",
 			"mode": "Time",
 			"defaultValue": 1000.0,
@@ -904,7 +921,7 @@ namespace UIFactory
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR4", {
-			"text": "S-colourV3[nodefault]",
+			"text": "S[nodefault]",
 			"pluginParameterName": "Sustain",
 			"mode": "Decibel",
 			"defaultValue": -2.0,
@@ -913,7 +930,7 @@ namespace UIFactory
 		});
 		
 		Content.setPropertiesFromJSON("knbAHDSR5", {
-			"text": "R-colourV3[nodefault]",
+			"text": "R[nodefault]",
 			"pluginParameterName": "Release",
 			"mode": "Time",
 			"defaultValue": 500.0,
