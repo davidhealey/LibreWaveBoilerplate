@@ -41,7 +41,7 @@ namespace LookAndFeel
 		g.fillPath(obj.path, a);
 		
 	    g.setColour(obj.itemColour2);
-	    g.drawPath(obj.path, a, 2.5);
+	    g.drawPath(obj.path, a, 2.0);
 	});
 	
 	laf.registerFunction("drawTablePoint", function(g, obj)
@@ -75,19 +75,17 @@ namespace LookAndFeel
 	{
 		var a = obj.area;
 		var p = obj.path;
-		
-		if (obj.isActive)
-		{
-			g.setColour(Colours.withAlpha(obj.itemColour2, 0.2));
-			g.fillPath(p, a);
-		}
-		else
-		{
-			g.setColour(obj.itemColour);
-			g.fillPath(p, a);
 
-			g.setColour(obj.itemColour2);
-			g.drawPath(p, a, 2.5);
+		g.setColour(Colours.withAlpha(obj.itemColour, obj.enabled ? 1.0 : 0.5));
+		g.fillPath(p, a);
+		
+		g.setColour(Colours.withAlpha(obj.itemColour2, obj.enabled && obj.isActive ? 0.2 : 0.0));
+		g.fillPath(p, a);
+
+		if (!obj.isActive)
+		{
+			g.setColour(Colours.withAlpha(obj.itemColour2, obj.enabled ? 1.0 : 0.5));
+			g.drawPath(p, a, 2.0);
 		}
 	});
 
