@@ -77,7 +77,7 @@ namespace Cards
 
 	inline function drawKnobLabel(g, c, a)
 	{
-		g.setFont("bold", 16);
+		a[2] == 55 ? g.setFont("semibold", 18) : g.setFont("semibold", 16);
 		g.setColour(this.get("textColour"));	
 		
 		local text = c.get("text").replace("[nodefault]");
@@ -85,7 +85,7 @@ namespace Cards
 		if (text.indexOf("[r]") != -1)
 			text = text.substring(0, c.get("text").indexOf("[r]"));
 		
-		local y = a[2] == 55 ? a[1] - 68 : a[1] - 30;
+		local y = a[2] == 55 ? a[1] - 67 : a[1] - 30;
 		
 		g.drawAlignedText(text, [a[0] - 20, y, a[2] + 40, 25], "centred");
 	}
