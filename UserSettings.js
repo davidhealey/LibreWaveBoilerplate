@@ -8,7 +8,7 @@
 
     This file is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -82,6 +82,7 @@ namespace UserSettings
 	// fltAudioSettings
 	const fltAudioSettings = Content.getComponent("fltAudioSettings");
 	fltAudioSettings.setLocalLookAndFeel(LookAndFeel.customSettings);
+	fltAudioSettings.set("enabled", !Engine.isPlugin());
 
 	// fltEngineSettings
 	const fltEngineSettings = Content.getComponent("fltEngineSettings");
@@ -155,8 +156,6 @@ namespace UserSettings
     inline function positionTabButtons()
     {
         local numButtons = btnSettingsTab.length;
-
-        btnSettingsTab[0].showControl(!Engine.isPlugin());
                     
         local w = pnlSettings.getWidth() / numButtons;
 
