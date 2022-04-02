@@ -39,7 +39,7 @@ namespace Configuration
 	const noteRangeFilter = [];
 	const processorIds = Synth.getIdList("Script Processor");
 	const scriptProcessors = [];
-	    
+
 	for (id in processorIds)
 	{
 		scriptProcessors.push(Synth.getMidiProcessor(id));
@@ -234,6 +234,7 @@ namespace Configuration
 		}
 	}
 	
+	// Called from articulation handler
 	inline function setNoteRangeFilter(index)
 	{
 		local kr = keyRanges[index];
@@ -297,8 +298,6 @@ namespace Configuration
 
 	inline function loadDefaults()
 	{
-		Patches.set(-1);
-
 		for (x in samplers)
 		{
 			x.setBypassed(true);
@@ -306,7 +305,7 @@ namespace Configuration
 			x.setAttribute(x.VoiceAmount, 1);
 			x.setAttribute(x.VoiceLimit, 1);
 		}
-		
+				
 		for (x in effects)
 		{
 			if (x.getId().indexOf("Convolution") != -1)
