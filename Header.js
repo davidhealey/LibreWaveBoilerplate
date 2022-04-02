@@ -31,10 +31,7 @@ namespace Header
         g.fillRoundedRectangle(a, 5);
         
 	    // Product title
-	    var titleSize = 28;
-	
-	    if (isDefined(Manifest.titleSize))
-	      titleSize = Manifest.titleSize;
+	    var titleSize = Manifest.titleSize == undefined ? 28 : Manifest.titleSize;
 	
 	    g.setFont("title", titleSize);
 	    g.setColour(this.get("textColour"));
