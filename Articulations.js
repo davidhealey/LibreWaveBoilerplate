@@ -60,13 +60,21 @@ namespace Articulations
 			g.setColour(this.get("textColour"));
 
 			// Articulation name
-			var text;
-			art.label != undefined ? text = art.label : text = art.id;
+			var text = art.label != undefined ? art.label : art.id;			
 			g.drawAlignedText(text, [a[0] + 10, a[1] - 0.5, a[2], a[3]], "left");
                 
 			// Keyswitch                
 			if (ks != undefined && ks[i] != undefined)
 				g.drawAlignedText(Engine.getMidiNoteName(ks[i]), [a[0], a[1] - 0.5, a[2] - 25, a[3]], "right");
+
+			// Tooltip
+			if (this.data.hover == artIndex)
+			{
+				if (isDefined(art.comment))
+					this.set("tooltip", art.comment);
+				else
+					this.set("tooltip", "");
+			}		
 		}
 	});
 	
@@ -125,10 +133,15 @@ namespace Articulations
 	pnlArticulationGain.setMouseCallback(function(event)
 	{
 		var arts = Patches.getCurrentPatch().articulations.active;
+		var index =  parseInt(event.y / (ROW_HEIGHT + ROW_SPACE));
+		var art = Manifest.articulations[index];
+		var text = art.label != undefined ? art.label : art.id;
+
+		this.set("tooltip", text + " master volume");
 
         if (event.clicked)
         {
-            this.data.index = parseInt(event.y / (ROW_HEIGHT + ROW_SPACE));
+            this.data.index = index;
             this.data.downValue = slpArticulationGain.getSliderValueAt(this.data.index);
         }
         
