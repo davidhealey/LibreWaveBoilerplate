@@ -355,7 +355,7 @@ namespace UIFactory
 		    "ContentType": "PresetBrowser",
 		    "Font": "bold",
 		    "FontSize": 14,
-		    "Data": "{\n  \"ShowSaveButton\": true,\n  \"ShowExpansionsAsColumn\": false,\n  \"ShowFolderButton\": true,\n  \"ShowNotes\": true,\n  \"ShowEditButtons\": true,\n  \"EditButtonOffset\": 15,\n  \"ButtonsInsideBorder\": true,\n  \"ShowAddButton\": false,\n  \"ShowRenameButton\": true,\n  \"ShowDeleteButton\": true,\n  \"ShowFavoriteIcon\": true,\n  \"NumColumns\": 3,\n  \"ColumnWidthRatio\": [\n    0.3333333333333333,\n    0.3333333333333333,\n    0.3333333333333333\n  ],\n  \"ListAreaOffset\": [\n    0,\n    10,\n    -5,\n    -20\n  ],\n  \"ColumnRowPadding\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"SearchBarBounds\": [\n    200,\n    4,\n    500,\n    32\n  ],\n  \"FavoriteButtonBounds\": [\n    136,\n    5,\n    30,\n    30\n  ]\n}"
+		    "Data": "{\n  \"ShowSaveButton\": true,\n  \"ShowExpansionsAsColumn\": true,\n  \"ShowFolderButton\": true,\n  \"ShowNotes\": true,\n  \"ShowEditButtons\": true,\n  \"EditButtonOffset\": 15,\n  \"ButtonsInsideBorder\": true,\n  \"ShowAddButton\": false,\n  \"ShowRenameButton\": true,\n  \"ShowDeleteButton\": true,\n  \"ShowFavoriteIcon\": true,\n  \"NumColumns\": 3,\n  \"ColumnWidthRatio\": [\n    0.3333333333333333,\n    0.3333333333333333,\n    0.3333333333333333\n  ],\n  \"ListAreaOffset\": [\n    0,\n    10,\n    -5,\n    -20\n  ],\n  \"ColumnRowPadding\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"SearchBarBounds\": [\n    200,\n    4,\n    500,\n    32\n  ],\n  \"FavoriteButtonBounds\": [\n    136,\n    5,\n    30,\n    30\n  ]\n}"
 		});
 		
 		Content.addPanel("pnlPresetNotesBlocker", 0, 0);
