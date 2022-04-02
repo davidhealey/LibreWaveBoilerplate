@@ -82,6 +82,7 @@ namespace UIFactory
 			"x": 0, "y": 0, "width": 128, "height": 48,
 			"parentComponent": "pnlAdmin",
 			"text": "Patch",
+			"min": -1.0,
 			"max": 50.0,
 			"stepSize": 1.0,
 			"middlePosition": 25.0,
@@ -287,7 +288,7 @@ namespace UIFactory
 		    "showValuePopup": "Below",
 		    "style": "Horizontal",		    
 		    "text": "Gain",
-		    "processorId": "Master Gain",
+		    "processorId": "masterGain",
 		    "parameterId": "Gain",
 		    "tooltip": "Master volume."
 		});
@@ -577,7 +578,7 @@ namespace UIFactory
 			{
 				"id": "knbExpression",
 				"properties": {
-					"text": "Expression",
+					"text": "EXPRESSION",
 				    "isPluginParameter": true,
 				    "pluginParameterName": "Expression",
 				    "max": 127.0,
@@ -593,7 +594,7 @@ namespace UIFactory
 			{
 				"id": "knbDynamics",
 				"properties": {
-				    "text": "[r]SOFT,HARD[/r]",
+				    "text": "DYNAMICS[r]SOFT,HARD[/r]",
 				    "isPluginParameter": true,
 				    "pluginParameterName": "Dynamics",
 				    "max": 127.0,
@@ -617,7 +618,7 @@ namespace UIFactory
 			{
 				"id": "knbVibratoRate",
 				"properties": {
-				    "text": "Rate[r]0,100%[/r]",
+				    "text": "RATE[r]0,100%[/r]",
 				    "showValuePopup": "Right",
 				    "defaultValue": 0.5,
 				    "isPluginParameter": true,
@@ -631,7 +632,7 @@ namespace UIFactory
 			{
 				"id": "knbVibratoDepth",
 				"properties": {
-				    "text": "Depth[r]0,100%[/r]",
+				    "text": "DEPTH[r]0,100%[/r]",
 				    "showValuePopup": "Right",
 				    "isPluginParameter": true,
 				    "pluginParameterName": "Vibrato Depth",
@@ -652,7 +653,7 @@ namespace UIFactory
 			{
 				"id": "knbGrowl",
 				"properties": {
-				    "text": "Growl[r]0,100%[/r]",
+				    "text": "GROWL[r]0,100%[/r]",
 				    "showValuePopup": "Right",
 				    "isPluginParameter": true,
 				    "pluginParameterName": "Growl",
@@ -665,7 +666,7 @@ namespace UIFactory
 			{
 				"id": "knbFlutter",
 				"properties": {
-				    "text": "Flutter[r]0,100%[/r]",
+				    "text": "FLUTTER[r]0,100%[/r]",
 				    "showValuePopup": "Right",
 				    "isPluginParameter": true,
 				    "pluginParameterName": "Flutter",
@@ -686,7 +687,7 @@ namespace UIFactory
 			{
 				"id": "knbReleaseGain",
 				"properties": {
-				    "text": "Gain",
+				    "text": "GAIN",
 				    "isPluginParameter": true,
 				    "pluginParameterName": "Release Trigger Gain",
 				    "mode": "Decibel",
