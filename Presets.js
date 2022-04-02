@@ -40,7 +40,7 @@ namespace Presets
     
     pnlPresetNotesBlocker.setPaintRoutine(function(g)
     {
-		var labels = ["LIBRARY", "BANK", "CATEGORY", "PRESET"];
+		var labels = Engine.isPlugin() ? ["LIBRARY", "BANK", "CATEGORY", "PRESET"] : ["BANK", "CATEGORY", "PRESET"];
 
         g.fillAll(this.get("bgColour"));
 
@@ -98,6 +98,12 @@ namespace Presets
     }
 
     // Functions
+    inline function setNumColumns()
+    {
+	    local data = "{\n  \"ShowSaveButton\": true,\n  \"ShowExpansionsAsColumn\": " + Engine.isPlugin() + ",\n  \"ShowFolderButton\": true,\n  \"ShowNotes\": true,\n  \"ShowEditButtons\": true,\n  \"EditButtonOffset\": 15,\n  \"ShowAddButton\": true,\n  \"ShowRenameButton\": true,\n  \"ShowDeleteButton\": true,\n  \"ShowFavoriteIcon\": true,\n  \"ButtonsInsideBorder\": true,\n  \"NumColumns\": 3,\n  \"ColumnWidthRatio\": [\n    0.3333333333333333,\n    0.3333333333333333,\n    0.3333333333333333\n  ],\n  \"ListAreaOffset\": [\n    0,\n    10,\n    -5,\n    -20\n  ],\n  \"ColumnRowPadding\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"SearchBarBounds\": [\n    200,\n    4,\n    500,\n    32\n  ],\n  \"FavoriteButtonBounds\": [\n    136,\n    5,\n    30,\n    30\n  ]\n}";
+	    fltPresetBrowser.set("Data", data);
+    }
+    
     inline function show()
     {
         pnlPresetBrowser.showControl(true);
@@ -124,4 +130,7 @@ namespace Presets
 		for (x in btnPreset)
 	    	x.set("enabled", state);
     }
+    
+    // Function calls
+    setNumColumns();
 }
