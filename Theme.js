@@ -6,7 +6,6 @@ namespace Theme
 		{
 			"components": {
 				"pnlMain": {"bgColour": 0xff242220, "itemColour": 0xff302c2a, "itemColour2": 0xff302c2a},
-				"pnlLibrary": {"bgColour": 0xff242220, "textColour": 0xffcdcdcd},
 				"pnlPlay": {"bgColour": 0x00, "itemColour": 0x00, "itemColour2": 0x00},
 				"pnlArticulationList": {"bgColour": 0x00, "itemColour": 0xff5a5452, "itemColour2": 0xff968b81, "textColour": Colours.white},
 				"pnlHeader": {"bgColour": 0xff7c6c63, "itemColour": 0xff403e3c, "textColour": 0xffd7d0bc},
@@ -18,7 +17,7 @@ namespace Theme
 				"pnlFooter": {"bgColour": 0xff695b54, "itemColour": 0xffede6d8, "itemColour2": 0xffd7d0bc, "textColour": 0xffd7d0bc},
 				"fltStats": {"textColour": 0xffa29b98},
 				"knbMasterGain": {"itemColour": 0xff7c6c63, "itemColour2": 0xffd7d0bc, "textColour": 0xff695b54},
-				"knbMasterPan": {"bgColour": 0xff4c4441, "itemColour": 0xff7c6c63, "itemColour2": 0xffd7d0bc, "textColour": 0xff695b54},
+				"knbMasterPan": {"bgColour": 0xff514a47, "itemColour": 0xff7c6c63, "itemColour2": 0xffd7d0bc, "textColour": 0xff695b54},
 				"btnSettingsTab0": {"bgColour": 0xff97675e, "itemColour": 0xff403e3c, "textColour": 0xffede6d8},
 				"btnSettingsTab1": {"bgColour": 0xff97675e, "itemColour": 0xff403e3c, "textColour": 0xffede6d8},
 				"pnlSettings": {"bgColour": 0xff594f4b, "itemColour": 0xff464241, "itemColour2": 0xff3a3635, "textColour": 0xffc2bcae},
@@ -37,7 +36,7 @@ namespace Theme
 				"pnlSpinnerContainer": {"bgColour": 0x00, "itemColour": 0x89000000, "itemColour2": 0x89000000},
 				"fltEnvelope": {"bgColour": 0xff4c4441, "itemColour": 0xff8b7559, "itemColour2": 0xffd2c7b2},
 				"pnlMixerControls": {"bgColour": 0xff514a47, "itemColour": 0x00, "itemColour2": 0x00},
-				"pnlVuMeter": {"bgColour": 0xff514a47, "itemColour": 0x00, "itemColour2": 0x00},
+				"pnlVuMeter": {"bgColour": 0xff514a47, "itemColour": 0x00, "itemColour2": 0x00, "textColour": 0x0},
 				"pnlArticulationGain": {"bgColour": 0xff413c3b, "itemColour": 0xff9f8369},
 				"pnlAbout": {"bgColour": 0x88000000, "itemColour": 0xff3a3635, "itemColour2": 0xff89837d, "textColour": Colours.white}
 			},
