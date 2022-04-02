@@ -37,7 +37,7 @@ namespace Theme
 				"cmbFilter": {"bgColour": 0xff393736, "itemColour": 0xffc1c1c1, "textColour": 0xffc1c1c1},
 				"pnlTooltip": {"bgColour": 0xaa000000, "textColour": Colours.white},
 				"pnlSpinnerContainer": {"bgColour": 0x00, "itemColour": 0x89000000, "itemColour2": 0x89000000},
-				"fltEnvelope": {"bgColour": 0xff4c4441, "itemColour": 0xff8b7559, "itemColour2": 0xffd2c7b2},
+				"fltEnvelope": {"bgColour": 0xff4c4441, "itemColour": 0xff8b7559, "itemColour2": 0xffd2c2b2},
 				"pnlMixerControls": {"bgColour": 0xff514a47, "itemColour": 0x00, "itemColour2": 0x00},
 				"pnlVuMeter": {"bgColour": 0xff514a47, "itemColour": 0x00, "itemColour2": 0x00, "textColour": 0x0},
 				"pnlArticulationGain": {"bgColour": 0xff413c3b, "itemColour": 0xff9f8369},
