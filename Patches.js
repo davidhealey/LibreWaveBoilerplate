@@ -35,7 +35,10 @@ namespace Patches
 	inline function onbtnLoadDefaultControl(component, value)
 	{
 		if (value)
+		{
 			Configuration.loadDefaults();
+			knbPatch.setValue(-1);
+		}			
 	}
 	
 	// Functions	
@@ -78,6 +81,7 @@ namespace Patches
 			UserSettings.hide();
 			Presets.show();
 			Configuration.setMasterMuter(true);
+			Configuration.setKeyColours(0);
 		}
 	}
 
