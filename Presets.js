@@ -29,7 +29,7 @@ namespace Presets
     
     pnlPresetBrowser.setPaintRoutine(function(g)
     {
-	   var a = [0, 0, this.getWidth(), this.getHeight()] ;
+	   var a = [0, 0, this.getWidth(), this.getHeight()];
 	   
 	   g.setColour(this.get("bgColour"));	   
 	   g.fillRoundedRectangle(a, 5);
@@ -40,13 +40,13 @@ namespace Presets
     
     pnlPresetNotesBlocker.setPaintRoutine(function(g)
     {
-		var labels = ["BANK", "CATEGORY", "PRESET"];
+		var labels = ["LIBRARY", "BANK", "CATEGORY", "PRESET"];
 
         g.fillAll(this.get("bgColour"));
 
         g.setColour(this.get("textColour"));
         g.setFont("bold", 16);
-        
+
         for (i = 0; i < labels.length; i++)
         {
 	        var w = this.getWidth() / labels.length;

@@ -108,6 +108,7 @@ namespace Mixer
 		cmbOutput.push(Content.getComponent("cmbOutput" + i));
 		cmbOutput[i].setLocalLookAndFeel(LookAndFeel.comboBox);
 		cmbOutput[i].setControlCallback(oncmbOutputControl);
+		Engine.isPlugin() ? cmbOutput[i].set("items", "1/2\n3/4\n5/6\n7/8") : cmbOutput[i].set("items", "1/2");
 	}	
 
     inline function oncmbOutputControl(component, value)

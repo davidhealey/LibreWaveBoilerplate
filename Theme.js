@@ -6,8 +6,11 @@ namespace Theme
 		{
 			"components": {
 				"pnlMain": {"bgColour": 0xff242220, "itemColour": 0xff302c2a, "itemColour2": 0xff302c2a},
+<<<<<<< HEAD
 				"pnlVelocity": {"bgColour": 0x0, "itemColour": 0x0, "itemColour2": 0x0, "textColour": 0x0},
 				"tblVelocity": {"bgColour": 0xff4c4441, "itemColour": 0xff7a6052, "itemColour2": 0xffd2c2b2},
+=======
+>>>>>>> aa6159287eb409861f5a7ecca1834367d5fcb71c
 				"pnlPlay": {"bgColour": 0x00, "itemColour": 0x00, "itemColour2": 0x00},
 				"pnlArticulationList": {"bgColour": 0x00, "itemColour": 0xff5a5452, "itemColour2": 0xff968b81, "textColour": Colours.white},
 				"pnlHeader": {"bgColour": 0xff7c6c63, "itemColour": 0xff403e3c, "textColour": 0xffd7d0bc},
@@ -18,7 +21,12 @@ namespace Theme
 				"btnPreset1": {"itemColour": 0xff968b81, "itemColour2": 0xff695b54},
 				"pnlFooter": {"bgColour": 0xff695b54, "itemColour": 0xffede6d8, "itemColour2": 0xffd7d0bc, "textColour": 0xffd7d0bc},
 				"fltStats": {"textColour": 0xffa29b98},
+<<<<<<< HEAD
 				"knbMasterGain": {"bgColour": 0x0, "itemColour": 0xff7c6c63, "itemColour2": 0xffd7d0bc, "textColour": 0xff695b54},
+=======
+				"knbMasterGain": {"itemColour": 0xff7c6c63, "itemColour2": 0xffd7d0bc, "textColour": 0xff695b54},
+				"knbMasterPan": {"bgColour": 0xff514a47, "itemColour": 0xff7c6c63, "itemColour2": 0xffd7d0bc, "textColour": 0xff695b54},
+>>>>>>> aa6159287eb409861f5a7ecca1834367d5fcb71c
 				"btnSettingsTab0": {"bgColour": 0xff97675e, "itemColour": 0xff403e3c, "textColour": 0xffede6d8},
 				"btnSettingsTab1": {"bgColour": 0xff97675e, "itemColour": 0xff403e3c, "textColour": 0xffede6d8},
 				"pnlSettings": {"bgColour": 0xff594f4b, "itemColour": 0xff464241, "itemColour2": 0xff3a3635, "textColour": 0xffc2bcae},
