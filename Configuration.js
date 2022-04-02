@@ -171,8 +171,7 @@ namespace Configuration
             }
             else
             {
-                Console.print(d.id);
-                Console.assertTrue(index != -1);
+                Console.print("Missing Module: " + d.id);
             }
         }
     }
