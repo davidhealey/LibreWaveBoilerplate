@@ -8,7 +8,7 @@
 
     This file is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -18,7 +18,7 @@
 namespace Envelope
 {
 	const ahdsrController = Synth.getMidiProcessor("ahdsrController");
-
+	
 	// fltEnvelope
 	const fltEnvelope = Content.getComponent("fltEnvelope");
 
@@ -61,20 +61,9 @@ namespace Envelope
     
     inline function setEnabled(state)
     {
-		local colours = Theme.getComponentColours("fltEnvelope");
-
 	    for (x in knbAHDSR)
 	    	x.set("enabled", state);
-	    	
-	    for (x in colours)
-	    {
-			if (x == "bgColour") continue;
 
-			local c = Colours.withAlpha(colours[x], state ? 1.0 : 0.5);
-			fltEnvelope.set(x, parseInt(c));
-	    }
+		fltEnvelope.set("enabled", state);
     }
-    
-    // Function calls
-    setProcessorId("sampler2GainAHDSR");
 }
