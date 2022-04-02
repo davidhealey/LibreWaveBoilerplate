@@ -35,12 +35,12 @@ namespace Envelope
 	{
 		local index = knbAHDSR.indexOf(component);
         local attributes = [ahdsrController.AttackCurve, ahdsrController.Attack, ahdsrController.Hold, ahdsrController.Decay, ahdsrController.Sustain, ahdsrController.Release];
-        local art = Articulations.getCurrent();
-        
+        local art = isDefined(Articulations.getCurrent) ? Articulations.getCurrent() : 0;
+
         ahdsrController.setAttribute(attributes[index], value);
         slpAHDSR.setSliderAtIndex(art * knbAHDSR.length + index, value);
 	}
-	
+
 	// slpAHDSR
 	const slpAHDSR = Content.getComponent("slpAHDSR");
 	
