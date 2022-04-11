@@ -224,7 +224,7 @@ namespace UIFactory
 		    "saveInPreset": false,
 		    "enableMidiLearn": false,
 		    "isMomentary": true,
-		    "text": "caretLeft",
+		    "text": "triangleLeft",
 		    "tooltip": "Load the previous preset."
 		});
 		
@@ -235,7 +235,7 @@ namespace UIFactory
 		    "saveInPreset": false,
 		    "enableMidiLearn": false,
 		    "isMomentary": true,
-		    "text": "caretRight",
+		    "text": "triangleRight",
 		    "tooltip": "Load the next preset."
 		});
 	}
