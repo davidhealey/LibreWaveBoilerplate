@@ -71,6 +71,8 @@ namespace Patches
 
 			if (isDefined(Articulations.init))
 				Articulations.init();
+				
+			Configuration.setMasterMuter(false);
 		}
 		else
 		{
