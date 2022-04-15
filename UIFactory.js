@@ -430,6 +430,16 @@ namespace UIFactory
 		    "Font": "bold",
 		    "FontSize": 16.0
 		});
+		
+		Content.addFloatingTile("fltSampleLocation", 0, 0);
+		Content.setPropertiesFromJSON("fltSampleLocation", {
+		    "x": 436, "y": 227, "width": 400, "height": 100,
+		    "parentComponent": "pnlSettingsTab0",
+		    "ContentType": "CustomSettings",
+		    "Data": "{\n  \"Driver\": false,\n  \"Device\": false,\n  \"Output\": false,\n  \"BufferSize\": false,\n  \"SampleRate\": false,\n  \"GlobalBPM\": false,\n  \"StreamingMode\": false,\n  \"ScaleFactor\": false,\n  \"VoiceAmountMultiplier\": false,\n  \"ClearMidiCC\": false,\n  \"SampleLocation\": true,\n  \"UseOpenGL\": false,\n  \"DebugMode\": false,\n  \"ScaleFactorList\": [\n    0.5,\n    0.75,\n    1.0,\n    1.25,\n    1.5,\n    2.0\n  ]\n}",
+		    "Font": "regular",
+		    "FontSize": 14.0
+		});
 
 		Content.addKnob("knbCoarseTuning", 0, 0);
 		Content.setPropertiesFromJSON("knbCoarseTuning", {
@@ -494,6 +504,35 @@ namespace UIFactory
 			"parentComponent": "pnlSettingsTab0",
 			"text": "Debug Mode",
 			"saveInPreset": false,
+			"bgColour": 0xff584d49,
+			"itemColour":0xff8b7559,
+			"itemColour2": 0x0,
+			"textColour": Colours.white,
+			"enableMidiLearn": false
+		});
+		
+		Content.addButton("btnSampleLocation" + i, 0, 0);
+		Content.setPropertiesFromJSON("btnSampleLocation" + i, {
+			"x": 573, "y": 223, "width": 188, "height": 30,
+			"parentComponent": "pnlSettingsTab0",
+			"text": "Relocate Samples",
+			"saveInPreset": false,
+			"bgColour": 0xff584d49,
+			"itemColour":0xff8b7559,
+			"itemColour2": 0x0,
+			"textColour": Colours.white,
+			"enableMidiLearn": false
+		});
+		
+		Content.addPanel("pnlSampleLocation" + i, 0, 0);
+		Content.setPropertiesFromJSON("btnSampleLocation" + i, {
+			"x": 520, "y": 269, "width": 280, "height": 60,
+			"parentComponent": "pnlSettingsTab0",
+			"saveInPreset": false,
+			"bgColour": 0x0,
+			"itemColour":0x0,
+			"itemColour2": 0x0,
+			"textColour": 0xffc0baac,
 			"enableMidiLearn": false
 		});
 

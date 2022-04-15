@@ -31,13 +31,89 @@ namespace Expansions
 			Expansions.unloadWithPrompt();	
 	}
 
+	// btnSampleLocation
+	const btnSampleLocation = Content.getComponent("btnSampleLocation");
+	btnSampleLocation.setLocalLookAndFeel(LookAndFeel.textButton);
+	btnSampleLocation.setControlCallback(onbtnSampleLocationControl);
+	
+	inline function onbtnSampleLocationControl(component, value)
+	{
+		if (!value)
+			relocateSamples();
+	}
+
+	// pnlSampleLocation
+	const pnlSampleLocation = Content.getComponent("pnlSampleLocation");
+
+	pnlSampleLocation.setPaintRoutine(function(g)
+	{
+		var e = expHandler.getCurrentExpansion();
+	
+		if (isDefined(e))
+		{
+			var a = this.getLocalBounds(0);
+
+			g.setColour(this.get("textColour"));
+
+			g.setFont("bold", 14);
+			g.drawAlignedText("Current Sample Location", [a[0], a[1], a[2], 30], "centred");	
+
+			g.setFont("regular", 14);			
+			g.drawAlignedText(e.getSampleFolder().toString(0), [a[0], 20, a[2], 30], "centred");
+		}
+	});
+
 	// Functions
 	inline function unloadWithPrompt()
 	{
-		Engine.showYesNoWindow(l10n.get("Unload"), l10n.get("Do you want to unload " + Engine.getName() + "?"), function(response)
+		local e = expHandler.getCurrentExpansion();
+		local name = Engine.getName();
+		
+		if (isDefined(e))
+			name = e.getProperties().Name;	
+
+		Engine.showYesNoWindow(l10n.get("Unload"), l10n.get("Do you want to unload " + name + "?"), function(response)
 		{
 			if (response)
 				expHandler.setCurrentExpansion("");
 		});
 	}
+	
+	inline function relocateSamples()
+	{		
+		var e = expHandler.getCurrentExpansion();
+	
+		if (!isDefined(e))
+			return Engine.showMessageBox("No Library", "No library is currently loaded.", 1);
+
+		Engine.showYesNoWindow("Relocate Samples", "Select the folder containing the library's samples", function(response)
+		{
+			if (response)
+			{				
+				FileSystem.browseForDirectory(e.getSampleFolder(), function(dir)
+				{
+					if (isDefined(dir) && dir.isDirectory())
+					{
+						if (e.setSampleFolder(dir))
+							Engine.showMessageBox("Success", "The sample folder was relocated. Please reload the library.", 0);
+						else
+							Engine.showMessageBox("Failed", "The selected folder could not be used.", 3);
+							
+						pnlSampleLocation.repaint();
+					}
+				});
+			}
+		});		
+	}
+	
+	inline function setRelocatePanelVisibility()
+	{
+		local e = expHandler.getCurrentExpansion();
+
+		pnlSampleLocation.showControl(isDefined(e));
+		btnSampleLocation.showControl(isDefined(e));
+	}
+	
+	// Function calls
+	setRelocatePanelVisibility();
 }
