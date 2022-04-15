@@ -25,15 +25,17 @@ namespace LookAndFeel
 	empty.registerFunction("drawRotarySlider", function(g, obj) {});
 
 	// table
-	laf.registerFunction("drawTableBackground", function(g, obj)
+	const table = Content.createLocalLookAndFeel();
+	
+	table.registerFunction("drawTableBackground", function(g, obj)
 	{
 		var a = obj.area;
-		
+
 		g.setColour(obj.bgColour);
 		g.fillRoundedRectangle(a, 5);
 	});
 
-	laf.registerFunction("drawTablePath", function(g, obj)
+	table.registerFunction("drawTablePath", function(g, obj)
 	{
 		var a = obj.area;
 
@@ -44,7 +46,7 @@ namespace LookAndFeel
 	    g.drawPath(obj.path, a, 2.0);
 	});
 	
-	laf.registerFunction("drawTablePoint", function(g, obj)
+	table.registerFunction("drawTablePoint", function(g, obj)
 	{
 		var a = obj.tablePoint;
 
@@ -52,7 +54,7 @@ namespace LookAndFeel
 		g.fillEllipse(a);
 	});
 
-	laf.registerFunction("drawTableRuler", function(g, obj)
+	table.registerFunction("drawTableRuler", function(g, obj)
 	{
 		var x = obj.position * obj.area[2];
 		
@@ -478,13 +480,14 @@ namespace LookAndFeel
     // Preset browser search bar
     presetBrowser.registerFunction("drawPresetBrowserSearchBar", function(g, obj)
     {
-        var a = [obj.area[0], obj.area[1], obj.area[2] - 10, obj.area[3]];
-        g.setColour(Colours.withAlpha(Colours.lightgrey, 0.8));
+        var a = [obj.area[0] + 20, obj.area[1], obj.area[2] - 40 , obj.area[3]];
+        var wh = a[3] / 1.6;
+
+        g.setColour(Colours.withAlpha(0xff2a2625, 0.8));
         g.fillRoundedRectangle(a, 3);
         
-        g.setColour(Colours.withAlpha(Colours.darkgrey, 0.8));
-        var wh = a[3] / 1.6;
-        g.fillPath(obj.icon, [a[0] + 7, a[1] + a[3] / 2 - wh / 2, wh, wh]);       
+        g.setColour(Colours.withAlpha(Colours.lightgrey, 0.8));        
+        g.fillPath(obj.icon, [a[0] + a[2] - 30, a[1] + a[3] / 2 - wh / 2, wh, wh]);       
     });    
     
     presetBrowser.registerFunction("drawDialogButton", function(g, obj)

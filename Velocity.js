@@ -2,6 +2,7 @@ namespace Velocity
 {
 	// tblVelocity
 	const tblVelocity = Content.getComponent("tblVelocity");
+	tblVelocity.setLocalLookAndFeel(LookAndFeel.table);
 	
 	tblVelocity.setTablePopupFunction(function(x, y)
 	{
