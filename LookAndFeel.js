@@ -94,7 +94,9 @@ namespace LookAndFeel
 	laf.registerFunction("drawAhdsrBall", function(g, obj)
 	{
 		g.setColour(obj.itemColour2);
-		g.fillEllipse([obj.position[0] - 5, obj.position[1] - 5, 10, 10]);
+
+		if (obj.enabled)
+			g.fillEllipse([obj.position[0] - 5, obj.position[1] - 5, 10, 10]);
 	});
 
 	// knob
