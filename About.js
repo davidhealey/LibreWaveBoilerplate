@@ -1,6 +1,6 @@
 namespace About
 {
-	const data = Engine.getProjectInfo();	
+	const projectData = getData();
 
 	// pnlAbout
 	const pnlAbout = Content.getComponent("pnlAbout");
@@ -24,12 +24,15 @@ namespace About
 		a = [a[0] + 25, a[1] + 18, a[2] - 50, 30];
 		
 		g.setFont("bold", 22);
-		g.drawAlignedText(data.ProjectName, a, "centred");
+		g.drawAlignedText(projectData.ProjectName, a, "centred");
 		
 		g.setFont("medium", 18);
-		g.drawAlignedText("Version: " + data.ProjectVersion, [a[0], a[1] + 40, a[2], a[3]], "centred");
-		g.drawAlignedText("Built: " + data.BuildDate, [a[0], a[1] + 80, a[2], a[3]], "centred");
-		g.drawAlignedText(data.CompanyCopyright.replace("(c)", "© "), [a[0], a[1] + 120, a[2], a[3]], "centred");
+		g.drawAlignedText("Version: " + projectData.ProjectVersion, [a[0], a[1] + 40, a[2], a[3]], "centred");
+		
+		if (isDefined(projectData.BuildDate))
+			g.drawAlignedText("Built: " + projectData.BuildDate, [a[0], a[1] + 80, a[2], a[3]], "centred");
+
+		g.drawAlignedText(projectData.CompanyCopyright.replace("(c)", "© "), [a[0], a[1] + 120, a[2], a[3]], "centred");
 
 		a = this.getLocalBounds(250);		
 		g.fillPath(Paths.icons["x"], [a[0] + a[2] - 20, a[1] + 10, 12, 12]);
@@ -53,6 +56,25 @@ namespace About
 	}	
 
 	// Functions
+	inline function getData()
+	{
+		local e = Expansions.getCurrentExpansion();
+		local data = Engine.getProjectInfo();
+		
+		if (isDefined(e))
+		{
+			local props = e.getProperties();
+
+			return {
+				"ProjectName": props.Name,
+				"ProjectVersion": props.Version,
+				"CompanyCopyright": data.CompanyCopyright
+			};
+		}
+		
+		return data;
+	}
+	
 	inline function show()
 	{
 		pnlAbout.showControl(true);
