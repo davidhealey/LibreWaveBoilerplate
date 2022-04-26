@@ -139,6 +139,42 @@ namespace UserSettings
         changeTab(index);
     }
     
+	// btnSampleLocation
+	const btnSampleLocation = Content.getComponent("btnSampleLocation");
+	btnSampleLocation.setLocalLookAndFeel(LookAndFeel.textButton);
+	btnSampleLocation.setControlCallback(onbtnSampleLocationControl);
+	
+	inline function onbtnSampleLocationControl(component, value)
+	{
+		if (value)
+			Expansions.relocateSamples();
+	}
+
+	// pnlSampleLocation
+	const pnlSampleLocation = Content.getComponent("pnlSampleLocation");
+	pnlSampleLocation.data.path = "";
+	
+	pnlSampleLocation.setPaintRoutine(function(g)
+	{		
+		var a = this.getLocalBounds(0);
+		
+		g.setColour(this.get("textColour"));
+		g.setFont("bold", 14);
+		g.drawAlignedText("Current Sample Location", [a[0], a[1], a[2], 30], "centred");
+		
+		g.setFont("regular", 14);			
+		g.drawAlignedText(this.data.path, [a[0], 20, a[2], 30], "centred");
+	});
+
+	pnlSampleLocation.setMouseCallback(function(event)
+	{
+		if (event.clicked && !event.mouseUp && this.data.path != "")
+		{
+			var e = Expansions.getCurrentExpansion();
+			e.getSampleFolder().show();
+		}
+	});
+    
     // Functions
     inline function show()
     {
@@ -152,20 +188,7 @@ namespace UserSettings
 		btnSettings.setValue(false);
 	    pnlSettings.showControl(false);
     }
-    
-    inline function positionTabButtons()
-    {
-        local numButtons = btnSettingsTab.length;
-                    
-        local w = pnlSettings.getWidth() / numButtons;
-
-        for (i = Engine.isPlugin(); i < numButtons; i++)
-        {
-            local x = (i - Engine.isPlugin()) * w + w / 2 - btnSettingsTab[i].getWidth() / 2;
-            btnSettingsTab[i].set("x", x);
-        }
-    }
-      
+          
     inline function changeTab(index)
     {
         for (i = 0; i < btnSettingsTab.length; i++)
@@ -180,7 +203,18 @@ namespace UserSettings
 	    btnSettings.set("enabled", state);
     }
     
+	inline function setRelocatePanelVisibility()
+	{
+		local e = Expansions.getCurrentExpansion();
+	
+		if (isDefined(e))
+			pnlSampleLocation.data.path = e.getSampleFolder().toString(0);
+	
+		pnlSampleLocation.showControl(isDefined(e));
+		btnSampleLocation.showControl(isDefined(e));
+	}
+    
     // Function calls
-    positionTabButtons();
     changeTab(0);
+    setRelocatePanelVisibility();
 }

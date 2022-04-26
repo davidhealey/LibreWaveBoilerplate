@@ -18,7 +18,7 @@
 namespace Expansions
 {
 	const expHandler = Engine.createExpansionHandler();
-	
+		
 	// btnLibraryManager
 	const btnLibraryManager = Content.getComponent("btnLibraryManager");
 	btnLibraryManager.setLocalLookAndFeel(LookAndFeel.iconButton);
@@ -30,38 +30,6 @@ namespace Expansions
 		if (!value)
 			Expansions.unloadWithPrompt();	
 	}
-
-	// btnSampleLocation
-	const btnSampleLocation = Content.getComponent("btnSampleLocation");
-	btnSampleLocation.setLocalLookAndFeel(LookAndFeel.textButton);
-	btnSampleLocation.setControlCallback(onbtnSampleLocationControl);
-	
-	inline function onbtnSampleLocationControl(component, value)
-	{
-		if (!value)
-			relocateSamples();
-	}
-
-	// pnlSampleLocation
-	const pnlSampleLocation = Content.getComponent("pnlSampleLocation");
-
-	pnlSampleLocation.setPaintRoutine(function(g)
-	{
-		var e = expHandler.getCurrentExpansion();
-	
-		if (isDefined(e))
-		{
-			var a = this.getLocalBounds(0);
-
-			g.setColour(this.get("textColour"));
-
-			g.setFont("bold", 14);
-			g.drawAlignedText("Current Sample Location", [a[0], a[1], a[2], 30], "centred");	
-
-			g.setFont("regular", 14);			
-			g.drawAlignedText(e.getSampleFolder().toString(0), [a[0], 20, a[2], 30], "centred");
-		}
-	});
 
 	// Functions
 	inline function unloadWithPrompt()
@@ -105,15 +73,20 @@ namespace Expansions
 			}
 		});		
 	}
+
+	inline function getCurrentExpansion()
+	{
+		return expHandler.getCurrentExpansion();
+	}
 	
-	inline function setRelocatePanelVisibility()
+	inline function disableDuplicateSamples()
 	{
 		local e = expHandler.getCurrentExpansion();
-
-		pnlSampleLocation.showControl(isDefined(e));
-		btnSampleLocation.showControl(isDefined(e));
+		
+		if (isDefined(e))
+			e.setAllowDuplicateSamples(false);
 	}
 	
 	// Function calls
-	setRelocatePanelVisibility();
+	disableDuplicateSamples();
 }
