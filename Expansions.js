@@ -86,7 +86,4 @@ namespace Expansions
 		if (isDefined(e))
 			e.setAllowDuplicateSamples(false);
 	}
-	
-	// Function calls
-	disableDuplicateSamples();
 }
