@@ -431,16 +431,6 @@ namespace UIFactory
 		    "FontSize": 16.0
 		});
 		
-		Content.addFloatingTile("fltSampleLocation", 0, 0);
-		Content.setPropertiesFromJSON("fltSampleLocation", {
-		    "x": 436, "y": 227, "width": 400, "height": 100,
-		    "parentComponent": "pnlSettingsTab0",
-		    "ContentType": "CustomSettings",
-		    "Data": "{\n  \"Driver\": false,\n  \"Device\": false,\n  \"Output\": false,\n  \"BufferSize\": false,\n  \"SampleRate\": false,\n  \"GlobalBPM\": false,\n  \"StreamingMode\": false,\n  \"ScaleFactor\": false,\n  \"VoiceAmountMultiplier\": false,\n  \"ClearMidiCC\": false,\n  \"SampleLocation\": true,\n  \"UseOpenGL\": false,\n  \"DebugMode\": false,\n  \"ScaleFactorList\": [\n    0.5,\n    0.75,\n    1.0,\n    1.25,\n    1.5,\n    2.0\n  ]\n}",
-		    "Font": "regular",
-		    "FontSize": 14.0
-		});
-
 		Content.addKnob("knbCoarseTuning", 0, 0);
 		Content.setPropertiesFromJSON("knbCoarseTuning", {
 		    "x": 173, "y": 225, "width": 188, "height": 20,
@@ -498,7 +488,7 @@ namespace UIFactory
 		    "parameterId": "SemiTone"
 		});
 
-		Content.addButton("btnDebug" + i, 0, 0);
+		Content.addButton("btnDebug", 0, 0);
 		Content.setPropertiesFromJSON("btnDebug" + i, {
 			"x": 573, "y": 183, "width": 188, "height": 30,
 			"parentComponent": "pnlSettingsTab0",
@@ -511,7 +501,7 @@ namespace UIFactory
 			"enableMidiLearn": false
 		});
 		
-		Content.addButton("btnSampleLocation" + i, 0, 0);
+		Content.addButton("btnSampleLocation", 0, 0);
 		Content.setPropertiesFromJSON("btnSampleLocation" + i, {
 			"x": 573, "y": 223, "width": 188, "height": 30,
 			"parentComponent": "pnlSettingsTab0",
@@ -521,11 +511,12 @@ namespace UIFactory
 			"itemColour":0xff8b7559,
 			"itemColour2": 0x0,
 			"textColour": Colours.white,
-			"enableMidiLearn": false
+			"enableMidiLearn": false,
+			"isMomentary": true
 		});
 		
-		Content.addPanel("pnlSampleLocation" + i, 0, 0);
-		Content.setPropertiesFromJSON("btnSampleLocation" + i, {
+		Content.addPanel("pnlSampleLocation", 0, 0);
+		Content.setPropertiesFromJSON("pnlSampleLocation" + i, {
 			"x": 520, "y": 269, "width": 280, "height": 60,
 			"parentComponent": "pnlSettingsTab0",
 			"saveInPreset": false,
@@ -533,6 +524,7 @@ namespace UIFactory
 			"itemColour":0x0,
 			"itemColour2": 0x0,
 			"textColour": 0xffc0baac,
+			"allowCallbacks": "Clicks Only",
 			"enableMidiLearn": false
 		});
 
