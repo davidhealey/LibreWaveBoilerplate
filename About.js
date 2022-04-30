@@ -58,7 +58,7 @@ namespace About
 	// Functions
 	inline function getData()
 	{
-		local e = Expansions.getCurrentExpansion();
+		local e = Expansions.getCurrent();
 		local data = Engine.getProjectInfo();
 		
 		if (isDefined(e))

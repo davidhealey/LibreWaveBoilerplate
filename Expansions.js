@@ -74,7 +74,7 @@ namespace Expansions
 		});		
 	}
 
-	inline function getCurrentExpansion()
+	inline function getCurrent()
 	{
 		return expHandler.getCurrentExpansion();
 	}

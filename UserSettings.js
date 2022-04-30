@@ -170,7 +170,7 @@ namespace UserSettings
 	{
 		if (event.clicked && !event.mouseUp && this.data.path != "")
 		{
-			var e = Expansions.getCurrentExpansion();
+			var e = Expansions.getCurrent();
 			e.getSampleFolder().show();
 		}
 		
@@ -208,7 +208,7 @@ namespace UserSettings
     
 	inline function setRelocatePanelVisibility()
 	{
-		local e = Expansions.getCurrentExpansion();
+		local e = Expansions.getCurrent();
 	
 		if (isDefined(e))
 			pnlSampleLocation.data.path = e.getSampleFolder().toString(0);
