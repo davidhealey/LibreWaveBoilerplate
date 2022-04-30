@@ -158,7 +158,7 @@ namespace UserSettings
 	{		
 		var a = this.getLocalBounds(0);
 		
-		g.setColour(this.get("textColour"));
+		g.setColour(Colours.withAlpha(this.get("textColour"), 1 - 0.3 * this.data.hover));
 		g.setFont("bold", 14);
 		g.drawAlignedText("Current Sample Location", [a[0], a[1], a[2], 30], "centred");
 		
@@ -173,6 +173,9 @@ namespace UserSettings
 			var e = Expansions.getCurrentExpansion();
 			e.getSampleFolder().show();
 		}
+		
+		this.data.hover = event.hover;
+		this.repaint();
 	});
     
     // Functions
